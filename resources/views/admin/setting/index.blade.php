@@ -38,26 +38,6 @@
                             <input type="text" class="form-control" id="title" name="title" value="{{setting('title')}}" required>
                         </div>
 
-                        <div class="form-group">
-                            <label>เบอร์โทรศัพท์</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="{{setting('phone')}}">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Facebook</label>
-                            <input type="text" class="form-control" id="facebook" name="facebook" value="{{setting('facebook')}}">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Line</label>
-                            <input type="text" class="form-control" id="line" name="line" value="{{setting('line')}}">
-                        </div>
-
-                        <div class="form-group">
-                            <label>แผนที่</label>
-                            <textarea type="text" class="form-control" id="googlemap" name="googlemap" value="{{setting('googlemap')}}"></textarea>
-                        </div>
-
                     </div>
                 </div>
             </div>

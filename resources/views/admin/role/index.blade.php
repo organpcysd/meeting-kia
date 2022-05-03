@@ -1,13 +1,6 @@
 @extends('adminlte::page')
 @section('title', setting('title'). ' | จัดการบทบาท')
 @php $pagename = 'จัดการบทบาท'; @endphp
-@push('css')
-<style type="text/css">
-    body {
-        font-family: kanit !important;
-    }
-</style>
-@endpush
 @section('content')
 <div class="contrainer p-4">
     <div class="row">

@@ -67,6 +67,12 @@ class Carmodel extends Migration
 
         });
 
+        Schema::create('car_gift', function (Blueprint $table) {
+            $table->id();
+            $table->string('gift_name');
+            $table->timestamps();
+        });
+
     }
 
     /**

@@ -55,7 +55,7 @@ Route::prefix('admin')->group(function(){
         Route::post('/customer/getcanton',[App\Http\Controllers\Admin\CustomerController::class,'getDataCanton'])->name('customer.getcanton');
         Route::post('/customer/getzipcode',[App\Http\Controllers\Admin\CustomerController::class,'getDataZipcode'])->name('customer.getzipcode');
 
-
+        Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);
 
     });
 });

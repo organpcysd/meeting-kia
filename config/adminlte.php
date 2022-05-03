@@ -229,7 +229,7 @@ return [
         [
             'type'         => 'navbar-search',
             'text'         => 'search',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
         [
             'type'         => 'fullscreen-widget',
@@ -242,9 +242,9 @@ return [
             'text' => 'search',
         ],
         [
-            'text' => 'Dashboard',
+            'text' => 'รายงานผล',
             'icon' => 'fas fa-fw fa-home',
-            'url'  => '#',
+            'url'  => '',
         ],
         ['header' => 'ตั้งค่าทั่วไป'],
         [
@@ -256,6 +256,11 @@ return [
             'text'      => 'ลูกค้า Traffic',
             'icon'      => 'fas fa-fw fa-list',
             'url'       => '',
+        ],
+        [
+            'text'      => 'ใบเสนอราคา',
+            'icon'      => 'fas fa-fw fa-file',
+            'route'       => 'quotation.index',
         ],
         [
             'text'      => 'จัดการข้อมูลรถยนต์',

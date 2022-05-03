@@ -1,11 +1,5 @@
 @extends('adminlte::page')
-@push('css')
-<style type="text/css">
-    body {
-        font-family: kanit !important;
-    }
-</style>
-@endpush
+@section('title', setting('title'). ' | รายงานผล')
 @section('content')
     <div class="card">
         <div class="card-header">Dashboard</div>
