@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+@section('title', setting('title'). ' | จัดการรุ่นรถยนต์')
 @php $pagename = 'จัดการรุ่นรถ'; @endphp
 @section('content')
 <div class="contrainer p-4">

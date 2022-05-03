@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+@section('title', setting('title'). ' | จัดการตำแหน่ง')
 @php $pagename = 'จัดการตำแหน่ง'; @endphp
 @push('css')
 <style type="text/css">

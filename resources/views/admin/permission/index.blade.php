@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+@section('title', setting('title'). ' | จัดการสิทธิการเข้าถึง')
 @php $pagename = 'จัดการสิทธิ์การเข้าถึง'; @endphp
 @section('content')
 <div class="contrainer p-4">

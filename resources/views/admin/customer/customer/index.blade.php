@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+@section('title', setting('title'). ' | ลูกค้าติดต่อเข้ามา')
 @php $pagename = 'รายชื่อลูกค้า'; @endphp
 @section('content')
 <div class="contrainer p-4">
