@@ -51,10 +51,10 @@ class LoginController extends Controller
             if(auth()->user()->status == 1) {
                 return redirect('admin');
             }else{
-                return redirect()->route('login');
+                // return redirect()->route('login');
             }
         }
         return redirect()->route('login');
-        // dd($data);
+
     }
 }

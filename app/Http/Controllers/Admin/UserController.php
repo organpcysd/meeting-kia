@@ -182,10 +182,9 @@ class UserController extends Controller
         $users->hobby = $request->hobby;
         $users->line_id = $request->lineid;
         $users->phone = $request->phone;
-        $users->email = $request->email;
-        $users->password = bcrypt($request->password);
         $users->updated_at = Carbon::now();
 
+        // dd($users);
         if($users->save()){
             $users->user_position()->sync($request->position);
             $users->removeRole($users->roles()->get()[0]->name);

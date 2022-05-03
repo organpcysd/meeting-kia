@@ -23,7 +23,7 @@
                  alt="{{ Auth::user()->f_name }}">
         @endif
         <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
-            {{ Auth::user()->f_name }} {{ Auth::user()->l_name }} <i class="fa fa-fw fa-chevron-circle-down"></i>
+            {{ Auth::user()->f_name . ' ' . Auth::user()->l_name }} <i class="fa fa-fw fa-chevron-circle-down"></i>
         </span>
     </a>
 
