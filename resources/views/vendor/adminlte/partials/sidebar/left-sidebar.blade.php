@@ -19,6 +19,19 @@
                 @if(!config('adminlte.sidebar_nav_accordion'))
                     data-accordion="false"
                 @endif>
+
+                {{-- Profiles --}}
+                @if(config('adminlte.usermenu_image'))
+                    <div class="col text-center">
+                        <img src="{{ Auth::user()->adminlte_image() }}" {{-- {{ Auth::user()->adminlte_image() }} --}}
+                        class="img-circle elevation-2" width="50">
+                @endif
+                    <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }} @if(!config('adminlte.usermenu_image')) mt-0 @endif">
+                        {{ Auth::user()->f_name }} {{ Auth::user()->l_name }}
+                        ( {{ Auth::user()->roles()->get()[0]->name; }})
+                    </span>
+                    </div>
+
                 {{-- Configured sidebar links --}}
                 @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item')
             </ul>
