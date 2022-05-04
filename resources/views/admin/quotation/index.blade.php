@@ -17,5 +17,30 @@
             <h3>{{ $pagename }}</h3>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{ route('role.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
+                    <div class="mt-4">
+                        <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
+                            <thead>
+                            <tr>
+                                <td>##</td>
+                                <td>ชื่อลูกค้า</td>
+                                <td>ชื่อเล่น</td>
+                                <td>วันที่ออกใบเสนอราคา</td>
+                                <td>ที่ปรึกษา</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

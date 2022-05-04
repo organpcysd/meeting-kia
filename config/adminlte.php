@@ -263,10 +263,10 @@ return [
             'route'       => 'quotation.index',
         ],
         [
-            'text'      => 'จัดการข้อมูลรถยนต์',
+            'text'      => 'ตั้งค่าระบบ',
             'icon'      => 'fas fa-fw fa-car',
-            'url'       => '',
             'submenu'   => [
+                ['header' => 'จัดการข้อมูลรถยนต์'],
                 [
                     'text'      => 'จัดการรถยนต์',
                     'route'       => 'car.index',
@@ -287,21 +287,19 @@ return [
                     'text'      => 'จัดการสี',
                     'route'       => 'carcolor.index',
                 ],
-            ]
-        ],
-        [
-            'text'      => 'จัดการข้อมูล Traffic',
-            'icon'      => 'fas fa-fw fa-car',
-            'url'       => '',
-            'submenu'   => [
+                [
+                    'text'      => 'รายการของแถม',
+                    'route'       => 'cargift.index',
+                ],
+                ['header' => 'จัดการข้อมูล Traffic'],
                 [
                     'text'      => 'จัดการช่องทางการรับรู้',
-                    'url'       => '#',
+                    'route'       => 'channel.index',
                 ],
 
                 [
                     'text'      => 'จัดการแหล่งข้อมูล',
-                    'url'       => '#',
+                    'route'       => 'source.index',
                 ],
             ]
         ],
@@ -326,7 +324,7 @@ return [
             'icon'       => 'fas fa-fw fa-id-card',
             'route'      => 'permission.index',
         ],
-        ['header' => 'ตั้งค่าระบบ'],
+        ['header' => 'จัดการระบบ'],
         [
             'text'       => 'ตั้งค่าเว็บไซต์',
             'icon'       => 'fas fa-fw fa-cogs',

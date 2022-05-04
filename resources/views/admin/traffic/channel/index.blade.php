@@ -1,6 +1,6 @@
 @extends('adminlte::page')
-@section('title', setting('title'). ' | จัดการประเภทรถยนต์')
-@php $pagename = 'จัดการประเภทรถ'; @endphp
+@section('title', setting('title'). ' | จัดการช่องทางการรับรู้')
+@php $pagename = 'จัดการช่องทางการรับรู้'; @endphp
 @section('content')
 <div class="contrainer p-4">
     <div class="row">
@@ -20,11 +20,11 @@
 
     <div class="row">
         <div class="col-sm-4">
-            <form action="{{ route('cartype.store') }}" method="post">
+            <form action="{{ route('channel.store') }}" method="post">
                 @csrf
                 <div class="card card-info">
                     <div class="card-header">
-                        เพิ่มประเภทรถ
+                        เพิ่มช่องทางการรับรู้
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -34,9 +34,9 @@
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label>ชื่อประเภทรถ</label>
-                            <input type="text" class="form-control" id="cartype" name="cartype" required>
-                            @error('cartype')
+                            <label>ชื่อช่องทางการรับรู้</label>
+                            <input type="text" class="form-control" id="channel" name="channel" required>
+                            @error('channel')
                             <div class="my-2">
                                 <span class="text-danger my-2">{{ $message }}</span>
                             </div>
@@ -60,7 +60,7 @@
                             <thead>
                             <tr>
                                 <td>##</td>
-                                <td>ประเภท</td>
+                                <td>ช่องทางการรับรู้</td>
                                 <td>การจัดการ</td>
                             </tr>
                             </thead>
@@ -78,20 +78,20 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขประเภทรถ</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขช่องทางการรับรู้</h5>
                 </div>
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label>ชื่อประเภทรถ</label>
-                            <input type="hidden" id="cartype_id" value="">
-                            <input type="text" class="form-control" id="cartype_edit" name="cartype_edit" required>
+                            <label>ชื่อช่องทางการรับรู้</label>
+                            <input type="hidden" id="channel_id" value="">
+                            <input type="text" class="form-control" id="channel_edit" name="channel_edit" required>
                         </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <input type="submit" onclick="updatecartype()" class="btn btn-success savebtn" value="บันทึก">
+                        <input type="submit" onclick="updatechannel()" class="btn btn-success savebtn" value="บันทึก">
                     </div>
             </div>
         </div>
@@ -117,10 +117,10 @@
                         'processing': '<div class="spinner-border text-primary" role="status"><span class="sr-only">กำลังโหลด...</span></div>'
                     },
                     serverSide: true,
-                    ajax: "{{route('cartype.index')}}",
+                    ajax: "{{route('channel.index')}}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'id'} ,
-                        {data: 'type_name'},
+                        {data: 'channel_name'},
                         {data: 'btn'},
                     ],
                 });
@@ -131,32 +131,32 @@
 
                 $.ajax({
                     type: "get",
-                    url: '{{ url('admin/cartype')}}/' + id,
+                    url: "{{ url('admin/traffic/channel')}}/" + id,
                     success: function (response) {
                         console.log(response);
-                        $('#cartype_id').val(response.id);
-                        $('#cartype_edit').val(response.type_name);
+                        $('#channel_id').val(response.id);
+                        $('#channel_edit').val(response.channel_name);
 
                         $('#edit').modal('show');
                     }
                 });
             }
 
-            function updatecartype(){
-                id = document.getElementById('cartype_id').value;
-                cartype = document.getElementById('cartype_edit').value;
+            function updatechannel(){
+                id = document.getElementById('channel_id').value;
+                channel = document.getElementById('channel_edit').value;
 
                 // console.log(CSRF_TOKEN);
                 var data = {
                     _token : CSRF_TOKEN,
-                    cartype_edit : cartype,
+                    channel_edit : channel,
                 }
 
                 console.log(data)
 
                 $.ajax({
                     type: "PUT",
-                    url: '{{ url('admin/cartype')}}/' + id,
+                    url: "{{ url('admin/traffic/channel')}}/" + id,
                     data: data,
                     success: function (results) {
                         if (results.status === true) {
@@ -191,7 +191,7 @@
                         return new Promise(function (resolve) {
                             $.ajax({
                                 type: 'DELETE',
-                                url: "{{url('admin/cartype')}}/" + id,
+                                url: "{{url('admin/traffic/channel')}}/" + id,
                                 data: {_token: CSRF_TOKEN},
                                 dataType: 'JSON',
                                 success: function (results) {

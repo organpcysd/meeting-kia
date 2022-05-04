@@ -1,6 +1,6 @@
 @extends('adminlte::page')
-@section('title', setting('title'). ' | จัดการประเภทรถยนต์')
-@php $pagename = 'จัดการประเภทรถ'; @endphp
+@section('title', setting('title'). ' | รายการของแถม')
+@php $pagename = 'รายการของแถม'; @endphp
 @section('content')
 <div class="contrainer p-4">
     <div class="row">
@@ -20,11 +20,11 @@
 
     <div class="row">
         <div class="col-sm-4">
-            <form action="{{ route('cartype.store') }}" method="post">
+            <form action="{{ route('cargift.store') }}" method="post">
                 @csrf
                 <div class="card card-info">
                     <div class="card-header">
-                        เพิ่มประเภทรถ
+                        รายการของแถม
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -34,9 +34,9 @@
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label>ชื่อประเภทรถ</label>
-                            <input type="text" class="form-control" id="cartype" name="cartype" required>
-                            @error('cartype')
+                            <label>ชื่อของแถม</label>
+                            <input type="text" class="form-control" id="cargift" name="cargift" required>
+                            @error('cargift')
                             <div class="my-2">
                                 <span class="text-danger my-2">{{ $message }}</span>
                             </div>
@@ -60,7 +60,7 @@
                             <thead>
                             <tr>
                                 <td>##</td>
-                                <td>ประเภท</td>
+                                <td>ชื่อของแถม</td>
                                 <td>การจัดการ</td>
                             </tr>
                             </thead>
@@ -78,20 +78,20 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขประเภทรถ</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขรายการของแถม</h5>
                 </div>
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label>ชื่อประเภทรถ</label>
-                            <input type="hidden" id="cartype_id" value="">
-                            <input type="text" class="form-control" id="cartype_edit" name="cartype_edit" required>
+                            <label>ชื่อของแถม</label>
+                            <input type="hidden" id="cargift_id" value="">
+                            <input type="text" class="form-control" id="cargift_edit" name="cargift_edit" required>
                         </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <input type="submit" onclick="updatecartype()" class="btn btn-success savebtn" value="บันทึก">
+                        <input type="submit" onclick="updatecargift()" class="btn btn-success savebtn" value="บันทึก">
                     </div>
             </div>
         </div>
@@ -117,10 +117,10 @@
                         'processing': '<div class="spinner-border text-primary" role="status"><span class="sr-only">กำลังโหลด...</span></div>'
                     },
                     serverSide: true,
-                    ajax: "{{route('cartype.index')}}",
+                    ajax: "{{route('cargift.index')}}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'id'} ,
-                        {data: 'type_name'},
+                        {data: 'gift_name'},
                         {data: 'btn'},
                     ],
                 });
@@ -131,32 +131,32 @@
 
                 $.ajax({
                     type: "get",
-                    url: '{{ url('admin/cartype')}}/' + id,
+                    url: '{{ url('admin/cargift')}}/' + id,
                     success: function (response) {
                         console.log(response);
-                        $('#cartype_id').val(response.id);
-                        $('#cartype_edit').val(response.type_name);
+                        $('#cargift_id').val(response.id);
+                        $('#cargift_edit').val(response.gift_name);
 
                         $('#edit').modal('show');
                     }
                 });
             }
 
-            function updatecartype(){
-                id = document.getElementById('cartype_id').value;
-                cartype = document.getElementById('cartype_edit').value;
+            function updatecargift(){
+                id = document.getElementById('cargift_id').value;
+                cargift = document.getElementById('cargift_edit').value;
 
                 // console.log(CSRF_TOKEN);
                 var data = {
                     _token : CSRF_TOKEN,
-                    cartype_edit : cartype,
+                    cargift_edit : cargift,
                 }
 
                 console.log(data)
 
                 $.ajax({
                     type: "PUT",
-                    url: '{{ url('admin/cartype')}}/' + id,
+                    url: '{{ url('admin/cargift')}}/' + id,
                     data: data,
                     success: function (results) {
                         if (results.status === true) {
@@ -191,7 +191,7 @@
                         return new Promise(function (resolve) {
                             $.ajax({
                                 type: 'DELETE',
-                                url: "{{url('admin/cartype')}}/" + id,
+                                url: "{{url('admin/cargift')}}/" + id,
                                 data: {_token: CSRF_TOKEN},
                                 dataType: 'JSON',
                                 success: function (results) {

@@ -41,6 +41,7 @@ Route::prefix('admin')->group(function(){
         Route::resource('/cartype', App\Http\Controllers\Admin\CarTypeController::class);
         Route::resource('/carcolor', App\Http\Controllers\Admin\CarColorController::class);
         Route::resource('/carlevel', App\Http\Controllers\Admin\CarLevelController::class);
+        Route::resource('/cargift', App\Http\Controllers\Admin\CarGiftController::class);
 
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
         Route::resource('/customer/follow', App\Http\Controllers\Admin\CustomerFollowController::class);
@@ -56,6 +57,9 @@ Route::prefix('admin')->group(function(){
         Route::post('/customer/getzipcode',[App\Http\Controllers\Admin\CustomerController::class,'getDataZipcode'])->name('customer.getzipcode');
 
         Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);
+
+        Route::resource('traffic/channel', App\Http\Controllers\Admin\TrafficChannelController::class);
+        Route::resource('traffic/source', App\Http\Controllers\Admin\TrafficSourceController::class);
 
     });
 });

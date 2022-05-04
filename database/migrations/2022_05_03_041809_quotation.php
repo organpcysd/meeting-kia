@@ -15,6 +15,7 @@ class Quotation extends Migration
     {
         Schema::create('quotation', function (Blueprint $table) {
             $table->id();
+            $table->string('serial_number')->comment('หมายเลขใบเสนอราคา');
             $table->unsignedBigInteger('user_id')->comment('ลูกค้า');
             $table->unsignedBigInteger('customer_id')->comment('ที่ปรึกษาการขาย');
             $table->unsignedBigInteger('car_id')->comment('รถยนต์');
@@ -31,7 +32,7 @@ class Quotation extends Migration
 
         Schema::create('quotation_detail', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('quotation_id')->comment('ใบเสนอราคา');
+            $table->UnsignedBigInteger('quotation_id')->comment('ใบเสนอราคา');
             $table->string('condition')->comment('เงื่อนไข');
             $table->string('price_car')->comment('ราคารถยนต์');
             $table->string('payment_discount')->comment('ส่วนลดราคารถยนต์');
