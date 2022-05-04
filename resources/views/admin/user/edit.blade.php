@@ -85,7 +85,7 @@
 
                         <div class="form-group">
                             <label>วันเกิด</label>
-                            <input type="date" class="form-control" id="born" name="born" value = "{{ $user->born }}" required>
+                            <input type="date" class="form-control" id="born" name="born" value = "{{ $user->born }}">
                         </div>
 
                         <div class="form-group">
@@ -132,7 +132,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">อีเมล</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
+                            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
                             @error('email')
                             <div class="my-2">
                                 <span class="text-danger my-2">{{ $message }}</span>

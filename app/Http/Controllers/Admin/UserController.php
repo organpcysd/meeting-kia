@@ -156,7 +156,6 @@ class UserController extends Controller
             'fname'=>'required',
             'lname'=>'required',
             'nickname'=>'required',
-            'born'=>'required',
             'phone'=>'required',
             'email' => 'required|unique:users,email,'. $users->id,
         ],

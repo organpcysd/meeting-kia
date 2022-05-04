@@ -76,7 +76,7 @@
 
                         <div class="form-group">
                             <label>วันเกิด</label>
-                            <input type="date" class="form-control" id="birthdate" name="born" required>
+                            <input type="date" class="form-control" id="birthdate" name="born">
                         </div>
 
                         <div class="form-group">
@@ -123,7 +123,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">อีเมล</label>
-                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
                             @error('email')
                             <div class="my-2">
                                 <span class="text-danger my-2">{{ $message }}</span>
@@ -132,11 +132,11 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">รหัสผ่าน</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="6">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="6" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">ยืนยันรหัสผ่าน</label>
-                            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Password" minlength="6">
+                            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Password" minlength="6" required>
                         </div>
                     </div>
                 </div>
