@@ -22,16 +22,18 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('role.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
+                    <a href="{{ route('quotation.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
                     <div class="mt-4">
                         <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
                             <thead>
                             <tr>
                                 <td>##</td>
+                                <td>หมายเลขใบเสนอราคา</td>
                                 <td>ชื่อลูกค้า</td>
                                 <td>ชื่อเล่น</td>
                                 <td>วันที่ออกใบเสนอราคา</td>
                                 <td>ที่ปรึกษา</td>
+                                <td>การจัดการ</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -43,4 +45,75 @@
         </div>
     </div>
 </div>
+
+@include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
+@section('plugins.Datatables', true)
+@section('plugins.Sweetalert2', true)
+
+@push('js')
+<script>
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var table;
+        $(document).ready( function () {
+                table = $('#table').DataTable({
+                    responsive: true,
+                    processing: true,
+                    scrollX: true,
+                    scrollCollapse: true,
+                    language: {
+                        'loadingRecords': '&nbsp;',
+                        'processing': '<div class="spinner-border text-primary" role="status"><span class="sr-only">กำลังโหลด...</span></div>'
+                    },
+                    serverSide: true,
+                    ajax: "{{route('quotation.index')}}",
+                    columns: [
+                        {data: 'DT_RowIndex', name: 'id'} ,
+                        {data: 'serial_number'},
+                        {data: 'user_id'},
+                        {data: 'nickname'},
+                        {data: 'created_at'},
+                        {data: 'customer_id'},
+                        {data: 'btn'},
+                    ],
+                });
+            });
+
+        function deleteConfirmation(id) {
+            Swal.fire({
+                icon: 'info',
+                title: 'ท่านต้องการลบข้อมูลใช่หรือไม่',
+                text: 'หากลบข้อมูลแล้วจะไม่สามารถกู้คืนกลับมาได้',
+                showCancelButton: true,
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก',
+                showLoaderOnConfirm: true,
+                preConfirm: (e) => {
+                    return new Promise(function (resolve) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: "{{url('admin/quotation')}}/" + id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.status === true) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: results.message,
+                                    })
+                                    table.ajax.reload();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: results.message,
+                                    })
+                                }
+
+                            }
+                        });
+                    })
+                },
+            })
+        }
+    </script>
+@endpush
 @endsection

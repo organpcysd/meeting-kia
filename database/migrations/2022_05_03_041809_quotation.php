@@ -16,8 +16,9 @@ class Quotation extends Migration
         Schema::create('quotation', function (Blueprint $table) {
             $table->id();
             $table->string('serial_number')->comment('หมายเลขใบเสนอราคา');
-            $table->unsignedBigInteger('user_id')->comment('ลูกค้า');
-            $table->unsignedBigInteger('customer_id')->comment('ที่ปรึกษาการขาย');
+            $table->unsignedBigInteger('customer_id')->comment('ลูกค้า');
+            $table->unsignedBigInteger('user_id')->comment('ที่ปรึกษาการขาย');
+            $table->unsignedBigInteger('contact_id')->comment('ผู้มาติดต่อ');
             $table->unsignedBigInteger('car_id')->comment('รถยนต์');
             $table->string('place_send')->nullable()->comment('สถานที่จัดส่ง');
             $table->date('estimate_send')->nullable()->comment('ประมาณการส่งมอบ');
@@ -27,6 +28,7 @@ class Quotation extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('customer')->onDelete('cascade');
             $table->foreign('car_id')->references('id')->on('car')->onDelete('cascade');
         });
 

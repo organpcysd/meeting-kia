@@ -28,7 +28,6 @@
                 @endif
                     <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }} @if(!config('adminlte.usermenu_image')) mt-0 @endif">
                         {{ Auth::user()->f_name }} {{ Auth::user()->l_name }}
-                        ( {{ Auth::user()->roles()->get()[0]->name; }})
                     </span>
                     </div>
 
