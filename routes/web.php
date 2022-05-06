@@ -47,9 +47,6 @@ Route::prefix('admin')->group(function(){
         Route::resource('/customer/follow', App\Http\Controllers\Admin\CustomerFollowController::class);
         Route::get('/customer/follow/data/{customer}',[App\Http\Controllers\Admin\CustomerFollowController::class,'getData'])->name('follow.getData');
         Route::post('/customer/follow/data/changestatus',[App\Http\Controllers\Admin\CustomerFollowController::class,'changestatus'])->name('follow.changestatus');
-        // Route::post('/customer/follow',[App\Http\Controllers\Admin\CustomerFollowController::class,'store'])->name('follow.store');
-        // Route::get('/customer/follow/edit/{id}',[App\Http\Controllers\Admin\CustomerFollowController::class,'edit'])->name('follow.edit');
-
 
         Route::post('/customer/getprovinces',[App\Http\Controllers\Admin\CustomerController::class,'getDataProvinces'])->name('customer.getprovinces');
         Route::post('/customer/getdistricts',[App\Http\Controllers\Admin\CustomerController::class,'getDataDistricts'])->name('customer.getdistricts');
@@ -57,6 +54,7 @@ Route::prefix('admin')->group(function(){
         Route::post('/customer/getzipcode',[App\Http\Controllers\Admin\CustomerController::class,'getDataZipcode'])->name('customer.getzipcode');
 
         Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);
+        Route::post('/quotation/getDataCar',[App\Http\Controllers\Admin\QuotationController::class,'getDataCar'])->name('quotation.car');
 
         Route::resource('traffic/channel', App\Http\Controllers\Admin\TrafficChannelController::class);
         Route::resource('traffic/source', App\Http\Controllers\Admin\TrafficSourceController::class);

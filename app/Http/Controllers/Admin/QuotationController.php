@@ -8,6 +8,10 @@ use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Quotation;
+use App\Models\Customer;
+use App\Models\User;
+use App\Models\Car;
+use App\Models\Car_gift;
 
 class QuotationController extends Controller
 {
@@ -44,7 +48,11 @@ class QuotationController extends Controller
      */
     public function create()
     {
-        return view('admin.quotation.create');
+        $customers = Customer::all();
+        $users = User::all();
+        $cars = Car::all();
+        $accessories = Car_gift::all();
+        return view('admin.quotation.create',compact('customers','users','cars','accessories'));
     }
 
     /**
@@ -101,5 +109,10 @@ class QuotationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getDataCar(Request $request){
+        $car = Car::whereId($request->id)->first();
+        return response()->json($car);
     }
 }
