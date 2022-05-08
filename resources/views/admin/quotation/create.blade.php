@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <form action="{{ route('cartype.store') }}" method="post">
+        <form action="{{ route('quotation.store') }}" method="post">
             @csrf
             <div class="row">
                 <div class="col-sm-5">
@@ -104,15 +104,10 @@
                     </div>
                 </div>
 
-                <div class="col-sm-7">
+                <div class="col-sm-7" id="payment_detail">
                     <div class="card card-info">
                         <div class="card-header">
                             รายละเอียดการชำระเงิน
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
                         </div>
                         <div class="card-body">
 
@@ -120,8 +115,9 @@
                                 <label class="col-sm-3 col-form-label">เงื่อนไข</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="condition" id="condition">
-                                        <option value="สด">สด</option>
-                                        <option value="ผ่อน">ผ่อน</option>
+                                        <option selected disabled>- เลือกเงื่อนไข -</option>
+                                        <option value="cash">สด</option>
+                                        <option value="credit">ผ่อน</option>
                                     </select>
                                 </div>
                             </div>
@@ -140,7 +136,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" id="cal">
                                 <label class="col-sm-3 col-form-label">คำนวณยอดจัดซื้อ</label>
                                 <div class="col-sm-9 border border-info rounded p-4">
                                     <div class="form-group row">
@@ -171,7 +167,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" name="term_credit" id="term_credit">
-                                                    <option value="" selected disabled>- เลือกจำนวนงวด -</option>
+                                                    <option value="1" selected>- เลือกจำนวนงวด -</option>
                                                     <option value="12">12</option>
                                                     <option value="24">24</option>
                                                     <option value="36">36</option>
@@ -231,32 +227,28 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">มัดจำป้ายแดง</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="deposit_roll" name="deposit_roll"
-                                        required>
+                                    <input type="text" class="form-control" id="deposit_roll" name="deposit_roll">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าอุปกรณ์แต่งรถยนต์</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_decorate" name="payment_decorate"
-                                        required>
+                                    <input type="text" class="form-control" id="payment_decorate" name="payment_decorate">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าเบี้ยประกัน</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_insurance" name="payment_insurance"
-                                        required>
+                                    <input type="text" class="form-control" id="payment_insurance" name="payment_insurance">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าใช้จ่ายอื่นๆ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_other" name="payment_other"
-                                        required>
+                                    <input type="text" class="form-control" id="payment_other" name="payment_other">
                                 </div>
                             </div>
 
@@ -266,13 +258,13 @@
                                 <label class="col-sm-3 col-form-label">รถยนต์ที่นำมาแลก</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="car_change" id="car_change">
-                                        <option value="มี" >มี</option>
-                                        <option value="ไม่มี">ไม่มี</option>
+                                        <option value="yes" >มี</option>
+                                        <option value="no">ไม่มี</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" id="carturn">
                                 <label class="col-sm-3 col-form-label"><u>หัก</u> รถยนต์คันเก่า</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="payment_car_turn" name="payment_car_turn">
@@ -303,9 +295,8 @@
                     </div>
 
                     <div class="float-right">
-                        <a class='btn btn-secondary' onclick='history.back();'><i
-                                class="fas fa-arrow-left mr-2"></i>ย้อนกลับ</a>
-                        <button class='btn btn-info'><i class="fas fa-save mr-2"></i>บันทึก</button>
+                        <a class='btn btn-secondary' id="backbtn" onclick='history.back();'><i class="fas fa-arrow-left mr-2"></i>ย้อนกลับ</a>
+                        <button class='btn btn-info' id="savebtn"><i class="fas fa-save mr-2"></i>บันทึก</button>
                     </div>
                 </div>
             </div>
@@ -319,8 +310,32 @@
 @push('js')
     <script>
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
         $(document).ready(function() {
             $('.sel2').select2();
+
+            //hide div id : cal
+            let ele = document.getElementById("cal");
+            ele.style.display = "none";
+
+            select_car = $("#car").val();
+            if(select_car === null) {
+
+                $('#payment_detail').fadeTo(0, 0.4);
+
+                document.getElementById("condition").disabled = true;
+                document.getElementById("payment_discount").disabled = true;
+                document.getElementById("deposit_roll").disabled = true;
+                document.getElementById("payment_decorate").disabled = true;
+                document.getElementById("payment_insurance").disabled = true;
+                document.getElementById("payment_other").disabled = true;
+                document.getElementById("car_change").disabled = true;
+                document.getElementById("payment_car_turn").disabled = true;
+                document.getElementById("accessories").disabled = true;
+                document.getElementById("savebtn").disabled = true;
+                document.getElementById("backbtn").disabled = true;
+            }
+
         });
 
         $('#car').on('change',function(){
@@ -336,7 +351,185 @@
                     $('#price_car_net').val(response.price);
                 }
             });
+
+            select_car = $("#car").val();
+            if(select_car != null) {
+
+                $('#payment_detail').fadeTo(0, 1);
+                document.getElementById("condition").disabled = false;
+                document.getElementById("payment_discount").disabled = false;
+                document.getElementById("deposit_roll").disabled = false;
+                document.getElementById("payment_decorate").disabled = false;
+                document.getElementById("payment_insurance").disabled = false;
+                document.getElementById("payment_other").disabled = false;
+                document.getElementById("car_change").disabled = false;
+                document.getElementById("payment_car_turn").disabled = false;
+                document.getElementById("accessories").disabled = false;
+                document.getElementById("savebtn").disabled = false;
+                document.getElementById("backbtn").disabled = true;
+
+            }
+
         });
+
+        $('#condition').on('change',function(){
+            let val = $("#condition").val();
+
+            if (val == "cash") {
+                let ele = document.getElementById("cal");
+                ele.style.display = "none";
+
+                cal()
+            }else{
+                let ele = document.getElementById("cal");
+                ele.style.display = "";
+
+                cal()
+            }
+        });
+
+        $('#car_change').on('change',function(){
+            let car_change = $("#car_change").val();
+
+            if(car_change == "no") {
+                let ele = document.getElementById("carturn");
+                ele.style.display = "none";
+                $("#payment_car_turn").val('');
+                cal()
+            }else{
+                let ele = document.getElementById("carturn");
+                ele.style.display = "";
+            }
+        })
+
+        $('#payment_discount').on('keyup',function() {
+            var price_car = parseInt($("#price_car").val());
+            var payment_discount = parseInt($("#payment_discount").val());
+
+            if(isNaN(payment_discount)) {
+                payment_discount = 0;
+            }
+
+            net = price_car - payment_discount
+            $('#price_car_net').val(net);
+
+            cal()
+        });
+
+        //----- credit -----//
+
+        $('#payment_down').on('keyup',function() {
+            cal()
+        });
+
+        $('#payment_down_discount').on('keyup',function() {
+            cal()
+        });
+
+        $('#term_credit').on('change',function() {
+            cal()
+        });
+
+        $('#interest').on('keyup',function() {
+            cal()
+        });
+
+        //----------------//
+
+        $('#deposit_roll').on('keyup',function() {
+            cal()
+        });
+
+        $('#payment_decorate').on('keyup',function() {
+            cal()
+        });
+
+        $('#payment_insurance').on('keyup',function() {
+            cal()
+        });
+
+        $('#payment_other').on('keyup',function() {
+            cal()
+        });
+
+        $('#payment_car_turn').on('keyup',function() {
+            cal()
+        });
+
+        function cal() {
+            var price_car = parseInt($("#price_car").val()); //ราคารถยนต์
+            var payment_discount = parseInt($("#payment_discount").val()); //ส่วนลดราคารถยนต์
+
+            var price_car_net = parseInt($("#price_car_net").val()); //ราคารถยนต์สุทธิ
+            var payment_down = parseInt($("#payment_down").val()); //ดาวน์
+            var payment_down_discount = parseInt($("#payment_down_discount").val()); //ส่วนลดเงินดาวน์
+            var term_credit = parseInt($("#term_credit").val()); //ระยะเวลาผ่อนชำระ (เดือน) default = 1
+            var interest = parseInt($("#interest").val()); //อัตราดอกเบี้ยต่อปี
+
+            var deposit_roll = parseInt($("#deposit_roll").val()); //มัดจำป้ายแดง
+            var payment_decorate = parseInt($("#payment_decorate").val()); //ค่าอุปกรณ์แต่งรถยนต์
+            var payment_insurance = parseInt($("#payment_insurance").val()); //ค่าเบี้ยประกัน
+            var payment_other = parseInt($("#payment_other").val()); //ค่าใช้จ่ายอื่นๆ
+            var payment_car_turn = parseInt($("#payment_car_turn").val()); //หักรถยนต์คันเก่า
+
+            if(isNaN(payment_discount)) {
+                payment_discount = 0;
+            }
+
+            //----- credit -----//
+
+            if(isNaN(payment_down)) {
+                payment_down = 0;
+            }
+
+            if(isNaN(payment_down_discount)) {
+                payment_down_discount = 0;
+            }
+
+            if(isNaN(interest)) {
+                interest = 0;
+            }
+
+            //----------------//
+
+            if(isNaN(deposit_roll)) {
+                deposit_roll = 0;
+            }
+
+            if(isNaN(payment_decorate)) {
+                payment_decorate = 0;
+            }
+
+            if(isNaN(payment_insurance)) {
+                payment_insurance = 0;
+            }
+
+            if(isNaN(payment_other)) {
+                payment_other = 0;
+            }
+
+            if(isNaN(payment_car_turn)) {
+                payment_car_turn = 0;
+            }
+
+            condition = $("#condition").val();
+            if (condition === "cash") {
+                let subtotal = ( price_car - payment_discount ) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn
+                $("#subtotal").val(subtotal);
+            } else if ( condition === "credit") {
+                hire = (price_car - payment_discount) - payment_down;
+                term_payment = hire/term_credit;
+                net_interest = (((hire*interest)/100)/12);
+                net_payment = Math.ceil(term_payment) + Math.ceil(net_interest);
+
+                $("#hire_purchase").val(hire); //ยอดจัดเช่าซื้อ
+                $("#term_payment").val(net_payment); //ค่างวดต่อเดือน
+
+                let subtotal = (payment_down - payment_down_discount) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn
+                $("#subtotal").val(subtotal);
+            }
+
+        }
 
     </script>
 @endpush

@@ -12,6 +12,7 @@ use App\Models\Customer;
 use App\Models\User;
 use App\Models\Car;
 use App\Models\Car_gift;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class QuotationController extends Controller
 {
@@ -63,7 +64,16 @@ class QuotationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $config = [
+            'table' => 'quotation',
+            'field' => 'serial_number',
+            'length' => 11,
+            'prefix' => 'TCQ' . date('y') . date('m')
+        ];
+        // now use it
+        $id = IdGenerator::generate($config);
+
+        dd($id);
     }
 
     /**
