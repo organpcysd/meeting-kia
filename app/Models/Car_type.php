@@ -17,6 +17,6 @@ class Car_type extends Model
 
     public function car()
     {
-        return $this->belongsTo(Car::class);
+        return $this->hasOne(Car::class);
     }
 }

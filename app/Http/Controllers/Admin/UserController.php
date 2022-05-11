@@ -33,6 +33,10 @@ class UserController extends Controller
                             <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                     return $btn;
                 })
+                ->addColumn('fullname',function($data){
+                    $fullname = $data['f_name'] . ' ' . $data['l_name'];
+                    return $fullname;
+                })
                 ->addColumn('status',function($data){
                     if($data['status']){
                         $status = '<label class="switch">

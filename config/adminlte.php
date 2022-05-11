@@ -246,6 +246,12 @@ return [
             'icon' => 'fas fa-fw fa-home',
             'url'  => '',
         ],
+        ['header' => 'การตั้งค่าผู้ใช้งาน'],
+        [
+            'text'       => 'จัดการผู้ดูแล',
+            'icon'       => 'fas fa-fw fa-user',
+            'route'      => 'user.index',
+        ],
         ['header' => 'ตั้งค่าทั่วไป'],
         [
             'text'      => 'ลูกค้าติดต่อเข้ามา',
@@ -303,11 +309,17 @@ return [
                 ],
             ]
         ],
-        ['header' => 'การตั้งค่าผู้ใช้งาน'],
+        ['header' => 'จัดการระบบ'],
         [
-            'text'       => 'จัดการผู้ใช้งาน',
+            'text'       => 'ตั้งค่าเว็บไซต์',
+            'icon'       => 'fas fa-fw fa-cogs',
+            'icon_color' => 'maroon',
+            'route'        => 'setting.index',
+        ],
+        [
+            'text'       => 'จัดการคำนำหน้าชื่อ',
             'icon'       => 'fas fa-fw fa-user',
-            'route'      => 'user.index',
+            'route'      => 'userprefix.index',
         ],
         [
             'text'       => 'จัดการตำแหน่ง',
@@ -323,13 +335,6 @@ return [
             'text'       => 'จัดการสิทธิ์การเข้าถึง',
             'icon'       => 'fas fa-fw fa-id-card',
             'route'      => 'permission.index',
-        ],
-        ['header' => 'จัดการระบบ'],
-        [
-            'text'       => 'ตั้งค่าเว็บไซต์',
-            'icon'       => 'fas fa-fw fa-cogs',
-            'icon_color' => 'maroon',
-            'route'        => 'setting.index',
         ],
     ],
 

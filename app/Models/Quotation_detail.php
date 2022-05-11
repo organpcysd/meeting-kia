@@ -9,6 +9,8 @@ class Quotation_detail extends Model
 {
     use HasFactory;
 
+    public $table = 'quotation_detail';
+
     protected $fillable = [
         'quotation_id',
         'condition',
@@ -31,7 +33,12 @@ class Quotation_detail extends Model
         'accessories',
     ];
 
+    public function quotation(){
+        return $this->belongsTo(Quotation::class,'quotation_id','id');
+    }
+
     public function car_gift(){
         return $this->belongsToMany(Car_gift::class,'quotation_has_accessories','quotation_detail_id','accessories_id');
     }
+
 }

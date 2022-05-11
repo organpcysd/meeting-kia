@@ -24,6 +24,7 @@ Route::prefix('admin')->group(function(){
         Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index']);
 
         Route::resource('/user', App\Http\Controllers\Admin\UserController::class);
+        Route::resource('/userprefix', App\Http\Controllers\Admin\UserPrefixController::class);
         Route::resource('/profile', App\Http\Controllers\Admin\ProfileController::class);
         Route::get('/user/status/{id}',[App\Http\Controllers\Admin\UserController::class, 'status']);
 

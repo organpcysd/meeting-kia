@@ -18,6 +18,6 @@ class Car_color extends Model
 
     public function car()
     {
-        return $this->belongsTo(Car::class);
+        return $this->hasOne(Car::class);
     }
 }

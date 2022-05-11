@@ -14,6 +14,10 @@ class User_prefix extends Model
     ];
 
     public function user(){
-        return $this->hasOne(User::class,'id','user_prefix_id');
+        return $this->hasOne(User::class);
+    }
+
+    public function customer(){
+        return $this->hasOne(User::class);
     }
 }

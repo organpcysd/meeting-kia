@@ -59,12 +59,20 @@ class User extends Authenticatable
 
     public function user_prefix()
     {
-        return $this->belongsTo(User_prefix::class,'id','user_prefix_id');
+        return $this->belongsTo(User_prefix::class,'user_prefix_id','id');
     }
 
     public function user_position()
     {
         return $this->belongsToMany(User_position::class, 'user_has_positions', 'user_id', 'position_id');
+    }
+
+    public function quotation(){
+        return $this->hasOne(Quotation::class);
+    }
+
+    public function customer(){
+        return $this->hasOne(Customer::class);
     }
 
     public function adminlte_image()

@@ -35,8 +35,7 @@
                             <thead>
                             <tr>
                                 <td>##</td>
-                                <td>ชื่อ</td>
-                                <td>นามสกุล</td>
+                                <td>ชื่อ-นามสกุล</td>
                                 <td>สถานะ</td>
                                 <td>การจัดการ</td>
                             </tr>
@@ -72,8 +71,7 @@
                     ajax: "{{route('user.index')}}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'id'} ,
-                        {data: 'f_name'},
-                        {data: 'l_name'},
+                        {data: 'fullname'},
                         {data: 'status'},
                         {data: 'btn'},
                     ],

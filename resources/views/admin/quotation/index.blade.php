@@ -69,10 +69,10 @@
                     columns: [
                         {data: 'DT_RowIndex', name: 'id'} ,
                         {data: 'serial_number'},
-                        {data: 'user_id'},
+                        {data: 'customer_name'},
                         {data: 'nickname'},
                         {data: 'created_at'},
-                        {data: 'customer_id'},
+                        {data: 'user_name'},
                         {data: 'btn'},
                     ],
                 });

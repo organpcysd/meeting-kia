@@ -29,18 +29,18 @@ class Car extends Model
     ];
 
     public function car_color(){
-        return $this->hasOne(Car_color::class,'id','color_id');
+        return $this->belongsTo(Car_color::class,'color_id','id');
     }
 
     public function car_model(){
-        return $this->hasOne(Car_model::class,'id', 'model_id');
+        return $this->belongsTo(Car_model::class,'model_id', 'id');
     }
 
     public function car_type(){
-        return $this->hasOne(Car_type::class,'id', 'type_id');
+        return $this->belongsTo(Car_type::class,'type_id', 'id');
     }
 
     public function car_level(){
-        return $this->hasOne(Car_level::class,'id', 'level_id');
+        return $this->belongsTo(Car_level::class,'level_id', 'id');
     }
 }

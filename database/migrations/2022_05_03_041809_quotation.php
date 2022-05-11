@@ -18,7 +18,7 @@ class Quotation extends Migration
             $table->string('serial_number')->comment('หมายเลขใบเสนอราคา');
             $table->unsignedBigInteger('customer_id')->comment('ลูกค้า');
             $table->unsignedBigInteger('user_id')->comment('ที่ปรึกษาการขาย');
-            $table->unsignedBigInteger('contact_id')->comment('ผู้มาติดต่อ');
+            $table->unsignedBigInteger('contact_id')->nullable()->comment('ผู้มาติดต่อ');
             $table->unsignedBigInteger('car_id')->comment('รถยนต์');
             $table->string('place_send')->nullable()->comment('สถานที่จัดส่ง');
             $table->date('estimate_send')->nullable()->comment('ประมาณการส่งมอบ');
@@ -52,7 +52,7 @@ class Quotation extends Migration
             $table->string('car_change')->nullable()->comment('รถยนต์ที่นำมาแลก');
             $table->string('payment_car_turn')->nullable()->comment('ราคาหักจากรถยนต์คันเก่า');
             $table->string('subtotal')->nullable()->comment('ค่าใช้จ่ายวันออกรถ');
-            $table->string('accessories')->nullable()->comment('อุปกรณ์แต่งที่แถม');
+            $table->string('accessories')->nullable()->comment('อุปกรณ์แต่งอื่นๆ');
 
             $table->foreign('quotation_id')->references('id')->on('quotation')->onDelete('cascade');
 

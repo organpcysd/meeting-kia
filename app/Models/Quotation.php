@@ -21,4 +21,16 @@ class Quotation extends Model
         'allow_status',
         'quotation_status',
     ];
+
+    public function quotation_detail(){
+        return $this->hasOne(Quotation_detail::class);
+    }
+
+    public function customer(){
+        return $this->belongsTo(Customer::class,'customer_id','id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','id');
+    }
 }

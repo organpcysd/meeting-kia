@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@php $pagename = 'เพิ่มใบเสนอราคา'; @endphp
+@php $pagename = 'แก้ไขใบเสนอราคา'; @endphp
 @section('content')
     <div class="contrainer p-4">
         <div class="row">
@@ -20,7 +20,8 @@
             </div>
         </div>
 
-        <form action="{{ route('quotation.store') }}" method="post" id="formsubmit">
+        <form action="{{ route('quotation.update',['quotation'=>$quotation->id]) }}" method="post" id="formsubmit">
+            @method('PUT')
             @csrf
             <div class="row">
                 <div class="col-sm-5">
@@ -40,9 +41,9 @@
                                         <label class="col-sm-4 col-form-label">ลูกค้า</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="customer" id="customer">
-                                                    <option value="" selected disabled>- ค้นหาลูกค้า -</option>
+                                                <option value="" selected disabled>- ค้นหาลูกค้า -</option>
                                                 @foreach($customers as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                    <option @if ($quotation->customer_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -54,7 +55,7 @@
                                             <select class="sel2 form-control" name="user" id="user">
                                                 <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
                                                 @foreach($users as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                    <option @if ($quotation->user_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -64,9 +65,9 @@
                                         <label class="col-sm-4 col-form-label">ผู้มาติดต่อ</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="contact" id="contact">
-                                                <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
+                                                <option value="" disabled>- ค้นหาผู้มาติดต่อ -</option>
                                                 @foreach($customers as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                    <option @if ($quotation->user_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -77,7 +78,7 @@
                                             <select class="sel2 form-control" name="car" id="car">
                                                 <option value="" selected disabled>- ค้นหารถยนต์ -</option>
                                                 @foreach($cars as $item)
-                                                    <option value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
+                                                    <option @if ($quotation->car_id === $item->id) selected @endif value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -86,15 +87,14 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">สถานที่จัดส่ง</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="place_send" name="place_send">
+                                            <input type="text" class="form-control" id="place_send" name="place_send" value="{{ $quotation->place_send }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ประมาณการส่งมอบ</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="estimate_send"
-                                                name="estimate_send">
+                                            <input type="date" class="form-control" id="estimate_send" name="estimate_send" value="{{ $quotation->estimate_send }}">
                                         </div>
                                     </div>
                                 </div>
@@ -115,9 +115,9 @@
                                 <label class="col-sm-3 col-form-label">เงื่อนไข</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="condition" id="condition">
-                                        <option selected disabled>- เลือกเงื่อนไข -</option>
-                                        <option value="cash">สด</option>
-                                        <option value="credit">ผ่อน</option>
+                                        <option disabled>- เลือกเงื่อนไข -</option>
+                                        <option @if($quotation->quotation_detail->condition === "cash") selected @endif value="cash">สด</option>
+                                        <option @if($quotation->quotation_detail->condition === "credit") selected @endif value="credit">ผ่อน</option>
                                     </select>
                                 </div>
                             </div>
@@ -125,14 +125,14 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ราคารถยนต์</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="price_car" name="price_car" readonly>
+                                    <input type="text" class="form-control" id="price_car" name="price_car" value="{{ $quotation->quotation_detail->price_car }}" readonly>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"><u>ส่วนลด</u> ราคารถยนต์</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_discount" name="payment_discount">
+                                    <input type="text" class="form-control" id="payment_discount" name="payment_discount" value="{{ $quotation->quotation_detail->payment_discount }}">
                                 </div>
                             </div>
 
@@ -142,21 +142,21 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ราคารถยนต์ : สุทธิ</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control form-control-sm" id="price_car_net" name="price_car_net" readonly>
+                                            <input type="text" class="form-control form-control-sm" id="price_car_net" name="price_car_net" value="{{ $quotation->quotation_detail->price_car_net }}" readonly>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ดาวน์</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control form-control-sm" id="payment_down" name="payment_down">
+                                            <input type="text" class="form-control form-control-sm" id="payment_down" name="payment_down" value="{{ $quotation->quotation_detail->payment_down }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label"><u>ส่วนลด</u> เงินดาวน์</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control form-control-sm" id="payment_down_discount" name="payment_down_discount">
+                                            <input type="text" class="form-control form-control-sm" id="payment_down_discount" name="payment_down_discount" value="{{ $quotation->quotation_detail->payment_down_discount }}">
                                         </div>
                                     </div>
 
@@ -166,7 +166,7 @@
                                         <label class="col-sm-4 col-form-label">ระยะเวลาผ่อนชำระ</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
-                                                <select class="form-control" name="term_credit" id="term_credit">
+                                                <select class="form-control" name="term_credit" id="term_credit" value="{{ $quotation->quotation_detail->term_credit }}">
                                                     <option value="1" selected>- เลือกจำนวนงวด -</option>
                                                     <option value="12">12</option>
                                                     <option value="24">24</option>
@@ -188,7 +188,7 @@
                                         <label class="col-sm-4 col-form-label">อัตราดอกเบี้ยต่อปี</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" class="form-control form-control-sm" id="interest" name="interest">
+                                                <input type="text" class="form-control form-control-sm" id="interest" name="interest" value="{{ $quotation->quotation_detail->interest }}">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">%</div>
                                                 </div>
@@ -200,7 +200,7 @@
                                         <label class="col-sm-4 col-form-label">ยอดจัดเช่าซื้อ</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" class="form-control form-control-sm" id="hire_purchase" name="hire_purchase" readonly>
+                                                <input type="text" class="form-control form-control-sm" id="hire_purchase" name="hire_purchase" value="{{ $quotation->quotation_detail->hire_purchase }}" readonly>
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">บาท</div>
                                                 </div>
@@ -213,7 +213,7 @@
                                         <label class="col-sm-4 col-form-label">ค่างวดต่อเดือน (รวม VAT)</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" class="form-control form-control-sm" id="term_payment" name="term_payment" readonly>
+                                                <input type="text" class="form-control form-control-sm" id="term_payment" name="term_payment" value="{{ $quotation->quotation_detail->term_payment }}" readonly>
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">บาท</div>
                                                 </div>
@@ -227,28 +227,28 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">มัดจำป้ายแดง</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="deposit_roll" name="deposit_roll">
+                                    <input type="text" class="form-control" id="deposit_roll" name="deposit_roll" value="{{ $quotation->quotation_detail->deposit_roll }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าอุปกรณ์แต่งรถยนต์</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_decorate" name="payment_decorate">
+                                    <input type="text" class="form-control" id="payment_decorate" name="payment_decorate" value="{{ $quotation->quotation_detail->payment_decorate }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าเบี้ยประกัน</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_insurance" name="payment_insurance">
+                                    <input type="text" class="form-control" id="payment_insurance" name="payment_insurance" value="{{ $quotation->quotation_detail->payment_insurance }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าใช้จ่ายอื่นๆ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_other" name="payment_other">
+                                    <input type="text" class="form-control" id="payment_other" name="payment_other" value="{{ $quotation->quotation_detail->payment_other }}">
                                 </div>
                             </div>
 
@@ -258,8 +258,8 @@
                                 <label class="col-sm-3 col-form-label">รถยนต์ที่นำมาแลก</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="car_change" id="car_change">
-                                        <option value="yes" >มี</option>
-                                        <option value="no">ไม่มี</option>
+                                        <option @if($quotation->quotation_detail->car_change === "yes") selected @endif value="yes">มี</option>
+                                        <option @if($quotation->quotation_detail->car_change === "no") selected @endif value="no">ไม่มี</option>
                                     </select>
                                 </div>
                             </div>
@@ -267,7 +267,7 @@
                             <div class="form-group row" id="carturn">
                                 <label class="col-sm-3 col-form-label"><u>หัก</u> รถยนต์คันเก่า</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_car_turn" name="payment_car_turn">
+                                    <input type="text" class="form-control" id="payment_car_turn" name="payment_car_turn" value="{{ $quotation->quotation_detail->payment_car_turn }}">
                                 </div>
                             </div>
 
@@ -276,7 +276,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าใช้จ่ายวันออกรถ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="subtotal" name="subtotal" readonly>
+                                    <input type="text" class="form-control" id="subtotal" name="subtotal" value="{{ $quotation->quotation_detail->subtotal }}" readonly>
                                 </div>
                             </div>
 
@@ -285,7 +285,7 @@
                                 <div class="col-sm-9">
                                     <select class="sel2 form-control" name="gift[]" id="gift" multiple>
                                         @foreach($accessories as $item)
-                                            <option value="{{$item->id}}">{{$item->gift_name}}</option>
+                                            <option @if(in_array($item->gift_name,$quotation->quotation_detail->car_gift()->pluck('gift_name')->toArray())) selected @endif value="{{$item->id}}">{{$item->gift_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -294,7 +294,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งอื่นๆ</label>
                                 <div class="col-sm-9">
-                                    <textarea type="text" class="form-control" id="accessories" name="accessories"></textarea>
+                                    <textarea type="text" class="form-control" id="accessories" name="accessories" value="{{ $quotation->quotation_detail->accessories }}"></textarea>
                                 </div>
                             </div>
 
@@ -321,7 +321,7 @@
         function formsubmit() {
             Swal.fire({
                 title: 'ยืนยัน',
-                text: "ยืนยันการเพิ่มข้อมูล?",
+                text: "ยืนยันการแก้ไขข้อมูล?",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#17a2b8',
@@ -359,6 +359,14 @@
                 document.getElementById("accessories").disabled = true;
                 document.getElementById("backbtn").disabled = true;
                 $('#savebtn').attr('onclick','return false');
+            }
+
+            let car_change = $("#car_change").val();
+            if(car_change == "no") {
+                let ele = document.getElementById("carturn");
+                ele.style.display = "none";
+                $("#payment_car_turn").val('');
+                cal()
             }
 
         });

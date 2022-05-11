@@ -30,7 +30,11 @@ class Customer extends Model
     ];
 
     public function customer_prefix(){
-        return $this->belongsTo(User_prefix::class,'id','prefix_id');
+        return $this->belongsTo(User_prefix::class,'prefix_id','id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'staff_id','id');
     }
 
     public function customer_follow(){
@@ -39,6 +43,10 @@ class Customer extends Model
 
     public function customer_address(){
         return $this->hasOne(Customer_address::class);
+    }
+
+    public function quotation(){
+        return $this->hasOne(Quotation::class);
     }
 
 }

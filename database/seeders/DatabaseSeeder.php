@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserPrefixSeeder::class,
             UserPositionSeeder::class,
             UserSeeder::class,
+            CarSeeder::class,
         ]);
     }
 }

@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Car_type;
+use App\Models\User_prefix;
 
-class CarTypeController extends Controller
+class UserPrefixController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,18 +19,18 @@ class CarTypeController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Car_type::all();
+            $data = User_prefix::all();
             return DataTables::make($data)
             ->addIndexColumn()
             ->addColumn('btn',function($data){
                 $btn = '<button id = "editbtn" type="button" class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen"></i></button>
-                            <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                        <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
             ->rawColumns(['btn'])
             ->make(true);
         }
-        return view('admin.car.type.index');
+        return view('admin.user.prefix.index');
     }
 
     /**
@@ -40,7 +40,7 @@ class CarTypeController extends Controller
      */
     public function create()
     {
-        return view('admin.car.type.create');
+        //
     }
 
     /**
@@ -51,25 +51,18 @@ class CarTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'cartype' => 'required|unique:car_type,type_name',
-        ],[
-            'cartype.required' => 'กรุณากรอกชื่อประเภทรถ',
-            'cartype.unique' => 'มีชื่อประเภทรถนี้อยู่แล้ว',
-        ]);
+        $prefix = new User_prefix();
+        $prefix->title = $request->title;
+        $prefix->created_at = Carbon::now();
+        $prefix->updated_at = Carbon::now();
 
-        $cartype = new Car_type();
-        $cartype->type_name = $request->cartype;
-        $cartype->created_at = Carbon::now();
-        $cartype->updated_at = Carbon::now();
-
-        if($cartype->save()){
+        if($prefix->save()){
             Alert::success('เพิ่มข้อมูลสำเร็จ');
-            return redirect()->route('cartype.index');
+            return redirect()->route('userprefix.index');
         }
 
         Alert::error('ไม่สามารถเพิ่มข้อมูลได้');
-        return redirect()->route('cartype.index');
+        return redirect()->route('userprefix.index');
     }
 
     /**
@@ -80,8 +73,8 @@ class CarTypeController extends Controller
      */
     public function show($id)
     {
-        $cartype = Car_type::whereId($id)->first();
-        return response()->json($cartype);
+        $prefix = User_prefix::whereId($id)->first();
+        return response()->json($prefix);
     }
 
     /**
@@ -92,8 +85,7 @@ class CarTypeController extends Controller
      */
     public function edit($id)
     {
-        // $cartype = Car_type::whereId($id)->first();
-        // return view('admin.car.type.edit',compact('cartype'));
+        //
     }
 
     /**
@@ -108,12 +100,12 @@ class CarTypeController extends Controller
         $status = false;
         $message = 'ไม่สามารถอัพเดทข้อมูลได้';
 
-        $cartype = Car_type::whereId($id)->first();
+        $prefix = User_prefix::whereId($id)->first();
 
-        $cartype->type_name = $request->cartype_edit;
-        $cartype->updated_at = Carbon::now();
+        $prefix->title = $request->titledd_edit;
+        $prefix->updated_at = Carbon::now();
 
-        if ($cartype->save()){
+        if ($prefix->save()){
             $status = true;
             $message = 'อัพเดทข้อมูลเรียบร้อย';
         }
@@ -132,9 +124,9 @@ class CarTypeController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $cartype = Car_type::whereId($id)->first();
+        $prefix = User_prefix::whereId($id)->first();
 
-        if ($cartype->delete()) {
+        if ($prefix->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

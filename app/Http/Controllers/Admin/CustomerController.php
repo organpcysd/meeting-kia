@@ -41,8 +41,7 @@ class CustomerController extends Controller
                 return $btn;
             })
             ->addColumn('staff_name',function($data){
-                $staff = User::find($data['staff_id']);
-                $staff_name = $staff->f_name . ' ' . $staff->l_name;
+                $staff_name = $data->user->f_name . ' ' . $data->user->l_name;
                 return $staff_name;
 
             })

@@ -17,7 +17,7 @@ class Car_model extends Model
 
     public function car()
     {
-        return $this->belongsTo(Car::class);
+        return $this->hasOne(Car::class);
     }
 
     public function car_level()

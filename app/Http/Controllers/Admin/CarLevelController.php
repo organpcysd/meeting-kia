@@ -25,7 +25,7 @@ class CarLevelController extends Controller
             return DataTables::make($data)
             ->addIndexColumn()
             ->addColumn('model',function($data){
-                $model = Car_level::find($data['id'])->car_model->model_name;
+                $model = $data->car_model->model_name;
                 return $model;
             })
             ->addColumn('btn',function($data){

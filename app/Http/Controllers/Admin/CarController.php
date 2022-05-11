@@ -32,22 +32,22 @@ class CarController extends Controller
                 return $btn;
             })
             ->addColumn('model',function($data){
-                $model = Car::find($data['id'])->car_model->model_name;
+                $model = $data->car_model->model_name;
                 return $model;
             })
 
             ->addColumn('level',function($data){
-                $level = Car::find($data['id'])->car_level->level_name;
+                $level = $data->car_level->level_name;
                 return $level;
             })
 
             ->addColumn('type',function($data){
-                $typel = Car::find($data['id'])->car_type->type_name;
+                $typel = $data->car_type->type_name;
                 return $typel;
             })
 
             ->addColumn('color',function($data){
-                $color = Car::find($data['id'])->car_color->color_name . ' ' . Car::find($data['id'])->car_color->color_code;
+                $color = $data->car_color->color_name . ' ' . $data->car_color->color_code;
                 return $color;
             })
             ->rawColumns(['btn','color','model','level','type'])
@@ -122,13 +122,13 @@ class CarController extends Controller
     {
         $car = Car::whereId($id)->first();
         $models = Car_model::all();
-        $carmodel = Car::find($id)->car_model->model_name;
+        $carmodel = $car->car_model->model_name;
         $colors = Car_color::all();
-        $carcolor = Car::find($id)->car_color->color_name;
+        $carcolor = $car->car_color->color_name;
         $types = Car_type::all();
-        $cartype = Car::find($id)->car_type->type_name;
+        $cartype = $car->car_type->type_name;
         $levels = Car_level::all();
-        $carlevel = Car::find($id)->car_level->id;
+        $carlevel = $car->car_level->id;
         return view('admin.car.car.edit',compact('car','colors','carcolor','models','carmodel','types','cartype','levels','carlevel'));
     }
 
