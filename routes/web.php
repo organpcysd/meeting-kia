@@ -13,15 +13,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Auth::routes();
+// Auth::routes();
+Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginform']);
+Route::post('login', [App\Http\Controllers\Auth\LoginController::class,'login'])->name('login');
+Route::post('logout', [App\Http\Controllers\Auth\LoginController::class,'logout']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::prefix('admin')->group(function(){
     Route::group(['middleware' => ['IsActive']],function(){
-        Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index']);
+        Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
 
         Route::resource('/user', App\Http\Controllers\Admin\UserController::class);
         Route::resource('/userprefix', App\Http\Controllers\Admin\UserPrefixController::class);
@@ -57,9 +59,12 @@ Route::prefix('admin')->group(function(){
         Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);
         Route::post('/quotation/getDataCar',[App\Http\Controllers\Admin\QuotationController::class,'getDataCar'])->name('quotation.car');
 
-        Route::resource('traffic', App\Http\Controllers\Admin\TrafficController::class);
-        Route::resource('traffic/channel', App\Http\Controllers\Admin\TrafficChannelController::class);
-        Route::resource('traffic/source', App\Http\Controllers\Admin\TrafficSourceController::class);
+
+        Route::resource('traffic', App\Http\Controllers\Admin\TrafficController::class)->except(['show']);
+        Route::prefix('traffic/')->group(function () {
+            Route::resource('channel', App\Http\Controllers\Admin\TrafficChannelController::class);
+            Route::resource('source', App\Http\Controllers\Admin\TrafficSourceController::class);
+        });
 
     });
 });

@@ -345,5 +345,61 @@ class CarSeeder extends Seeder
                 'available' => 0,
             ],
         ]);
+
+        DB::table('traffic_channel')->insert([
+            [
+                'channel_name' => 'facebook',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'channel_name' => 'youtube',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'channel_name' => 'line@',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'channel_name' => 'หนังสือพิมพ์ท้องถิ่น',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'channel_name' => 'โทรทัศน์',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'channel_name' => 'ลูกค้าแนะนำ',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'channel_name' => 'billboard',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+
+        DB::table('traffic_source')->insert([
+            [
+                'source_name' => 'walk in',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'source_name' => 'road show',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'source_name' => 'call in',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
     }
 }

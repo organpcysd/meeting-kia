@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 @section('title', setting('title'). ' | ลูกค้าติดต่อเข้ามา')
-@php $pagename = 'รายชื่อลูกค้า'; @endphp
+@php $pagename = 'รายการลูกค้าติดต่อ'; @endphp
 @section('content')
 <div class="contrainer p-4">
     <div class="row">
@@ -22,7 +22,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('customer.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
+                    <a href="{{ route('traffic.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
                     <div class="mt-4">
                         <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
                             <thead>
@@ -64,7 +64,7 @@
                         'processing': '<div class="spinner-border text-primary" role="status"><span class="sr-only">กำลังโหลด...</span></div>'
                     },
                     serverSide: true,
-                    ajax: "{{route('customer.index')}}",
+                    ajax: "{{route('traffic.index')}}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'id'},
                         {data: 'created_at'},
@@ -92,7 +92,7 @@
                             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                             $.ajax({
                                 type: 'DELETE',
-                                url: "{{url('admin/customer')}}/" + id,
+                                url: "{{url('admin/traffic/')}}/" + id,
                                 data: {_token: CSRF_TOKEN},
                                 dataType: 'JSON',
                                 success: function (results) {

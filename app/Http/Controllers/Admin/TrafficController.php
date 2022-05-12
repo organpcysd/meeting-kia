@@ -8,6 +8,13 @@ use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Traffic;
+use App\Models\Customer;
+use App\Models\User;
+use App\Models\Car_model;
+use App\Models\Car_level;
+use App\Models\Car_color;
+use App\Models\Traffic_source;
+use App\Models\Traffic_channel;
 
 class TrafficController extends Controller
 {
@@ -16,10 +23,10 @@ class TrafficController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Customer::all();
+            $data = Traffic::all();
             return DataTables::make($data)
             ->addIndexColumn()
             ->addColumn('btn',function($data){
@@ -41,7 +48,15 @@ class TrafficController extends Controller
      */
     public function create()
     {
-        //
+        $customers = Customer::all();
+        $users = User::all();
+        $sources = Traffic_source::all();
+        $channels = Traffic_channel::all();
+        $carmodels = Car_model::all();
+        $carlevels = Car_level::all();
+        $carcolors = Car_color::all();
+
+        return view('admin.traffic.traffic.create',compact('customers','users','carmodels','carlevels','carcolors','sources','channels'));
     }
 
     /**
@@ -63,7 +78,7 @@ class TrafficController extends Controller
      */
     public function show($id)
     {
-        //
+        dd($id);
     }
 
     /**

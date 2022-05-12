@@ -43,23 +43,11 @@ class UserSeeder extends Seeder
             'status' => '1',
             'email' => 'b6121877@g.sut.ac.th',
             'password' => bcrypt('password'),
+            'phone' => '0981495240',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
-        $user2 = \App\Models\User::create([
-            'user_prefix_id' => '1',
-            'f_name' => 'ณัฐพงษ์',
-            'l_name' => 'พานแก้ว',
-            'nickname' => 'โอ๊ต',
-            'status' => '1',
-            'email' => 'b6121723@g.sut.ac.th',
-            'password' => bcrypt('password'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
         $user->assignRole($role_administrator);
-        $user2->assignRole($role_administrator);
-
     }
 }

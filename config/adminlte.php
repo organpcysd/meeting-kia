@@ -261,7 +261,7 @@ return [
         [
             'text'      => 'ลูกค้า Traffic',
             'icon'      => 'fas fa-fw fa-list',
-            'url'       => '',
+            'route'       => 'traffic.index',
         ],
         [
             'text'      => 'ใบเสนอราคา',

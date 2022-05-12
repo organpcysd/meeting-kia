@@ -95,7 +95,7 @@
 
                         <div class="form-group">
                             <label>Fax</label>
-                            <input type="tel" class="form-control" id="fax" name="fax" required>
+                            <input type="tel" class="form-control" id="fax" name="fax">
                         </div>
 
                         <div class="form-group">
@@ -189,13 +189,11 @@
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@11"])
 @push('js')
     <script>
-        // alert('organ == ไม่ผ่านสหกิจ!!!!!!');
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
 
             $('#provinces').on('change',function(){
                 let id = $('#provinces').val();
-                // console.log(id)
                 $.ajax({
                     type: "post",
                     url: "{{ route('customer.getprovinces') }}",
@@ -205,8 +203,6 @@
                         let option = ''
                         option = '<option selected disabled>-กรุณาเลือกอำเภอ-</option>';
 
-                        // console.log(response);
-
                         response.forEach(districts => {
                             option += '<option value="' + districts.id + '">' + districts.name_th + '</option>';
                         });
@@ -214,8 +210,6 @@
                         $('#districts').html(option);
                         $('#canton').html('<option selected disabled>-กรุณาเลือกตำบล-</option>');
                         $('#zipcode').val('');
-                        // $('#districts').val('');
-                        // $('#canton').val('');
 
                     }
                 });
@@ -223,7 +217,6 @@
 
             $('#districts').on('change',function(){
                 let id = $('#districts').val();
-                // console.log(id)
                 $.ajax({
                     type: "post",
                     url: "{{ route('customer.getdistricts') }}",
@@ -233,14 +226,11 @@
                         let option = '<option selected disabled>-กรุณาเลือกตำบล-</option>';
                         let option2 = '';
 
-                        // console.log(response);
-
                         response.forEach(canton => {
                             option += '<option value="' + canton.id + '">' + canton.name_th + '</option>';
                         });
 
                         $('#canton').html(option);
-                        // $('#canton').val('');
 
                     }
                 });

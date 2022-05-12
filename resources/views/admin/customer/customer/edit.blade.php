@@ -193,7 +193,6 @@
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@11"])
 @push('js')
     <script>
-        // alert('organ == ไม่ผ่านสหกิจ!!!!!!');
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
 
@@ -283,7 +282,6 @@
 
             $('#canton').on('change',function(){
                 let id = $('#canton').val();
-                console.log(id)
                 $.ajax({
                     type: "post",
                     url: "{{ route('customer.getzipcode') }}",

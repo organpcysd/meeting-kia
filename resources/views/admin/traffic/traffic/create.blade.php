@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@php $pagename = 'เพิ่มข้อมูลลูกค้า'; @endphp
+@php $pagename = 'เพิ่มลูกค้าที่ติดต่อเข้ามา'; @endphp
 @section('content')
 <div class="contrainer p-4">
     <div class="row">
@@ -21,10 +21,10 @@
     <form action="{{ route('customer.store') }}" method="post">
         @csrf
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-7">
                 <div class="card card-info">
                     <div class="card-header">
-                        รายละเอียดส่วนตัว
+                        รายละเอียด
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -32,85 +32,113 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <input type="hidden" class="form-control" id="staff_id" name="staff_id" value={{ Auth::user()->id }}>
-
-                        <div class="form-group">
-                            <label>เลขประจำตัวผู้เสียภาษี</label>
-                            <input type="text" class="form-control" id="itax_id" name="itax_id" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>เลขประจำตัวประชาชน</label>
-                            <input type="text" class="form-control" id="citizen_id" name="citizen_id" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-2">
-                                <label>คำนำหน้า</label>
-                                <select class="js-example-basic-multiple form-control" name="customer_prefix">
-                                    @foreach($prefixes as $item_pr)
-                                        <option value="{{$item_pr->id}}">{{$item_pr->title}}</option>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">ลูกค้า</label>
+                            <div class="col-sm-8">
+                                <select class="sel2 form-control" name="customer" id="customer">
+                                        <option value="" selected disabled>- ค้นหาลูกค้า -</option>
+                                    @foreach($customers as $item)
+                                        <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-5">
-                              <label>ชิ่อจริง</label>
-                              <input type="text" class="form-control" id="fname" name="fname" required>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
+                            <div class="col-sm-8">
+                                <select class="sel2 form-control" name="user" id="user">
+                                    <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
+                                    @foreach($users as $item)
+                                        <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="form-group col-md-5">
-                              <label for="inputPassword4">นามสกุล</label>
-                              <input type="text" class="form-control" id="lname" name="lname" required>
+                        </div>
+
+                        <hr/>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">ผู้มีอำนาจในการตัดสินใจซื้อ</label>
+                            <div class="col-sm-8">
+                                <select class="sel2 form-control" name="dicision" id="dicision">
+                                    <option value="" selected disabled>- ค้นหาผู้มีอำนาจในการตัดสินใจซื้อ -</option>
+                                    <option value="ตัวลูกค้าเอง">ตัวลูกค้าเอง</option>
+                                    <option value="พ่อ">พ่อ</option>
+                                    <option value="แม่">แม่</option>
+                                    <option value="พ่อ-แม่">พ่อ-แม่</option>
+                                    <option value="สามี">สามี</option>
+                                    <option value="ภรรยา">ภรรยา</option>
+                                    <option value="ครอบครัว">ครอบครัว</option>
+                                    <option value="อื่นๆ">อื่นๆ</option>
+                                </select>
+                                <small class="text-cyan">หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "อื่นๆ" เพื่อกรอกข้อมูล</small>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>ชื่อเล่น</label>
-                            <input type="text" class="form-control" id="nickname" name="nickname" required>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">แหล่งข้อมูลลูกค้า</label>
+                            <div class="col-sm-8">
+                                <select class="sel2 form-control" name="traffic_source" id="traffic_source">
+                                    <option value="" selected disabled>- ค้นหาแหล่งข้อมูลลูกค้า -</option>
+                                        @foreach($sources as $item)
+                                            <option value="{{$item->id}}">{{$item->source_name}}</option>
+                                        @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>วันเกิด</label>
-                            <input type="date" class="form-control" id="born" name="born" required>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">สถานที่</label>
+                            <div class="col-sm-8">
+                                <select class="sel2 form-control" name="location" id="location">
+                                    <option value="" selected disabled>- ค้นหาแหล่งข้อมูลลูกค้า -</option>
+                                    @foreach($sources as $item)
+                                        <option value="{{$item->id}}">{{$item->source_name}}</option>
+                                    @endforeach
+                                </select>
+                                <small class="text-cyan">หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "อื่นๆ" เพื่อกรอกข้อมูล</small>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>อาชีพ</label>
-                            <input type="text" class="form-control" id="vocation" name="vocation" required>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">ผลการติดต่อ</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" id="contact_result" name="contact_result"></textarea>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>งานอดิเรก</label>
-                            <input type="text" class="form-control" id="hobby" name="hobby">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">ช่องทางการรับรู้</label>
+                            <div class="col-sm-8">
+                                <select class="sel2 form-control" name="traffic_channel" id="traffic_channel">
+                                    <option value="" selected disabled>- ค้นหาช่องทางการรับรู้ -</option>
+                                    @foreach($channels as $item)
+                                        <option value="{{$item->id}}">{{$item->channel_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">อีเมล</label>
-                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">แนวโน้ม</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="dicision" id="dicision">
+                                    <option value="" selected disabled>- เลือกแนวโน้ม -</option>
+                                    <option value="high">สูง</option>
+                                    <option value="medium">ปานกลาง</option>
+                                    <option value="low">ต่ำ</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>เบอร์โทรศัพท์</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Fax</label>
-                            <input type="tel" class="form-control" id="fax" name="fax" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>ไอดีไลน์</label>
-                            <input type="text" class="form-control" id="lineid" name="lineid">
-                        </div>
-
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <div class="card card-info">
                     <div class="card-header">
-                        รายละเอียดที่อยู่
+                        รถยนต์
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -118,58 +146,80 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label>บ้านเลขที่</label>
-                            <input type="text" class="form-control" id="house_number" name="house_number">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">รุ่นรถยนต์</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    @foreach($carmodels as $item)
+                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carmodel[]" id="carmodel" value="{{ $item->id }}"> {{ $item->model_name }} </label>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>ถนน</label>
-                            <input type="text" class="form-control" id="road" name="road">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">รุ่นย่อย</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    @foreach($carlevels as $item)
+                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carlevel[]" id="carlevel" value="{{ $item->id }}"> {{ $item->level_name }} </label>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>ตรอก / ซอย</label>
-                            <input type="text" class="form-control" id="alley" name="alley">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">สีรถยนต์</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    @foreach($carcolors as $item)
+                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carcolor[]" id="carcolor" value="{{ $item->id }}"> {{ $item->color_name }} </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-info">
+                    <div class="card-header">
+                        Test Drive
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">ชื่อผู้เบิกรถยนต์</label>
+                            <div class="col-sm-9">
+                                <select class="sel2 form-control" name="staff_pick" id="staff_pick">
+                                    <option value="" selected disabled>- ค้นหาชื่อผู้เบิกรถยนต์ -</option>
+                                    @foreach($users as $item)
+                                        <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>อาคาร / แขวง / หมู่ที่</label>
-                            <input type="text" class="form-control" id="group" name="group">
-                        </div>
-
-                        <div class="form-group">
-                            <label>หมู่บ้าน</label>
-                            <input type="text" class="form-control" id="village" name="village">
-                        </div>
-
-                        <div class="form-group">
-                            <label>จังหวัด</label>
-                            <select class="js-example-basic-multiple form-control" name="provinces" id="provinces">
-                                <option selected disabled>-กรุณาเลือกจังหวัด-</option>
-                                @foreach($provinces as $item)
-                                    <option value="{{$item->id}}">{{$item->name_th}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>อำเภอ</label>
-                            <select class="js-example-basic-multiple form-control" name="districts" id="districts">
-                                <option selected disabled>-กรุณาเลือกอำเภอ-</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>ตำบล</label>
-                            <select class="js-example-basic-multiple form-control" name="canton" id="canton">
-                                <option selected disabled>-กรุณาเลือกตำบล-</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>รหัสไปรษณีย์</label>
-                            <input type="text" class="form-control" id="zipcode" name="zipcode">
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-2">
+                                <label class="col-form-label">รูปภาพ</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="row row-cols-2 align-items-center">
+                                    <div class="col-sm-4 text-center">
+                                        <img src="{{ asset('image/no-image.jpg') }}" height="100px" width="100px" id="showimg">
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <input name="favicon" type="file" class="custom-file-input" id="imgInp">
+                                            <label class="custom-file-label" for="imgInp">เพิ่มรูปภาพ</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -189,84 +239,9 @@
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@11"])
 @push('js')
     <script>
-        // alert('organ == ไม่ผ่านสหกิจ!!!!!!');
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
-
-            $('#provinces').on('change',function(){
-                let id = $('#provinces').val();
-                // console.log(id)
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('customer.getprovinces') }}",
-                    data: {_token:CSRF_TOKEN,id:id},
-                    dataType: "json",
-                    success: function (response) {
-                        let option = ''
-                        option = '<option selected disabled>-กรุณาเลือกอำเภอ-</option>';
-
-                        // console.log(response);
-
-                        response.forEach(districts => {
-                            option += '<option value="' + districts.id + '">' + districts.name_th + '</option>';
-                        });
-
-                        $('#districts').html(option);
-                        $('#canton').html('<option selected disabled>-กรุณาเลือกตำบล-</option>');
-                        $('#zipcode').val('');
-                        // $('#districts').val('');
-                        // $('#canton').val('');
-
-                    }
-                });
-            })
-
-            $('#districts').on('change',function(){
-                let id = $('#districts').val();
-                // console.log(id)
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('customer.getdistricts') }}",
-                    data: {_token:CSRF_TOKEN,id:id},
-                    dataType: "json",
-                    success: function (response) {
-                        let option = '<option selected disabled>-กรุณาเลือกตำบล-</option>';
-                        let option2 = '';
-
-                        // console.log(response);
-
-                        response.forEach(canton => {
-                            option += '<option value="' + canton.id + '">' + canton.name_th + '</option>';
-                        });
-
-                        $('#canton').html(option);
-                        // $('#canton').val('');
-
-                    }
-                });
-            })
-
-            $('#canton').on('change',function(){
-                let id = $('#canton').val();
-                console.log(id)
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('customer.getzipcode') }}",
-                    data: {_token:CSRF_TOKEN,id:id},
-                    dataType: "json",
-                    success: function (response) {
-                        let option = '';
-                        response.forEach(zipcode => {
-                            option = zipcode.zip_code;
-                        });
-
-                        $('#zipcode').val(option);
-
-                    }
-                });
-            })
-
-
+            $('.sel2').select2();
         });
 
     </script>
