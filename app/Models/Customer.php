@@ -9,7 +9,7 @@ class Customer extends Model
 {
     use HasFactory;
 
-    public $table = "Customer";
+    protected $table = "Customer";
     protected $fillable = [
         'prefix_id',
         'citizen_id',
@@ -47,6 +47,10 @@ class Customer extends Model
 
     public function quotation(){
         return $this->hasOne(Quotation::class);
+    }
+
+    public function traffic(){
+        $this->hasOne(Traffic::class);
     }
 
 }

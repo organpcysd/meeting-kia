@@ -9,7 +9,7 @@ class Car_model extends Model
 {
     use HasFactory;
 
-    public $table = "car_model";
+    protected $table = "car_model";
 
     protected $fillable = [
         'model_name',

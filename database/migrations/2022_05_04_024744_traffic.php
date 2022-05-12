@@ -26,7 +26,7 @@ class Traffic extends Migration
         });
 
         Schema::create('traffic', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('customer_id')->comment('ลูกค้า');
             $table->unsignedBigInteger('user_id')->comment('ที่ปรึกษาการขาย');
             $table->string('dicision')->comment('ผู้ตัดสินใจ');
@@ -38,14 +38,21 @@ class Traffic extends Migration
             $table->string('tenor')->comment('แนวโน้ม');
 
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('source_id')->references('id')->on('traffic_source')->onDelete('cascade');
+            $table->foreign('channel_id')->references('id')->on('traffic_channel')->onDelete('cascade');
         });
 
         Schema::create('traffic_car_item', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('traffic_id')->comment('ลูกค้า Traffic');
-            $table->unsignedBigInteger('car_item')->comment('');
+            $table->text('car_item');
 
             $table->timestamps();
+
+            $table->foreign('traffic_id')->references('id')->on('traffic')->onDelete('cascade');
         });
     }
 
@@ -58,5 +65,6 @@ class Traffic extends Migration
     {
         Schema::dropIfExists('traffic_channel');
         Schema::dropIfExists('traffic_source');
+        Schema::dropIfExists('traffic_car_itemy');
     }
 }

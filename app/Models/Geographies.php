@@ -9,7 +9,7 @@ class Geographies extends Model
 {
     use HasFactory;
 
-    public $table = 'geographies';
+    protected $table = 'geographies';
 
     protected $fillable = [
         'name',

@@ -57,6 +57,7 @@ Route::prefix('admin')->group(function(){
         Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);
         Route::post('/quotation/getDataCar',[App\Http\Controllers\Admin\QuotationController::class,'getDataCar'])->name('quotation.car');
 
+        Route::resource('traffic', App\Http\Controllers\Admin\TrafficController::class);
         Route::resource('traffic/channel', App\Http\Controllers\Admin\TrafficChannelController::class);
         Route::resource('traffic/source', App\Http\Controllers\Admin\TrafficSourceController::class);
 

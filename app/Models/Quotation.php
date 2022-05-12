@@ -9,7 +9,7 @@ class Quotation extends Model
 {
     use HasFactory;
 
-    public $table = 'quotation';
+    protected $table = 'quotation';
 
     protected $fillable = [
         'serial_number',

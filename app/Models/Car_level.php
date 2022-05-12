@@ -9,7 +9,7 @@ class Car_level extends Model
 {
     use HasFactory;
 
-    public $table = "car_level";
+    protected $table = "car_level";
 
     protected $fillable = [
         'level_name',

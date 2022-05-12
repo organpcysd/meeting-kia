@@ -9,7 +9,7 @@ class Canton extends Model
 {
     use HasFactory;
 
-    public $table = 'canton';
+    protected $table = 'canton';
 
     protected $fillable = [
         'zip_code',

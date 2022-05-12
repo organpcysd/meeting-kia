@@ -75,6 +75,10 @@ class User extends Authenticatable
         return $this->hasOne(Customer::class);
     }
 
+    public function traffic(){
+        $this->hasOne(Traffic::class);
+    }
+
     public function adminlte_image()
     {
         return 'https://picsum.photos/300/300';

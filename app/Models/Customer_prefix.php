@@ -9,7 +9,7 @@ class Customer_prefix extends Model
 {
     use HasFactory;
 
-    public $table = 'customer_prefix';
+    protected $table = 'customer_prefix';
 
     protected $fillable = [
         'title',

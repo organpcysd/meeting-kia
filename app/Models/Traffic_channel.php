@@ -9,9 +9,13 @@ class Traffic_channel extends Model
 {
     use HasFactory;
 
-    public $table = "traffic_channel";
+    protected $table = "traffic_channel";
 
     protected $fillable = [
         'channel_name',
     ];
+
+    public function traffic(){
+        $this->hasOne(Traffic::class);
+    }
 }

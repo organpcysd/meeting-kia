@@ -9,9 +9,13 @@ class Traffic_source extends Model
 {
     use HasFactory;
 
-    public $table = "traffic_source";
+    protected $table = "traffic_source";
 
     protected $fillable = [
         'source_name',
     ];
+
+    public function traffic(){
+        $this->hasOne(Traffic::class);
+    }
 }
