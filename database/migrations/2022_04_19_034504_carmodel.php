@@ -73,6 +73,16 @@ class Carmodel extends Migration
             $table->timestamps();
         });
 
+        Schema::create('car_stock', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('car_id')->comment('รถยนต์');
+            $table->string('number_chassis')->comment('หมายเลข chassis รถยนต์');
+            $table->string('number_engine')->comment('หมายเลขเครื่อง');
+            $table->string('status')->comment('สถานะ');
+
+            $table->foreign('car_id')->references('id')->on('car')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -87,5 +97,7 @@ class Carmodel extends Migration
         Schema::dropIfExists('car_model');
         Schema::dropIfExists('car_color');
         schema::dropIfExists('car');
+        schema::dropIfExists('car_gift');
+        schema::dropIfExists('car_stock');
     }
 }

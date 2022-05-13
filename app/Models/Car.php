@@ -43,4 +43,9 @@ class Car extends Model
     public function car_level(){
         return $this->belongsTo(Car_level::class,'level_id', 'id');
     }
+
+    public function car_stock(){
+        return $this->hasMany(Car_stock::class);
+    }
+
 }

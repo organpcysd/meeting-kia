@@ -37,7 +37,7 @@ Route::prefix('admin')->group(function(){
         Route::resource('/permission', App\Http\Controllers\Admin\PermissionController::class);
         Route::resource('/setting', App\Http\Controllers\Admin\SettingController::class);
 
-        Route::resource('/car', App\Http\Controllers\Admin\CarController::class);
+        Route::resource('/car', App\Http\Controllers\Admin\CarController::class)->except(['show']);
         Route::post('/car/getmodel',[App\Http\Controllers\Admin\CarController::class,'getDataCarmodel'])->name('car.getmodel');
 
         Route::resource('/carmodel', App\Http\Controllers\Admin\CarModelController::class);
@@ -45,6 +45,8 @@ Route::prefix('admin')->group(function(){
         Route::resource('/carcolor', App\Http\Controllers\Admin\CarColorController::class);
         Route::resource('/carlevel', App\Http\Controllers\Admin\CarLevelController::class);
         Route::resource('/cargift', App\Http\Controllers\Admin\CarGiftController::class);
+        Route::resource('/car/stock', App\Http\Controllers\Admin\CarStockController::class);
+        Route::get('/car/stock/data/{car}',[App\Http\Controllers\Admin\CarStockController::class,'getData'])->name('stock.getData');
 
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
         Route::resource('/customer/follow', App\Http\Controllers\Admin\CustomerFollowController::class);
