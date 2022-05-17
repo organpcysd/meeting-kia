@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <form action="{{ route('customer.store') }}" method="post">
+    <form action="{{ route('traffic.store') }}" method="post">
         @csrf
         <div class="row">
             <div class="col-sm-7">
@@ -151,7 +151,7 @@
                             <div class="col-sm-10">
                                 <div class="btn-group-toggle" data-toggle="buttons">
                                     @foreach($carmodels as $item)
-                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carmodel[]" id="carmodel" value="{{ $item->id }}"> {{ $item->model_name }} </label>
+                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carmodel[]" id="carmodel" value="{{ $item->id }}" onclick="Carmodel()"> {{ $item->model_name }} </label>
                                     @endforeach
                                 </div>
                             </div>
@@ -160,10 +160,10 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">รุ่นย่อย</label>
                             <div class="col-sm-10">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    @foreach($carlevels as $item)
+                                <div class="btn-group-toggle" data-toggle="buttons" id="carlevels">
+                                    {{-- @foreach($carlevels as $item)
                                         <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carlevel[]" id="carlevel" value="{{ $item->id }}"> {{ $item->level_name }} </label>
-                                    @endforeach
+                                    @endforeach --}}
                                 </div>
                             </div>
                         </div>
@@ -172,9 +172,9 @@
                             <label class="col-sm-2 col-form-label">สีรถยนต์</label>
                             <div class="col-sm-10">
                                 <div class="btn-group-toggle" data-toggle="buttons">
-                                    @foreach($carcolors as $item)
+                                    {{-- @foreach($carcolors as $item)
                                         <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carcolor[]" id="carcolor" value="{{ $item->id }}"> {{ $item->color_name }} </label>
-                                    @endforeach
+                                    @endforeach --}}
                                 </div>
                             </div>
                         </div>
@@ -242,7 +242,56 @@
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
             $('.sel2').select2();
+
+            // option = '<label class="btn btn-outline-info p-1"> <input type="checkbox" name="carmodel[]" id="carmodel"> adwdw </label>'
+            // $('#carmodels').html(option);
+            // console.log(option);
+
         });
+
+        function Carmodel(){
+            var model_array = [];
+            $("input:checkbox[id=carmodel]:checked").each(function() {
+                model_array.push($(this).val());
+            });
+            // console.log(model_array);
+            if (model_array.length != 0) {
+                $.ajax({
+                type: "POST",
+                url: "{{ route('traffic.getcarlevel') }}",
+                data: { _token:CSRF_TOKEN,model_id:model_array},
+                dataType: "json",
+                success: function (response) {
+                    // console.log(response)
+                    let levels = '';
+                    response.forEach(carlevels => {
+                        levels += '<label class="btn btn-outline-info p-1"> <input type="checkbox" onclick="Carlevel()" name="carlevel[]" id="carlevel" data-id="'+ carlevels.id +'" value="'+ carlevels.id +'">' + carlevels.level_name + '</label> ';
+                    });
+                    // console.log(levels);
+                    $('#carlevels').html(levels);
+                }
+            });
+            }else{
+                let levels = '';
+                $('#carlevels').html(levels);
+            }
+
+            // var checkboxes = document.getElementsByName('carmodel[]');
+            // var result = "";
+
+            // for (var i = 0; i < checkboxes.length; i++) {
+            //     if (checkboxes[i].checked) {
+            //         result += checkboxes[i].value + ",";
+            //         model_id = result.slice(0,-1);
+            //         console.log(model_id);
+            //     }
+            // }
+
+        }
+
+        function Carlevel(){
+
+        }
 
     </script>
 @endpush

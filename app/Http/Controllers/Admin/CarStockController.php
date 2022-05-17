@@ -26,7 +26,7 @@ class CarStockController extends Controller
     public function getData(Car $car,Request $request)
     {
         if($request->ajax()){
-            $data = Car_stock::all();
+            $data = Car_stock::where('car_id',$car->id);
             return DataTables::make($data)
             ->addIndexColumn()
             ->addColumn('btn',function($data){

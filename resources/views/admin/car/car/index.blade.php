@@ -32,9 +32,8 @@
                                 <td>รุ่น</td>
                                 <td>ประเภท</td>
                                 <td>สี</td>
-                                <td>เครื่อง</td>
-                                <td>เกียร์</td>
                                 <td>ปี</td>
+                                <td>In stock</td>
                                 <td>ราคา</td>
                                 <td>การจัดการ</td>
                             </tr>
@@ -74,9 +73,8 @@
                         {data: 'level'},
                         {data: 'type'},
                         {data: 'color'},
-                        {data: 'engine'},
-                        {data: 'gear'},
                         {data: 'years'},
+                        {data: 'total_qty'},
                         {data: 'price'},
                         {data: 'btn'},
                     ],

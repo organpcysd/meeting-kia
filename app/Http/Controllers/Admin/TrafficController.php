@@ -67,7 +67,7 @@ class TrafficController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -113,5 +113,12 @@ class TrafficController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getDataCarlevels(Request $request){
+        // dd($request->model_id);
+        $carlevels = Car_level::whereIn('model_id',$request->model_id)->get();
+        // dd($carlevels);
+        return response()->json($carlevels);
     }
 }

@@ -6,7 +6,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb" style="background-color: transparent;">
                 <li class="breadcrumb-item"><a href="{{url('admin')}}" class="text-info"><i class="fa fa-home fa-fw" aria-hidden="true"></i>  หน้าแรก</a></li>
-                <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">รายชื่อลูกค้า</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">จัดการรถ</a></li>
                 <li class="breadcrumb-item active">{{ $pagename }}</li>
             </ol>
         </nav>
