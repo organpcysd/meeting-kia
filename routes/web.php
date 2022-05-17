@@ -67,6 +67,7 @@ Route::prefix('admin')->group(function(){
             Route::resource('channel', App\Http\Controllers\Admin\TrafficChannelController::class);
             Route::resource('source', App\Http\Controllers\Admin\TrafficSourceController::class);
             Route::post('getcarlevel',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarlevels'])->name('traffic.getcarlevel');
+            Route::post('getcarcolor',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarcolors'])->name('traffic.getcarcolor');
 
         });
 

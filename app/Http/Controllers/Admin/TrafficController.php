@@ -10,6 +10,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Traffic;
 use App\Models\Customer;
 use App\Models\User;
+use App\Models\Car;
 use App\Models\Car_model;
 use App\Models\Car_level;
 use App\Models\Car_color;
@@ -120,5 +121,13 @@ class TrafficController extends Controller
         $carlevels = Car_level::whereIn('model_id',$request->model_id)->get();
         // dd($carlevels);
         return response()->json($carlevels);
+    }
+
+    public function getDataCarcolors(Request $request){
+        // dd($request->level_id);
+        $carcolors = Car::whereIn('level_id',$request->level_id)->distinct()->pluck('color_id')->toArray();
+        $colors = Car_color::whereIn('id',$carcolors)->get();
+        // dd($colors);
+        return response()->json($colors);
     }
 }
