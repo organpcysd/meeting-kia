@@ -58,6 +58,17 @@ class Received extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('received_follow', function (Blueprint $table) {
+            $table->id();
+            $table->UnsignedBigInteger('received_id')->comment('ใบส่งมอบรถยนต์');
+            $table->string('follow_up')->comment('ผลการติดตาม');
+            $table->string('follow_up_customer')->nullable()->comment('การตอบสนองจากลูกค้า');
+            $table->string('recomment_ceo')->nullable()->comment('คำแนะนำจาก ผจก.');
+            $table->date('follow_date')->nullable()->comment('วันที่ติดตาม');
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -69,5 +80,6 @@ class Received extends Migration
     {
         Schema::dropIfExists('received');
         Schema::dropIfExists('received_detail');
+        Schema::dropIfExists('received_follow');
     }
 }
