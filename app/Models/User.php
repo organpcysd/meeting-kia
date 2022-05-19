@@ -8,10 +8,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -53,6 +56,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('user');
+    }
+
     public function activestatus(){
         return $this->status == 1;
     }
@@ -84,13 +92,8 @@ class User extends Authenticatable
         return 'https://picsum.photos/300/300';
     }
 
-    public function adminlte_desc()
-    {
-        return 'That\'s a nice guy';
-    }
-
     public function adminlte_profile_url()
     {
-        return 'admin/profile';
+        return 'profile/username';
     }
 }

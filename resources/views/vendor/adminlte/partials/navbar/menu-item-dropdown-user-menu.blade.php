@@ -65,7 +65,7 @@
         {{-- User menu footer --}}
         <li class="user-footer">
             @if($profile_url)
-                <a href="{{ route('profile.index') }}" class="btn btn-info border">
+                <a href="{{ route('user.edit',['user'=> Auth::user()->id ]) }}" class="btn btn-info border">
                     <i class="fa fa-fw fa-pen"></i>
                     {{-- {{ __('adminlte::menu.profile') }} --}}
                     โปรไฟล์

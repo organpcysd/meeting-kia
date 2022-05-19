@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\User;
 use App\Models\User_prefix;
 use App\Models\User_position;
@@ -23,6 +25,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        dd(Auth::user());
 
         if($request->ajax()){
             $data = User::all();

@@ -145,7 +145,7 @@
 
                         <div class="form-group">
                             <label>จังหวัด</label>
-                            <select class="js-example-basic-multiple form-control" name="provinces" id="provinces">
+                            <select class="sel2 js-example-basic-multiple form-control" name="provinces" id="provinces">
                                 <option selected disabled>-กรุณาเลือกจังหวัด-</option>
                                 @foreach($provinces as $item)
                                     <option value="{{$item->id}}">{{$item->name_th}}</option>
@@ -155,14 +155,14 @@
 
                         <div class="form-group">
                             <label>อำเภอ</label>
-                            <select class="js-example-basic-multiple form-control" name="districts" id="districts">
+                            <select class="sel2 js-example-basic-multiple form-control" name="districts" id="districts">
                                 <option selected disabled>-กรุณาเลือกอำเภอ-</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label>ตำบล</label>
-                            <select class="js-example-basic-multiple form-control" name="canton" id="canton">
+                            <select class="sel2 js-example-basic-multiple form-control" name="canton" id="canton">
                                 <option selected disabled>-กรุณาเลือกตำบล-</option>
                             </select>
                         </div>
@@ -191,6 +191,8 @@
     <script>
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
+
+            $('.sel2').select2();
 
             $('#provinces').on('change',function(){
                 let id = $('#provinces').val();

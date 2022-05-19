@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Traffic extends Model
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
     protected $table = "traffic";
 
     protected $fillable = [
@@ -21,6 +23,11 @@ class Traffic extends Model
         'channel_id',
         'tenor',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('traffic');
+    }
 
     public function customer()
     {
