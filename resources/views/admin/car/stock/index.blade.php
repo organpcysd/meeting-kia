@@ -19,7 +19,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-lg-4 col-md-12 col-sm-4">
             <div class="card card-info text-center">
                 <div class="card-header">
                     ข้อมูลรถยนต์
@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <div class="col-sm-8">
+        <div class="col-lg-8 col-md-12 col-sm-8">
             <div class="card">
                 <div class="card-body">
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addcarstock">

@@ -6,7 +6,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb" style="background-color: transparent;">
                 <li class="breadcrumb-item"><a href="{{url('admin')}}" class="text-info"><i class="fa fa-home fa-fw" aria-hidden="true"></i>  หน้าแรก</a></li>
-                <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">รายชื่อลูกค้า</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">รายการลูกค้าติดต่อ</a></li>
                 <li class="breadcrumb-item active">{{ $pagename }}</li>
             </ol>
         </nav>
@@ -21,7 +21,7 @@
     <form action="{{ route('traffic.store') }}" method="post">
         @csrf
         <div class="row">
-            <div class="col-sm-7">
+            <div class="col-lg-7 col-md-12 col-sm-7">
                 <div class="card card-info">
                     <div class="card-header">
                         รายละเอียด
@@ -140,7 +140,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-5">
+            <div class="col-lg-5 col-md-12 col-sm-5">
                 <div class="card card-info">
                     <div class="card-header">
                         รถยนต์
@@ -286,7 +286,7 @@
             $("input:checkbox[id=carmodel]:checked").each(function() {
                 model_array.push($(this).val());
             });
-            console.log(model_array);
+            // console.log(model_array);
             if (model_array.length != 0) {
                 $.ajax({
                 type: "POST",
@@ -334,7 +334,7 @@
             $("input:checkbox[id=carlevel]:checked").each(function() {
                 level_array.push($(this).val());
             });
-            console.log(level_array);
+            // console.log(level_array);
             if (level_array.length != 0) {
                 $.ajax({
                 type: "POST",

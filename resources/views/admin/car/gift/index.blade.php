@@ -19,7 +19,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-lg-4 col-md-5 col-sm-4">
             <form action="{{ route('cargift.store') }}" method="post">
                 @csrf
                 <div class="card card-info">
@@ -52,7 +52,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-8">
+        <div class="col-lg-8 col-md-7 col-sm-8">
             <div class="card">
                 <div class="card-body">
                     <div class="mt-4">

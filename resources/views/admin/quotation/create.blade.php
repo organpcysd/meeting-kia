@@ -7,7 +7,7 @@
                 <ol class="breadcrumb" style="background-color: transparent;">
                     <li class="breadcrumb-item"><a href="{{ url('admin') }}" class="text-info"><i
                                 class="fa fa-home fa-fw" aria-hidden="true"></i> หน้าแรก</a></li>
-                    <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">จัดการประเภทรถ</a>
+                    <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">รายการใบเสนอราคา</a>
                     </li>
                     <li class="breadcrumb-item active">{{ $pagename }}</li>
                 </ol>
@@ -23,7 +23,7 @@
         <form action="{{ route('quotation.store') }}" method="post" id="formsubmit">
             @csrf
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-lg-5 col-md-12 col-sm-5">
                     <div class="card card-info">
                         <div class="card-header">
                             รายละเอียดใบเสนอราคา
@@ -104,7 +104,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-7" id="payment_detail">
+                <div class="col-lg-7 col-md-12 col-sm-7" id="payment_detail">
                     <div class="card card-info">
                         <div class="card-header">
                             รายละเอียดการชำระเงิน

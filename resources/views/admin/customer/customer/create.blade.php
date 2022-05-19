@@ -21,7 +21,7 @@
     <form action="{{ route('customer.store') }}" method="post">
         @csrf
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-lg-6 col-md-12 col-sm-6">
                 <div class="card card-info">
                     <div class="card-header">
                         รายละเอียดส่วนตัว
@@ -44,8 +44,8 @@
                             <input type="text" class="form-control" id="citizen_id" name="citizen_id" required>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-2">
+                        <div class="form-group row">
+                            <div class="form-group col-md-4 col-lg-2">
                                 <label>คำนำหน้า</label>
                                 <select class="js-example-basic-multiple form-control" name="customer_prefix">
                                     @foreach($prefixes as $item_pr)
@@ -53,11 +53,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-4 col-lg-5">
                               <label>ชิ่อจริง</label>
                               <input type="text" class="form-control" id="fname" name="fname" required>
                             </div>
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-4 col-lg-5">
                               <label for="inputPassword4">นามสกุล</label>
                               <input type="text" class="form-control" id="lname" name="lname" required>
                             </div>
@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-lg-6 col-md-12 col-sm-6">
                 <div class="card card-info">
                     <div class="card-header">
                         รายละเอียดที่อยู่
