@@ -1,6 +1,6 @@
 @extends('adminlte::page')
-@section('title', setting('title'). ' | ลูกค้าจองรถยนต์')
-@php $pagename = 'ลูกค้าจองรถยนต์'; @endphp
+@section('title', setting('title'). ' | รายการส่งมอบรถยนต์')
+@php $pagename = 'รายการส่งมอบรถยนต์'; @endphp
 @section('content')
 <div class="contrainer p-4">
     <div class="row">
@@ -22,17 +22,16 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('reserved.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
+                    <a href="{{ route('received.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
                     <div class="mt-4">
                         <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
                             <thead>
                             <tr>
                                 <td>##</td>
-                                <td>หมายเลขการจอง</td>
+                                <td>หมายเลขการส่งมอบรถยนต์</td>
                                 <td>ชื่อลูกค้า</td>
                                 <td>ชื่อเล่น</td>
                                 <td>รุ่นรถยนต์</td>
-                                <td>จำนวนเงิน</td>
                                 <td>พนักงานขาย</td>
                                 <td>การจัดการ</td>
                             </tr>
@@ -66,14 +65,13 @@
                         'processing': '<div class="spinner-border text-primary" role="status"><span class="sr-only">กำลังโหลด...</span></div>'
                     },
                     serverSide: true,
-                    ajax: "{{route('reserved.index')}}",
+                    ajax: "{{route('received.index')}}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'id'} ,
                         {data: 'serial_number'},
                         {data: 'customer_name'},
                         {data: 'nickname'},
                         {data: 'car'},
-                        {data: 'payable'},
                         {data: 'user_name'},
                         {data: 'btn'},
                     ],
@@ -93,7 +91,7 @@
                     return new Promise(function (resolve) {
                         $.ajax({
                             type: 'DELETE',
-                            url: "{{url('admin/reserved')}}/" + id,
+                            url: "{{url('admin/received')}}/" + id,
                             data: {_token: CSRF_TOKEN},
                             dataType: 'JSON',
                             success: function (results) {

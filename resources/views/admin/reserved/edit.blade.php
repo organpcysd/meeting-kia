@@ -287,6 +287,17 @@
                                         </div>
                                     </div>
 
+                                    <div class="text-center">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="first_purchase" id="first_purchase" value="0" @if($reserved->reserved_detail->first_purchase === "0") checked @endif>
+                                            <label class="form-check-label" for="inlineRadio1">จ่ายงวดแรกวันรับรถ</label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="first_purchase" id="first_purchase" value="1" @if($reserved->reserved_detail->first_purchase === "1") checked @endif>
+                                            <label class="form-check-label" for="inlineRadio2">จ่ายงวดแรกเดือนถัดไป</label>
+                                          </div>
+                                    </div>
+
                                 </div>
                             </div>
 

@@ -78,6 +78,10 @@ Route::prefix('admin')->group(function(){
         Route::resource('/reserved', App\Http\Controllers\Admin\ReservedController::class);
         Route::get('/reserved/quotation/{quotation}',[App\Http\Controllers\Admin\ReservedController::class,'getDataQuotation'])->name('reserved.quotation');
 
+        Route::resource('/received', App\Http\Controllers\Admin\ReceivedController::class);
+        Route::get('/received/reserved/{reserved}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataReserved']);
+        Route::resource('/receivedfollow', App\Http\Controllers\Admin\ReceivedFollowController::class);
+
 
     });
 });

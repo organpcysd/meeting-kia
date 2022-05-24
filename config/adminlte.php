@@ -277,12 +277,12 @@ return [
         [
             'text'      => 'ส่งมอบรถยนต์',
             'icon'      => 'fas fa-fw fa-file',
-            'route'       => 'quotation.index',
+            'route'       => 'received.index',
         ],
         [
             'text'      => 'ติดตามหลังการขาย',
             'icon'      => 'fas fa-fw fa-file',
-            'route'       => 'quotation.index',
+            'route'       => 'receivedfollow.index',
         ],
         [
             'text'      => 'ตั้งค่าระบบ',

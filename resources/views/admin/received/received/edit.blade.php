@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@php $pagename = 'เพิ่มการจองรถยนต์'; @endphp
+@php $pagename = 'แก้ไขข้อมูลการส่งมอบรถยนต์ '; @endphp
 @section('content')
     <div class="contrainer p-4">
         <div class="row">
@@ -20,7 +20,8 @@
             </div>
         </div>
 
-        <form action="{{ route('reserved.store') }}" method="post" id="formsubmit">
+        <form action="{{ route('reserved.update',['reserved'=>$reserved->id]) }}" method="post" id="formsubmit">
+            @method('PUT')
             @csrf
             <div class="row">
                 <div class="col-lg-5 col-md-12 col-sm-5">
@@ -42,7 +43,7 @@
                                             <select class="sel2 form-control" name="quotation" id="quotation">
                                                     <option value="" selected disabled>- ค้นหาหมายเลขใบเสนอราคา -</option>
                                                 @foreach($quotations as $item)
-                                                    <option value="{{$item->id}}">{{$item->serial_number . ' : ' . $item->customer->customer_prefix->title . ' ' . $item->customer->f_name . ' ' . $item->customer->l_name }}</option>
+                                                    <option @if($reserved->quotation_id === $item->id) selected @endif value="{{$item->id}}">{{$item->serial_number . ' : ' . $item->customer->customer_prefix->title . ' ' . $item->customer->f_name . ' ' . $item->customer->l_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -54,10 +55,10 @@
                                         <label class="col-sm-4 col-form-label">ลูกค้า</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="customer" id="customer">
-                                                {{-- <option value="" selected disabled>- ค้นหาลูกค้า -</option> --}}
-                                                {{-- @foreach($customers as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                                <option value="" selected disabled>- ค้นหาลูกค้า -</option>
+                                                @foreach($customers as $item)
+                                                    <option @if ($reserved->customer_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -66,10 +67,10 @@
                                         <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="user" id="user">
-                                                {{-- <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
+                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
                                                 @foreach($users as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                                    <option @if ($reserved->user_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -77,11 +78,11 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ผู้มาติดต่อ</label>
                                         <div class="col-sm-8">
-                                            <select class="sel2 form-control" name="contact" id="contact">
-                                                {{-- <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
-                                                @foreach($customers as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                            <select class="sel2 form-control" name="car" id="car">
+                                                <option value="" selected disabled>- ค้นหารถยนต์ -</option>
+                                                @foreach($cars as $item)
+                                                    <option @if ($reserved->car_id === $item->id) selected @endif value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -89,10 +90,10 @@
                                         <label class="col-sm-4 col-form-label">รถยนต์</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="car" id="car">
-                                                {{-- <option value="" selected disabled>- ค้นหารถยนต์ -</option>
+                                                <option value="" selected disabled>- ค้นหารถยนต์ -</option>
                                                 @foreach($cars as $item)
-                                                    <option value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
-                                                @endforeach --}}
+                                                    <option @if ($reserved->car_id === $item->id) selected @endif value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -100,23 +101,21 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">สถานที่จัดส่ง</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="place_send" name="place_send">
+                                            <input type="text" class="form-control" id="place_send" name="place_send" value="{{ $reserved->place_send }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ประมาณการส่งมอบ</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="estimate_send"
-                                                name="estimate_send">
+                                            <input type="date" class="form-control" id="estimate_send" name="estimate_send" value="{{ $reserved->estimate_send }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">วันที่จอง</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="reserved_date"
-                                                name="reserved_date">
+                                            <input type="date" class="form-control" id="reserved_date" name="reserved_date" value="{{ $reserved->reserved_date }}">
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +132,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">จำนวนเงิน</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="payable" name="payable">
+                                    <input type="text" class="form-control" id="payable" name="payable" value="{{ $reserved->reserved_detail->payable }}">
                                 </div>
                             </div>
 
@@ -142,10 +141,10 @@
                                 <div class="col-sm-8">
                                     <select class="form-control" name="payment_by" id="payment_by">
                                         <option value="" selected disabled>- เลือกวิธีการชำระเงิน -</option>
-                                        <option value="cash">เงินสด</option>
-                                        <option value="credit">บัตรเครดิต</option>
-                                        <option value="cheque">เช็ค</option>
-                                        <option value="tranfer">โอนผ่าน Banking</option>
+                                        <option @if($reserved->payment_by === 'cash') selected @endif value="cash">เงินสด</option>
+                                        <option @if($reserved->payment_by === 'credit') selected @endif value="credit">บัตรเครดิต</option>
+                                        <option @if($reserved->payment_by === 'cheque') selected @endif value="cheque">เช็ค</option>
+                                        <option @if($reserved->payment_by === 'tranfer') selected @endif value="tranfer">โอนผ่าน Banking</option>
                                     </select>
                                 </div>
                             </div>
@@ -154,14 +153,14 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">ธนาคาร</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="payment_bank" name="payment_bank">
+                                        <input type="text" class="form-control" id="payment_bank" name="payment_bank" value="{{ $reserved->payment_bank }}">
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">เลขที่</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="payment_no" name="payment_no">
+                                        <input type="text" class="form-control" id="payment_no" name="payment_no" value="{{ $reserved->payment_no }}">
                                     </div>
                                 </div>
                             </div>
@@ -182,9 +181,9 @@
                                 <label class="col-sm-3 col-form-label">เงื่อนไข</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="condition" id="condition">
-                                        <option selected disabled>- เลือกเงื่อนไข -</option>
-                                        <option value="cash">สด</option>
-                                        <option value="credit">ผ่อน</option>
+                                        <option disabled>- เลือกเงื่อนไข -</option>
+                                        <option @if($reserved->reserved_detail->condition === 'cash') selected @endif value="cash">สด</option>
+                                        <option @if($reserved->reserved_detail->condition === 'credit') selected @endif value="credit">ผ่อน</option>
                                     </select>
                                 </div>
                             </div>
@@ -192,14 +191,14 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ราคารถยนต์</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="price_car" name="price_car" readonly>
+                                    <input type="text" class="form-control" id="price_car" name="price_car" readonly value="{{ $reserved->reserved_detail->price_car }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"><u>ส่วนลด</u> ราคารถยนต์</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_discount" name="payment_discount">
+                                    <input type="text" class="form-control" id="payment_discount" name="payment_discount" value="{{ $reserved->reserved_detail->payment_discount }}">
                                 </div>
                             </div>
 
@@ -209,21 +208,21 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ราคารถยนต์ : สุทธิ</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control form-control-sm" id="price_car_net" name="price_car_net" readonly>
+                                            <input type="text" class="form-control form-control-sm" id="price_car_net" name="price_car_net" readonly value="{{ $reserved->reserved_detail->price_car_net }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ดาวน์</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control form-control-sm" id="payment_down" name="payment_down">
+                                            <input type="text" class="form-control form-control-sm" id="payment_down" name="payment_down" value="{{ $reserved->reserved_detail->payment_down }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label"><u>ส่วนลด</u> เงินดาวน์</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control form-control-sm" id="payment_down_discount" name="payment_down_discount">
+                                            <input type="text" class="form-control form-control-sm" id="payment_down_discount" name="payment_down_discount" value="{{ $reserved->reserved_detail->payment_down_discount }}">
                                         </div>
                                     </div>
 
@@ -235,13 +234,13 @@
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" name="term_credit" id="term_credit">
                                                     <option value="1" selected>- เลือกจำนวนงวด -</option>
-                                                    <option value="12">12</option>
-                                                    <option value="24">24</option>
-                                                    <option value="36">36</option>
-                                                    <option value="48">48</option>
-                                                    <option value="60">60</option>
-                                                    <option value="72">72</option>
-                                                    <option value="84">84</option>
+                                                    <option @if($reserved->reserved_detail->term_credit === "12") selected @endif value="12">12</option>
+                                                    <option @if($reserved->reserved_detail->term_credit === "24") selected @endif value="24">24</option>
+                                                    <option @if($reserved->reserved_detail->term_credit === "36") selected @endif value="36">36</option>
+                                                    <option @if($reserved->reserved_detail->term_credit === "48") selected @endif value="48">48</option>
+                                                    <option @if($reserved->reserved_detail->term_credit === "60") selected @endif value="60">60</option>
+                                                    <option @if($reserved->reserved_detail->term_credit === "72") selected @endif value="72">72</option>
+                                                    <option @if($reserved->reserved_detail->term_credit === "84") selected @endif value="84">84</option>
                                                 </select>
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">เดือน</div>
@@ -255,7 +254,7 @@
                                         <label class="col-sm-4 col-form-label">อัตราดอกเบี้ยต่อปี</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" class="form-control form-control-sm" id="interest" name="interest">
+                                                <input type="text" class="form-control form-control-sm" id="interest" name="interest" value="{{ $reserved->reserved_detail->interest }}">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">%</div>
                                                 </div>
@@ -267,7 +266,7 @@
                                         <label class="col-sm-4 col-form-label">ยอดจัดเช่าซื้อ</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" class="form-control form-control-sm" id="hire_purchase" name="hire_purchase" readonly>
+                                                <input type="text" class="form-control form-control-sm" id="hire_purchase" name="hire_purchase" value="{{ $reserved->reserved_detail->hire_purchase }}" readonly>
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">บาท</div>
                                                 </div>
@@ -280,23 +279,12 @@
                                         <label class="col-sm-4 col-form-label">ค่างวดต่อเดือน (รวม VAT)</label>
                                         <div class="col-sm-8">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" class="form-control form-control-sm" id="term_payment" name="term_payment" readonly>
+                                                <input type="text" class="form-control form-control-sm" id="term_payment" name="term_payment" value="{{ $reserved->reserved_detail->term_payment }}" readonly>
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">บาท</div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="first_purchase" id="first_purchase" value="0">
-                                            <label class="form-check-label" for="inlineRadio1">จ่ายงวดแรกวันรับรถ</label>
-                                          </div>
-                                          <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="first_purchase" id="first_purchase" value="1">
-                                            <label class="form-check-label" for="inlineRadio2">จ่ายงวดแรกเดือนถัดไป</label>
-                                          </div>
                                     </div>
 
                                 </div>
@@ -305,35 +293,35 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">มัดจำป้ายแดง</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="deposit_roll" name="deposit_roll">
+                                    <input type="text" class="form-control" id="deposit_roll" name="deposit_roll" value="{{ $reserved->reserved_detail->deposit_roll }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าอุปกรณ์แต่งรถยนต์</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_decorate" name="payment_decorate">
+                                    <input type="text" class="form-control" id="payment_decorate" name="payment_decorate" value="{{ $reserved->reserved_detail->payment_decorate }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าเบี้ยประกัน</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_insurance" name="payment_insurance">
+                                    <input type="text" class="form-control" id="payment_insurance" name="payment_insurance" value="{{ $reserved->reserved_detail->payment_insurance }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าใช้จ่ายอื่นๆ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_other" name="payment_other">
+                                    <input type="text" class="form-control" id="payment_other" name="payment_other" value="{{ $reserved->reserved_detail->payment_other }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">หักค่ามัดจำ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payable_show" name="payable_show" readonly>
+                                    <input type="text" class="form-control" id="payable_show" name="payable_show" value="{{ $reserved->reserved_detail->payable }}" readonly>
                                 </div>
                             </div>
 
@@ -343,8 +331,8 @@
                                 <label class="col-sm-3 col-form-label">รถยนต์ที่นำมาแลก</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="car_change" id="car_change">
-                                        <option value="yes" >มี</option>
-                                        <option value="no">ไม่มี</option>
+                                        <option @if($reserved->reserved_detail->car_change === "yes") selected @endif value="yes">มี</option>
+                                        <option @if($reserved->reserved_detail->car_change === "no") selected @endif value="no">ไม่มี</option>
                                     </select>
                                 </div>
                             </div>
@@ -352,7 +340,7 @@
                             <div class="form-group row" id="carturn">
                                 <label class="col-sm-3 col-form-label"><u>หัก</u> รถยนต์คันเก่า</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="payment_car_turn" name="payment_car_turn">
+                                    <input type="text" class="form-control" id="payment_car_turn" name="payment_car_turn" value="{{ $reserved->reserved_detail->payment_car_turn }}">
                                 </div>
                             </div>
 
@@ -361,7 +349,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">ค่าใช้จ่ายวันออกรถ</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="subtotal" name="subtotal" readonly>
+                                    <input type="text" class="form-control" id="subtotal" name="subtotal" value="{{ $reserved->reserved_detail->subtotal }}" readonly>
                                 </div>
                             </div>
 
@@ -369,9 +357,9 @@
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม</label>
                                 <div class="col-sm-9">
                                     <select class="sel2 form-control" name="gift[]" id="gift" multiple>
-                                        {{-- @foreach($accessories as $item)
-                                            <option value="{{$item->id}}">{{$item->gift_name}}</option>
-                                        @endforeach --}}
+                                        @foreach($accessories as $item)
+                                            <option @if(in_array($item->gift_name,$reserved->reserved_detail->car_gift()->pluck('gift_name')->toArray())) selected @endif value="{{$item->id}}">{{$item->gift_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -379,14 +367,14 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม เพิ่มเติม</label>
                                 <div class="col-sm-9">
-                                    <textarea type="text" class="form-control" id="accessories" name="accessories"></textarea>
+                                    <textarea type="text" class="form-control" id="accessories" name="accessories" value="{{ $reserved->reserved_detail->accessories }}"></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่ซื้อ</label>
                                 <div class="col-sm-9">
-                                    <textarea type="text" class="form-control" id="accessories_buy" name="accessories_buy"></textarea>
+                                    <textarea type="text" class="form-control" id="accessories_buy" name="accessories_buy" value="{{ $reserved->reserved_detail->accessories_buy }}"></textarea>
                                 </div>
                             </div>
 
@@ -413,7 +401,7 @@
         function formsubmit() {
             Swal.fire({
                 title: 'ยืนยัน',
-                text: "ยืนยันการเพิ่มข้อมูล?",
+                text: "ยืนยันการแก้ไขข้อมูล?",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#17a2b8',
@@ -451,47 +439,16 @@
                 }
             });
 
-            $.ajax({
-                type: "get",
-                url: "{{ url('admin/reserved/quotation') }}/1",
-                success: function (response) {
-
-                    let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
-                    let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
-                    let contact_option = '<option selected disabled>- ค้นหาผู้มาติดต่อ -</option>';
-                    let car_option = '<option selected disabled>- ค้นหารถยนต์ -</option>';
-                    let accessories_option = '';
-
-                    response.customers.forEach(customers => {
-                        customer_option += '<option value="' + customers.id + '">' + customers.f_name + ' ' + customers.l_name + ' (' + customers.phone + ')' + '</option>';
-                    });
-
-                    response.users.forEach(users => {
-                        user_option += '<option value="' + users.id + '">' + users.f_name + ' ' + users.l_name + ' (' + users.phone + ')' + '</option>';
-                    });
-
-                    response.customers.forEach(contacts => {
-                        contact_option += '<option value="' + contacts.id + '">' + contacts.f_name + ' ' + contacts.l_name + ' (' + contacts.phone + ')' + '</option>';
-                    });
-
-                    response.cars.forEach(cars => {
-                        // console.log(cars.car_model.model_name);
-                        car_option += '<option value="' + cars.id + '">' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
-                    });
-
-                    response.car_gifts.forEach(gift => {
-                        // console.log(cars.car_model.model_name);
-                        accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
-                    });
-
-                    $('#customer').html(customer_option);
-                    $('#user').html(user_option);
-                    $('#contact').html(contact_option);
-                    $('#car').html(car_option);
-                    $('#gift').html(accessories_option);
-
-                }
-            });
+            let val = $("#condition").val();
+            if (val == "cash") {
+                let ele = document.getElementById("cal");
+                ele.style.display = "none";
+                cal()
+            }else{
+                let ele = document.getElementById("cal");
+                ele.style.display = "";
+                cal()
+            }
 
         });
 
@@ -530,95 +487,6 @@
             document.getElementById("backbtn").disabled = false;
             $('#savebtn').attr('onclick','formsubmit()');
         }
-
-        //ดึงข้อมูลตอนเลือกใบเสนอราคา
-        $('#quotation').on('change',function(){
-            let id = $('#quotation').val();
-
-            $.ajax({
-                type: "get",
-                url: "{{ url('admin/reserved/quotation') }}/" + id,
-                success: function (response) {
-
-                    let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
-                    let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
-                    let contact_option = '<option selected disabled>- ค้นหาผู้มาติดต่อ -</option>';
-                    let car_option = '<option selected disabled>- ค้นหารถยนต์ -</option>';
-                    let accessories_option = '';
-
-                    response.customers.forEach(customers =>{
-                        let selected = (customers.id === response.quotation.customer_id ? ' selected' : '');
-                        customer_option += '<option value="' + customers.id + '"' + selected +'>' + customers.f_name + ' ' + customers.l_name + ' (' + customers.phone + ')' + '</option>';
-                    });
-
-                    response.users.forEach(users =>{
-                        let selected = (users.id === response.quotation.user_id ? ' selected' : '');
-                        user_option += '<option value="' + users.id + '"' + selected +'>' + users.f_name + ' ' + users.l_name + ' (' + users.phone + ')' + '</option>';
-                    });
-
-                    response.customers.forEach(contacts =>{
-                        let selected = (contacts.id === response.quotation.contact_id ? ' selected' : '');
-                        contact_option += '<option value="' + contacts.id + '"' + selected +'>' + contacts.f_name + ' ' + contacts.l_name + ' (' + contacts.phone + ')' + '</option>';
-                    });
-
-                    response.cars.forEach(cars =>{
-                        let selected = (cars.id === response.quotation.car_id ? ' selected' : '');
-                        car_option += '<option value="' + cars.id + '"' + selected +'>' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
-                    });
-
-                    response.car_gifts.map((gift,key) =>{
-                        let organ = 0;
-                        for(let i=0;i<response.accessories.length;i++){
-                            if(gift.id === response.accessories[i].id){
-                                organ = 1;
-                                accessories_option += '<option value="' + gift.id + '" selected>' + gift.gift_name + '</option>';
-                            }
-                        }
-                            if(organ != 1){
-                                accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
-                            }
-                    });
-
-                    $('#user').html(user_option);
-                    $('#customer').html(customer_option);
-                    $('#contact').html(contact_option);
-                    $('#car').html(car_option);
-                    $('#gift').html(accessories_option);
-
-                    $('#place_send').val(response.quotation.place_send);
-                    $('#estimate_send').val(response.quotation.estimate_send);
-                    $('#condition').val(response.quotation_detail.condition);
-                    if ($('#condition').val() == "cash") {
-                        let ele = document.getElementById("cal");
-                        ele.style.display = "none";
-                    }else{
-                        let ele = document.getElementById("cal");
-                        ele.style.display = "";
-                    }
-
-                    $('#price_car').val(response.quotation_detail.price_car);
-                    $('#payment_discount').val(response.quotation_detail.payment_discount);
-                    $('#price_car_net').val(response.quotation_detail.price_car_net);
-                    $('#payment_down').val(response.quotation_detail.payment_down);
-                    $('#payment_down_discount').val(response.quotation_detail.payment_down_discount);
-                    $('#term_credit').val(response.quotation_detail.term_credit);
-                    $('#interest').val(response.quotation_detail.interest);
-                    $('#deposit_roll').val(response.quotation_detail.deposit_roll);
-                    $('#payment_decorate').val(response.quotation_detail.payment_decorate);
-                    $('#payment_insurance').val(response.quotation_detail.payment_insurance);
-                    $('#payment_other').val(response.quotation_detail.payment_other);
-                    $('#payment_car_turn').val(response.quotation_detail.payment_car_turn);
-                    $('#hire_purchase').val(response.quotation_detail.hire_purchase);
-                    $('#term_payment').val(response.quotation_detail.term_payment);
-                    $('#subtotal').val(response.quotation_detail.subtotal);
-
-                    cal();
-
-                }
-            });
-
-            enable_payment_detail();
-        });
 
         $('#car').on('change',function(){
             let id = $('#car').val();

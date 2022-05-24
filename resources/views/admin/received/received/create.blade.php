@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@php $pagename = 'เพิ่มการจองรถยนต์'; @endphp
+@php $pagename = 'เพิ่มข้อมูลส่งมอบรถยนต์'; @endphp
 @section('content')
     <div class="contrainer p-4">
         <div class="row">
@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <form action="{{ route('reserved.store') }}" method="post" id="formsubmit">
+        <form action="{{ route('received.store') }}" method="post" id="formsubmit">
             @csrf
             <div class="row">
                 <div class="col-lg-5 col-md-12 col-sm-5">
@@ -37,11 +37,11 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">หมายเลขใบเสนอราคา</label>
+                                        <label class="col-sm-4 col-form-label">หมายเลขใบจอง</label>
                                         <div class="col-sm-8">
-                                            <select class="sel2 form-control" name="quotation" id="quotation">
-                                                    <option value="" selected disabled>- ค้นหาหมายเลขใบเสนอราคา -</option>
-                                                @foreach($quotations as $item)
+                                            <select class="sel2 form-control" name="reserved" id="reserved">
+                                                <option value="" selected disabled>- ค้นหาหมายเลขใบจอง -</option>
+                                                @foreach($reserved as $item)
                                                     <option value="{{$item->id}}">{{$item->serial_number . ' : ' . $item->customer->customer_prefix->title . ' ' . $item->customer->f_name . ' ' . $item->customer->l_name }}</option>
                                                 @endforeach
                                             </select>
@@ -288,17 +288,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="text-center">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="first_purchase" id="first_purchase" value="0">
-                                            <label class="form-check-label" for="inlineRadio1">จ่ายงวดแรกวันรับรถ</label>
-                                          </div>
-                                          <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="first_purchase" id="first_purchase" value="1">
-                                            <label class="form-check-label" for="inlineRadio2">จ่ายงวดแรกเดือนถัดไป</label>
-                                          </div>
-                                    </div>
-
                                 </div>
                             </div>
 
@@ -453,7 +442,7 @@
 
             $.ajax({
                 type: "get",
-                url: "{{ url('admin/reserved/quotation') }}/1",
+                url: "{{ url('admin/received/reserved') }}/1",
                 success: function (response) {
 
                     let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
@@ -532,13 +521,15 @@
         }
 
         //ดึงข้อมูลตอนเลือกใบเสนอราคา
-        $('#quotation').on('change',function(){
-            let id = $('#quotation').val();
+        $('#reserved').on('change',function(){
+            let id = $('#reserved').val();
 
             $.ajax({
                 type: "get",
-                url: "{{ url('admin/reserved/quotation') }}/" + id,
+                url: "{{ url('admin/received/reserved') }}/" + id,
                 success: function (response) {
+
+                    console.log(response);
 
                     let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
                     let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
@@ -547,47 +538,47 @@
                     let accessories_option = '';
 
                     response.customers.forEach(customers =>{
-                        let selected = (customers.id === response.quotation.customer_id ? ' selected' : '');
+                        let selected = (customers.id === response.reserved.customer_id ? ' selected' : '');
                         customer_option += '<option value="' + customers.id + '"' + selected +'>' + customers.f_name + ' ' + customers.l_name + ' (' + customers.phone + ')' + '</option>';
                     });
 
                     response.users.forEach(users =>{
-                        let selected = (users.id === response.quotation.user_id ? ' selected' : '');
+                        let selected = (users.id === response.reserved.user_id ? ' selected' : '');
                         user_option += '<option value="' + users.id + '"' + selected +'>' + users.f_name + ' ' + users.l_name + ' (' + users.phone + ')' + '</option>';
                     });
 
                     response.customers.forEach(contacts =>{
-                        let selected = (contacts.id === response.quotation.contact_id ? ' selected' : '');
+                        let selected = (contacts.id === response.reserved.contact_id ? ' selected' : '');
                         contact_option += '<option value="' + contacts.id + '"' + selected +'>' + contacts.f_name + ' ' + contacts.l_name + ' (' + contacts.phone + ')' + '</option>';
                     });
 
                     response.cars.forEach(cars =>{
-                        let selected = (cars.id === response.quotation.car_id ? ' selected' : '');
+                        let selected = (cars.id === response.reserved.car_id ? ' selected' : '');
                         car_option += '<option value="' + cars.id + '"' + selected +'>' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
                     });
 
-                    response.car_gifts.map((gift,key) =>{
-                        let organ = 0;
-                        for(let i=0;i<response.accessories.length;i++){
-                            if(gift.id === response.accessories[i].id){
-                                organ = 1;
-                                accessories_option += '<option value="' + gift.id + '" selected>' + gift.gift_name + '</option>';
-                            }
-                        }
-                            if(organ != 1){
-                                accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
-                            }
-                    });
+                    // response.car_gifts.map((gift,key) =>{
+                    //     let organ = 0;
+                    //     for(let i=0;i<response.accessories.length;i++){
+                    //         if(gift.id === response.accessories[i].id){
+                    //             organ = 1;
+                    //             accessories_option += '<option value="' + gift.id + '" selected>' + gift.gift_name + '</option>';
+                    //         }
+                    //     }
+                    //         if(organ != 1){
+                    //             accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
+                    //         }
+                    // });
 
                     $('#user').html(user_option);
                     $('#customer').html(customer_option);
                     $('#contact').html(contact_option);
                     $('#car').html(car_option);
-                    $('#gift').html(accessories_option);
+                    // $('#gift').html(accessories_option);
 
-                    $('#place_send').val(response.quotation.place_send);
-                    $('#estimate_send').val(response.quotation.estimate_send);
-                    $('#condition').val(response.quotation_detail.condition);
+                    $('#place_send').val(response.reserved.place_send);
+                    $('#estimate_send').val(response.reserved.estimate_send);
+                    $('#condition').val(response.reserved_detail.condition);
                     if ($('#condition').val() == "cash") {
                         let ele = document.getElementById("cal");
                         ele.style.display = "none";
@@ -596,21 +587,21 @@
                         ele.style.display = "";
                     }
 
-                    $('#price_car').val(response.quotation_detail.price_car);
-                    $('#payment_discount').val(response.quotation_detail.payment_discount);
-                    $('#price_car_net').val(response.quotation_detail.price_car_net);
-                    $('#payment_down').val(response.quotation_detail.payment_down);
-                    $('#payment_down_discount').val(response.quotation_detail.payment_down_discount);
-                    $('#term_credit').val(response.quotation_detail.term_credit);
-                    $('#interest').val(response.quotation_detail.interest);
-                    $('#deposit_roll').val(response.quotation_detail.deposit_roll);
-                    $('#payment_decorate').val(response.quotation_detail.payment_decorate);
-                    $('#payment_insurance').val(response.quotation_detail.payment_insurance);
-                    $('#payment_other').val(response.quotation_detail.payment_other);
-                    $('#payment_car_turn').val(response.quotation_detail.payment_car_turn);
-                    $('#hire_purchase').val(response.quotation_detail.hire_purchase);
-                    $('#term_payment').val(response.quotation_detail.term_payment);
-                    $('#subtotal').val(response.quotation_detail.subtotal);
+                    $('#price_car').val(response.reserved_detail.price_car);
+                    $('#payment_discount').val(response.reserved_detail.payment_discount);
+                    $('#price_car_net').val(response.reserved_detail.price_car_net);
+                    $('#payment_down').val(response.reserved_detail.payment_down);
+                    $('#payment_down_discount').val(response.reserved_detail.payment_down_discount);
+                    $('#term_credit').val(response.reserved_detail.term_credit);
+                    $('#interest').val(response.reserved_detail.interest);
+                    $('#deposit_roll').val(response.reserved_detail.deposit_roll);
+                    $('#payment_decorate').val(response.reserved_detail.payment_decorate);
+                    $('#payment_insurance').val(response.reserved_detail.payment_insurance);
+                    $('#payment_other').val(response.reserved_detail.payment_other);
+                    $('#payment_car_turn').val(response.reserved_detail.payment_car_turn);
+                    $('#hire_purchase').val(response.reserved_detail.hire_purchase);
+                    $('#term_payment').val(response.reserved_detail.term_payment);
+                    $('#subtotal').val(response.reserved_detail.subtotal);
 
                     cal();
 
