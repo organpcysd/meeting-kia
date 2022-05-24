@@ -257,6 +257,7 @@ return [
             'text'      => 'ลูกค้าติดต่อเข้ามา',
             'icon'      => 'fas fa-fw fa-users',
             'route'       => 'customer.index',
+            'active'    => ['*customer*'],
         ],
         [
             'text'      => 'ลูกค้า Traffic',
@@ -265,6 +266,21 @@ return [
         ],
         [
             'text'      => 'ใบเสนอราคา',
+            'icon'      => 'fas fa-fw fa-file',
+            'route'       => 'quotation.index',
+        ],
+        [
+            'text'      => 'จองรถยนต์',
+            'icon'      => 'fas fa-fw fa-file',
+            'route'       => 'reserved.index',
+        ],
+        [
+            'text'      => 'ส่งมอบรถยนต์',
+            'icon'      => 'fas fa-fw fa-file',
+            'route'       => 'quotation.index',
+        ],
+        [
+            'text'      => 'ติดตามหลังการขาย',
             'icon'      => 'fas fa-fw fa-file',
             'route'       => 'quotation.index',
         ],

@@ -199,7 +199,7 @@
             });
 
             function modaledit(id){
-                console.log(id)
+                // console.log(id)
                 $.ajax({
                     type: "get",
                     url: "{{ url('admin/car/stock') }}/" + id,

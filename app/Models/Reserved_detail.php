@@ -9,6 +9,8 @@ class Reserved_detail extends Model
 {
     use HasFactory;
 
+    protected $table = "reserved_detail";
+
     protected $fillable = [
         'reserved_id',
         'condition',
@@ -34,4 +36,12 @@ class Reserved_detail extends Model
         'accessories',
         'accessories_buy',
     ];
+
+    public function reserved(){
+        return $this->belongsTo(Reserved::class, 'reserved_id', 'id');
+    }
+
+    public function car_gift(){
+        return $this->belongsToMany(Car_gift::class,'reserved_has_accessories','reserved_detail_id','accessories_id');
+    }
 }

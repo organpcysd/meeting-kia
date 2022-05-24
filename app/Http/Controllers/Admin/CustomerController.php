@@ -51,7 +51,7 @@ class CustomerController extends Controller
                     $status = '<h5><span class="badge badge-secondary">'. $data['status'] .'</span></h5>';
                 }elseif($data['status'] == 'traffic'){
                     $status = '<h5><span class="badge badge-primary">'. $data['status'] .'</span></h5>';
-                }elseif($data['status'] == 'quatation'){
+                }elseif($data['status'] == 'quotation'){
                     $status = '<h5><span class="badge badge-info">'. $data['status'] .'</span></h5>';
                 }elseif($data['status'] == 'booked'){
                     $status = '<h5><span class="badge badge-warning text-white">'. $data['status'] .'</span></h5>';

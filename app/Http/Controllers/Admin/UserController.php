@@ -6,15 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
-
 use App\Models\User;
 use App\Models\User_prefix;
 use App\Models\User_position;
 use App\Models\User_has_position;
-
 use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -25,15 +24,18 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        dd(Auth::user());
-
         if($request->ajax()){
             $data = User::all();
             return DataTables::make($data)
                 ->addIndexColumn()
                 ->addColumn('btn',function ($data){
-                    $btn = '<a class="btn btn-warning" href="'.route('user.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
-                            <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                    if(Auth::user()->id == $data['id']){
+                        $btn = '<a class="btn btn-warning" href="'.route('user.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
+                                <button class="btn btn-danger" disabled><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                    }else{
+                        $btn = '<a class="btn btn-warning" href="'.route('user.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
+                                <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                    }
                     return $btn;
                 })
                 ->addColumn('fullname',function($data){
@@ -82,17 +84,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'fname'=>'required',
-            'lname'=>'required',
-            'nickname'=>'required',
-            'born'=>'required',
-            'phone'=>'required',
-            'password' => 'required',
-            'email' => 'required|unique:users,email',
-        ],[
-            'email.unique' => "อีเมลนี้ถูกใช้งานแล้ว",
-        ]);
+        // $request->validate([
+        //     'fname'=>'required',
+        //     'lname'=>'required',
+        //     'nickname'=>'required',
+        //     'born'=>'required',
+        //     'phone'=>'required',
+        //     'password' => 'required',
+        //     'email' => 'required|unique:users,email',
+        // ],[
+        //     'email.unique' => "อีเมลนี้ถูกใช้งานแล้ว",
+        // ]);
 
         $users = new User();
         $users->user_prefix_id = $request->user_prefix;
@@ -111,6 +113,16 @@ class UserController extends Controller
         if($users->save()){
             $users->user_position()->attach($request->position);
             $users->assignRole($request->role);
+
+
+            if($request->file('imgs')){
+                // dd($request->file('imgs'));
+                $getImage = $request->file('imgs');
+                $newname = time().'.'.$getImage->extension();
+                Storage::putFileAs('public', $getImage, $newname);
+                $users->addMedia(storage_path('app\public\\').$newname)->toMediaCollection('user');
+            }
+
             Alert::success('เพิ่มข้อมูลสำเร็จ');
             return redirect()->route('user.index');
         }
@@ -195,6 +207,21 @@ class UserController extends Controller
             $users->user_position()->sync($request->position);
             $users->removeRole($users->roles()->get()[0]->name);
             $users->assignRole($request->role);
+
+            if($request->file('imgs')){
+                $medias = $users->getMedia('user');
+                if(count($medias) > 0){
+                    foreach ($medias as $media) {
+                        $media->delete();
+                    }
+                }
+
+                $getImage = $request->file('imgs');
+                $newname = time().'.'.$getImage->extension();
+                Storage::putFileAs('public', $getImage, $newname);
+                $users->addMedia(storage_path('app\public\\').$newname)->toMediaCollection('user');
+            }
+
             Alert::success('บันทึกข้อมูล');
             return redirect()->route('user.index');
         }

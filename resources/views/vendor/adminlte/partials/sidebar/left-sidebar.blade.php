@@ -21,15 +21,26 @@
                 @endif>
 
                 {{-- Profiles --}}
-                @if(config('adminlte.usermenu_image'))
-                    <div class="col text-center">
-                        <img src="{{ Auth::user()->adminlte_image() }}" {{-- {{ Auth::user()->adminlte_image() }} --}}
-                        class="img-circle elevation-2" width="50">
-                @endif
-                    <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }} @if(!config('adminlte.usermenu_image')) mt-0 @endif">
-                        {{ Auth::user()->f_name }} {{ Auth::user()->l_name }}
-                    </span>
+                <div class="row mt-2 mb-2">
+                    @if(config('adminlte.usermenu_image'))
+                        <div class="ml-1 col-sm-3 text-left">
+                            <img src="@if(Auth::user()->getFirstMediaUrl('user')) {{asset(Auth::user()->getFirstMediaUrl('user'))}} @else {{asset('image/no-image.jpg')}} @endif" {{-- {{ Auth::user()->adminlte_image() }} --}}
+                            class="img-circle elevation-2" width="50" height="50">
+                        </div>
+                    @endif
+                    <div class="col-sm-8">
+                        <div class="brand-text font-weight-bold {{ config('adminlte.classes_brand_text') }} @if(!config('adminlte.usermenu_image')) mt-0 @endif">
+                            {{ Auth::user()->f_name }} {{ Auth::user()->l_name }}
+                        </div>
+                        <div class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }} @if(!config('adminlte.usermenu_image')) mt-0 @endif">
+                            <i class="fa fa-fw fa-circle text-success" style="font-size: 10px;"></i> {{ Auth::user()->roles()->get()[0]->name; }}
+                        </div>
                     </div>
+
+                </div>
+
+
+
 
                 {{-- Configured sidebar links --}}
                 @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item')

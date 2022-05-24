@@ -168,13 +168,13 @@
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" name="term_credit" id="term_credit" value="{{ $quotation->quotation_detail->term_credit }}">
                                                     <option value="1" selected>- เลือกจำนวนงวด -</option>
-                                                    <option value="12">12</option>
-                                                    <option value="24">24</option>
-                                                    <option value="36">36</option>
-                                                    <option value="48">48</option>
-                                                    <option value="60">60</option>
-                                                    <option value="72">72</option>
-                                                    <option value="84">84</option>
+                                                    <option @if($quotation->quotation_detail->term_credit === "12") selected @endif value="12">12</option>
+                                                    <option @if($quotation->quotation_detail->term_credit === "24") selected @endif value="24">24</option>
+                                                    <option @if($quotation->quotation_detail->term_credit === "36") selected @endif value="36">36</option>
+                                                    <option @if($quotation->quotation_detail->term_credit === "48") selected @endif value="48">48</option>
+                                                    <option @if($quotation->quotation_detail->term_credit === "60") selected @endif value="60">60</option>
+                                                    <option @if($quotation->quotation_detail->term_credit === "72") selected @endif value="72">72</option>
+                                                    <option @if($quotation->quotation_detail->term_credit === "84") selected @endif value="84">84</option>
                                                 </select>
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">เดือน</div>
@@ -369,6 +369,17 @@
                 cal()
             }
 
+            let val = $("#condition").val();
+            if (val == "cash") {
+                let ele = document.getElementById("cal");
+                ele.style.display = "none";
+                cal()
+            }else{
+                let ele = document.getElementById("cal");
+                ele.style.display = "";
+                cal()
+            }
+
         });
 
         $('#car').on('change',function(){
@@ -498,7 +509,7 @@
             var payment_down = parseInt($("#payment_down").val()); //ดาวน์
             var payment_down_discount = parseInt($("#payment_down_discount").val()); //ส่วนลดเงินดาวน์
             var term_credit = parseInt($("#term_credit").val()); //ระยะเวลาผ่อนชำระ (เดือน) default = 1
-            var interest = parseInt($("#interest").val()); //อัตราดอกเบี้ยต่อปี
+            var interest = parseFloat($("#interest").val()); //อัตราดอกเบี้ยต่อปี
 
             var deposit_roll = parseInt($("#deposit_roll").val()); //มัดจำป้ายแดง
             var payment_decorate = parseInt($("#payment_decorate").val()); //ค่าอุปกรณ์แต่งรถยนต์

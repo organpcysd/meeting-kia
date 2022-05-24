@@ -24,9 +24,9 @@ class Reserved extends Migration
             $table->string('place_send')->nullable()->comment('สถานที่จัดส่ง');
             $table->date('estimate_send')->nullable()->comment('ประมาณการส่งมอบ');
             $table->string('status_reserved')->comment('สถานะการจองรถยนต์');
-            $table->string('payment_by')->comment('วิธีการชำระเงิน');
-            $table->string('payment_bank')->comment('ธนาคาร');
-            $table->string('payment_no')->comment('เลขที่');
+            $table->string('payment_by')->nullable()->comment('วิธีการชำระเงิน');
+            $table->string('payment_bank')->nullable()->comment('ธนาคาร');
+            $table->string('payment_no')->nullable()->comment('เลขที่');
             $table->date('reserved_date')->nullable()->comment('วันที่จอง');
             $table->timestamps();
 
@@ -41,7 +41,7 @@ class Reserved extends Migration
             $table->id();
             $table->UnsignedBigInteger('reserved_id')->comment('จองรถยนต์');
             $table->string('condition')->comment('เงื่อนไข');
-            $table->string('payable')->comment('จำนวนเงินมัดจำ');
+            $table->string('payable')->nullable()->comment('จำนวนเงินมัดจำ');
             $table->string('price_car')->comment('ราคารถยนต์');
             $table->string('payment_discount')->nullable()->comment('ส่วนลดราคารถยนต์');
             $table->string('price_car_net')->nullable()->comment('ราคารถยนต์สุทธิ');
@@ -68,6 +68,17 @@ class Reserved extends Migration
             $table->timestamps();
         });
 
+        Schema::create('reserved_has_accessories', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('reserved_detail_id')->comment('รายละเอียดการจองรถยนต์');
+            $table->unsignedBigInteger('accessories_id')->comment('อุปกรณ์แต่งที่แถม');
+
+            $table->foreign('reserved_detail_id')->references('id')->on('reserved_detail')->onDelete('cascade');
+            $table->foreign('accessories_id')->references('id')->on('car_gift')->onDelete('cascade');
+
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -79,5 +90,6 @@ class Reserved extends Migration
     {
         Schema::dropIfExists('reserved');
         Schema::dropIfExists('reserved_detail');
+        Schema::dropIfExists('reserved_has_accessories');
     }
 }

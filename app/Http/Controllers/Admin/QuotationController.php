@@ -37,7 +37,7 @@ class QuotationController extends Controller
                 return $nickname;
             })
             ->addColumn('user_name',function($data){
-                $user_name = $data->user->f_name;
+                $user_name = $data->user->f_name . ' ' . $data->user->l_name;
                 return $user_name;
             })
             ->addColumn('created_at',function($data){
@@ -62,7 +62,7 @@ class QuotationController extends Controller
      */
     public function create()
     {
-        $customers = Customer::all();
+        $customers = Customer::whereIn('status',['pending','traffic','quotation'])->get();
         $users = User::all();
         $cars = Car::all();
         $accessories = Car_gift::all();
@@ -153,7 +153,7 @@ class QuotationController extends Controller
      */
     public function edit(Quotation $quotation)
     {
-        $customers = Customer::all();
+        $customers = Customer::whereIn('status',['pending','traffic','quotation'])->get();
         $users = User::all();
         $cars = Car::all();
         $accessories = Car_gift::all();

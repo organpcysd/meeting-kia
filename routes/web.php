@@ -16,6 +16,10 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/foo', function () {
+    Artisan::call('storage:link');
+});
+
 // Auth::routes();
 Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginform']);
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class,'login'])->name('login');
@@ -70,6 +74,10 @@ Route::prefix('admin')->group(function(){
             Route::post('getcarcolor',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarcolors'])->name('traffic.getcarcolor');
 
         });
+
+        Route::resource('/reserved', App\Http\Controllers\Admin\ReservedController::class);
+        Route::get('/reserved/quotation/{quotation}',[App\Http\Controllers\Admin\ReservedController::class,'getDataQuotation'])->name('reserved.quotation');
+
 
     });
 });

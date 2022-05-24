@@ -26,7 +26,7 @@
                 </div>
                 <div class="card-body">
                     <button class="btn @if($customer->status === 'traffic') btn-primary @else btn-outline-primary @endif" data-id="traffic" type="button" id="changestatus">Traffic</button>
-                    <button class="btn @if($customer->status === 'quatation') btn-primary @else btn-outline-primary @endif" data-id="quatation" type="button" id="changestatus">Quatation</button>
+                    <button class="btn @if($customer->status === 'quotation') btn-primary @else btn-outline-primary @endif" data-id="quotation" type="button" id="changestatus">Quotation</button>
                     <button class="btn @if($customer->status === 'booked') btn-primary @else btn-outline-primary @endif" data-id="booked" type="button" id="changestatus">Booked</button>
                     <button class="btn @if($customer->status === 'success') btn-primary @else btn-outline-primary @endif" data-id="success" type="button" id="changestatus">Success</button>
                     <button class="btn @if($customer->status === 'canceled') btn-primary @else btn-outline-primary @endif" data-id="canceled" type="button" id="changestatus">Canceled</button>

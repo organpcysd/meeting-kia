@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@php $pagename = 'เพิ่มใบเสนอราคา'; @endphp
+@php $pagename = 'เพิ่มการจองรถยนต์'; @endphp
 @section('content')
     <div class="contrainer p-4">
         <div class="row">
@@ -7,7 +7,7 @@
                 <ol class="breadcrumb" style="background-color: transparent;">
                     <li class="breadcrumb-item"><a href="{{ url('admin') }}" class="text-info"><i
                                 class="fa fa-home fa-fw" aria-hidden="true"></i> หน้าแรก</a></li>
-                    <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">รายการใบเสนอราคา</a>
+                    <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">ลูกค้าจองรถยนต์</a>
                     </li>
                     <li class="breadcrumb-item active">{{ $pagename }}</li>
                 </ol>
@@ -20,13 +20,13 @@
             </div>
         </div>
 
-        <form action="{{ route('quotation.store') }}" method="post" id="formsubmit">
+        <form action="{{ route('reserved.store') }}" method="post" id="formsubmit">
             @csrf
             <div class="row">
                 <div class="col-lg-5 col-md-12 col-sm-5">
                     <div class="card card-info">
                         <div class="card-header">
-                            รายละเอียดใบเสนอราคา
+                            เกี่ยวกับรถยนต์
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
@@ -37,13 +37,27 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">หมายเลขใบเสนอราคา</label>
+                                        <div class="col-sm-8">
+                                            <select class="sel2 form-control" name="quotation" id="quotation">
+                                                    <option value="" selected disabled>- ค้นหาหมายเลขใบเสนอราคา -</option>
+                                                @foreach($quotations as $item)
+                                                    <option value="{{$item->id}}">{{$item->serial_number . ' : ' . $item->customer->customer_prefix->title . ' ' . $item->customer->f_name . ' ' . $item->customer->l_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <hr/>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ลูกค้า</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="customer" id="customer">
-                                                    <option value="" selected disabled>- ค้นหาลูกค้า -</option>
-                                                @foreach($customers as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ')'}}</option>
-                                                @endforeach
+                                                {{-- <option value="" selected disabled>- ค้นหาลูกค้า -</option> --}}
+                                                {{-- @foreach($customers as $item)
+                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                @endforeach --}}
                                             </select>
                                         </div>
                                     </div>
@@ -52,10 +66,10 @@
                                         <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="user" id="user">
-                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
+                                                {{-- <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
                                                 @foreach($users as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ')'}}</option>
-                                                @endforeach
+                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                @endforeach --}}
                                             </select>
                                         </div>
                                     </div>
@@ -64,10 +78,10 @@
                                         <label class="col-sm-4 col-form-label">ผู้มาติดต่อ</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="contact" id="contact">
-                                                <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
+                                                {{-- <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
                                                 @foreach($customers as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ')'}}</option>
-                                                @endforeach
+                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                @endforeach --}}
                                             </select>
                                         </div>
                                     </div>
@@ -75,10 +89,10 @@
                                         <label class="col-sm-4 col-form-label">รถยนต์</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="car" id="car">
-                                                <option value="" selected disabled>- ค้นหารถยนต์ -</option>
+                                                {{-- <option value="" selected disabled>- ค้นหารถยนต์ -</option>
                                                 @foreach($cars as $item)
                                                     <option value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
-                                                @endforeach
+                                                @endforeach --}}
                                             </select>
                                         </div>
                                     </div>
@@ -97,8 +111,61 @@
                                                 name="estimate_send">
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">วันที่จอง</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control" id="reserved_date"
+                                                name="reserved_date">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card card-info">
+                        <div class="card-header">
+                            การวางเงินมัดจำ
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">จำนวนเงิน</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="payable" name="payable">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">วิธีการชำระเงิน</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="payment_by" id="payment_by">
+                                        <option value="" selected disabled>- เลือกวิธีการชำระเงิน -</option>
+                                        <option value="cash">เงินสด</option>
+                                        <option value="credit">บัตรเครดิต</option>
+                                        <option value="cheque">เช็ค</option>
+                                        <option value="tranfer">โอนผ่าน Banking</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="payment_condition">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">ธนาคาร</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="payment_bank" name="payment_bank">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">เลขที่</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="payment_no" name="payment_no">
+                                    </div>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -252,6 +319,13 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">หักค่ามัดจำ</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="payable_show" name="payable_show" readonly>
+                                </div>
+                            </div>
+
                             <hr/>
 
                             <div class="form-group row">
@@ -284,17 +358,24 @@
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม</label>
                                 <div class="col-sm-9">
                                     <select class="sel2 form-control" name="gift[]" id="gift" multiple>
-                                        @foreach($accessories as $item)
+                                        {{-- @foreach($accessories as $item)
                                             <option value="{{$item->id}}">{{$item->gift_name}}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">อุปกรณ์แต่งอื่นๆ</label>
+                                <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม เพิ่มเติม</label>
                                 <div class="col-sm-9">
                                     <textarea type="text" class="form-control" id="accessories" name="accessories"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่ซื้อ</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="accessories_buy" name="accessories_buy"></textarea>
                                 </div>
                             </div>
 
@@ -344,23 +425,188 @@
 
             select_car = $("#car").val();
             if(select_car === null) {
-
-                $('#payment_detail').fadeTo(0, 0.4);
-
-                document.getElementById("condition").disabled = true;
-                document.getElementById("payment_discount").disabled = true;
-                document.getElementById("deposit_roll").disabled = true;
-                document.getElementById("payment_decorate").disabled = true;
-                document.getElementById("payment_insurance").disabled = true;
-                document.getElementById("payment_other").disabled = true;
-                document.getElementById("car_change").disabled = true;
-                document.getElementById("payment_car_turn").disabled = true;
-                document.getElementById("gift").disabled = true;
-                document.getElementById("accessories").disabled = true;
-                document.getElementById("backbtn").disabled = true;
-                $('#savebtn').attr('onclick','return false');
+                disable_payment_detail();
             }
 
+            let payment = document.getElementById("payment_condition");
+            payment.style.display = "none";
+
+            $('#payment_by').change(function(){
+                let payment_by = $('#payment_by').val();
+                if(payment_by != 'cash'){
+                    payment.style.display = "";
+                }else{
+                    payment.style.display = "none";
+                }
+            });
+
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/reserved/quotation') }}/1",
+                success: function (response) {
+
+                    let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
+                    let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
+                    let contact_option = '<option selected disabled>- ค้นหาผู้มาติดต่อ -</option>';
+                    let car_option = '<option selected disabled>- ค้นหารถยนต์ -</option>';
+                    let accessories_option = '';
+
+                    response.customers.forEach(customers => {
+                        customer_option += '<option value="' + customers.id + '">' + customers.f_name + ' ' + customers.l_name + ' (' + customers.phone + ')' + '</option>';
+                    });
+
+                    response.users.forEach(users => {
+                        user_option += '<option value="' + users.id + '">' + users.f_name + ' ' + users.l_name + ' (' + users.phone + ')' + '</option>';
+                    });
+
+                    response.customers.forEach(contacts => {
+                        contact_option += '<option value="' + contacts.id + '">' + contacts.f_name + ' ' + contacts.l_name + ' (' + contacts.phone + ')' + '</option>';
+                    });
+
+                    response.cars.forEach(cars => {
+                        // console.log(cars.car_model.model_name);
+                        car_option += '<option value="' + cars.id + '">' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
+                    });
+
+                    response.car_gifts.forEach(gift => {
+                        // console.log(cars.car_model.model_name);
+                        accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
+                    });
+
+                    $('#customer').html(customer_option);
+                    $('#user').html(user_option);
+                    $('#contact').html(contact_option);
+                    $('#car').html(car_option);
+                    $('#gift').html(accessories_option);
+
+                }
+            });
+
+        });
+
+        function disable_payment_detail(){
+            $('#payment_detail').fadeTo(0, 0.4);
+
+            document.getElementById("condition").disabled = true;
+            document.getElementById("payment_discount").disabled = true;
+            document.getElementById("deposit_roll").disabled = true;
+            document.getElementById("payment_decorate").disabled = true;
+            document.getElementById("payment_insurance").disabled = true;
+            document.getElementById("payment_other").disabled = true;
+            document.getElementById("car_change").disabled = true;
+            document.getElementById("payment_car_turn").disabled = true;
+            document.getElementById("gift").disabled = true;
+            document.getElementById("accessories").disabled = true;
+            document.getElementById("accessories_buy").disabled = true;
+            document.getElementById("backbtn").disabled = true;
+            $('#savebtn').attr('onclick','return false');
+        }
+
+        function enable_payment_detail(){
+            $('#payment_detail').fadeTo(0, 1);
+
+            document.getElementById("condition").disabled = false;
+            document.getElementById("payment_discount").disabled = false;
+            document.getElementById("deposit_roll").disabled = false;
+            document.getElementById("payment_decorate").disabled = false;
+            document.getElementById("payment_insurance").disabled = false;
+            document.getElementById("payment_other").disabled = false;
+            document.getElementById("car_change").disabled = false;
+            document.getElementById("payment_car_turn").disabled = false;
+            document.getElementById("gift").disabled = false;
+            document.getElementById("accessories").disabled = false;
+            document.getElementById("accessories_buy").disabled = false;
+            document.getElementById("backbtn").disabled = false;
+            $('#savebtn').attr('onclick','formsubmit()');
+        }
+
+        //ดึงข้อมูลตอนเลือกใบเสนอราคา
+        $('#quotation').on('change',function(){
+            let id = $('#quotation').val();
+
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/reserved/quotation') }}/" + id,
+                success: function (response) {
+
+                    let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
+                    let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
+                    let contact_option = '<option selected disabled>- ค้นหาผู้มาติดต่อ -</option>';
+                    let car_option = '<option selected disabled>- ค้นหารถยนต์ -</option>';
+                    let accessories_option = '';
+
+                    response.customers.forEach(customers =>{
+                        let selected = (customers.id === response.quotation.customer_id ? ' selected' : '');
+                        customer_option += '<option value="' + customers.id + '"' + selected +'>' + customers.f_name + ' ' + customers.l_name + ' (' + customers.phone + ')' + '</option>';
+                    });
+
+                    response.users.forEach(users =>{
+                        let selected = (users.id === response.quotation.user_id ? ' selected' : '');
+                        user_option += '<option value="' + users.id + '"' + selected +'>' + users.f_name + ' ' + users.l_name + ' (' + users.phone + ')' + '</option>';
+                    });
+
+                    response.customers.forEach(contacts =>{
+                        let selected = (contacts.id === response.quotation.contact_id ? ' selected' : '');
+                        contact_option += '<option value="' + contacts.id + '"' + selected +'>' + contacts.f_name + ' ' + contacts.l_name + ' (' + contacts.phone + ')' + '</option>';
+                    });
+
+                    response.cars.forEach(cars =>{
+                        let selected = (cars.id === response.quotation.car_id ? ' selected' : '');
+                        car_option += '<option value="' + cars.id + '"' + selected +'>' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
+                    });
+
+                    response.car_gifts.map((gift,key) =>{
+                        let organ = 0;
+                        for(let i=0;i<response.accessories.length;i++){
+                            if(gift.id === response.accessories[i].id){
+                                organ = 1;
+                                accessories_option += '<option value="' + gift.id + '" selected>' + gift.gift_name + '</option>';
+                            }
+                        }
+                            if(organ != 1){
+                                accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
+                            }
+                    });
+
+                    $('#user').html(user_option);
+                    $('#customer').html(customer_option);
+                    $('#contact').html(contact_option);
+                    $('#car').html(car_option);
+                    $('#gift').html(accessories_option);
+
+                    $('#place_send').val(response.quotation.place_send);
+                    $('#estimate_send').val(response.quotation.estimate_send);
+                    $('#condition').val(response.quotation_detail.condition);
+                    if ($('#condition').val() == "cash") {
+                        let ele = document.getElementById("cal");
+                        ele.style.display = "none";
+                    }else{
+                        let ele = document.getElementById("cal");
+                        ele.style.display = "";
+                    }
+
+                    $('#price_car').val(response.quotation_detail.price_car);
+                    $('#payment_discount').val(response.quotation_detail.payment_discount);
+                    $('#price_car_net').val(response.quotation_detail.price_car_net);
+                    $('#payment_down').val(response.quotation_detail.payment_down);
+                    $('#payment_down_discount').val(response.quotation_detail.payment_down_discount);
+                    $('#term_credit').val(response.quotation_detail.term_credit);
+                    $('#interest').val(response.quotation_detail.interest);
+                    $('#deposit_roll').val(response.quotation_detail.deposit_roll);
+                    $('#payment_decorate').val(response.quotation_detail.payment_decorate);
+                    $('#payment_insurance').val(response.quotation_detail.payment_insurance);
+                    $('#payment_other').val(response.quotation_detail.payment_other);
+                    $('#payment_car_turn').val(response.quotation_detail.payment_car_turn);
+                    $('#hire_purchase').val(response.quotation_detail.hire_purchase);
+                    $('#term_payment').val(response.quotation_detail.term_payment);
+                    $('#subtotal').val(response.quotation_detail.subtotal);
+
+                    cal();
+
+                }
+            });
+
+            enable_payment_detail();
         });
 
         $('#car').on('change',function(){
@@ -379,21 +625,7 @@
 
             select_car = $("#car").val();
             if(select_car != null) {
-
-                $('#payment_detail').fadeTo(0, 1);
-                document.getElementById("condition").disabled = false;
-                document.getElementById("payment_discount").disabled = false;
-                document.getElementById("deposit_roll").disabled = false;
-                document.getElementById("payment_decorate").disabled = false;
-                document.getElementById("payment_insurance").disabled = false;
-                document.getElementById("payment_other").disabled = false;
-                document.getElementById("car_change").disabled = false;
-                document.getElementById("payment_car_turn").disabled = false;
-                document.getElementById("gift").disabled = false;
-                document.getElementById("accessories").disabled = false;
-                document.getElementById("backbtn").disabled = false;
-                $('#savebtn').attr('onclick','formsubmit()');
-
+                enable_payment_detail();
             }
 
         });
@@ -442,6 +674,11 @@
             cal()
         });
 
+        $('#payable').on('keyup',function(){
+            var payable = parseInt($("#payable").val());
+            $('#payable_show').val(payable);
+            cal()
+        });
         //----- credit -----//
 
         $('#payment_down').on('keyup',function() {
@@ -483,6 +720,7 @@
         });
 
         function cal() {
+            var payable = parseInt($('#payable').val()); //จำนวนเงินมัดจำ
             var price_car = parseInt($("#price_car").val()); //ราคารถยนต์
             var payment_discount = parseInt($("#payment_discount").val()); //ส่วนลดราคารถยนต์
 
@@ -500,6 +738,10 @@
 
             if(isNaN(payment_discount)) {
                 payment_discount = 0;
+            }
+
+            if(isNaN(payable)) {
+                payable = 0;
             }
 
             //----- credit -----//
@@ -540,7 +782,7 @@
 
             condition = $("#condition").val();
             if (condition === "cash") {
-                let subtotal = ( price_car - payment_discount ) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn
+                let subtotal = ( price_car - payment_discount ) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
                 $("#subtotal").val(subtotal);
             } else if ( condition === "credit") {
                 hire = (price_car - payment_discount) - payment_down;
@@ -551,7 +793,7 @@
                 $("#hire_purchase").val(hire); //ยอดจัดเช่าซื้อ
                 $("#term_payment").val(net_payment); //ค่างวดต่อเดือน
 
-                let subtotal = (payment_down - payment_down_discount) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn
+                let subtotal = (payment_down - payment_down_discount) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
                 $("#subtotal").val(subtotal);
             }
 

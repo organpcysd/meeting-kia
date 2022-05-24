@@ -94,7 +94,7 @@
                             <label class="col-sm-4 col-form-label">สถานที่</label>
                             <div class="col-sm-8">
                                 <select class="sel2 form-control" name="location" id="locations">
-                                    <option value="" selected disabled>- ค้นหาแหล่งข้อมูลลูกค้า -</option>
+                                    <option value="" selected disabled>- ค้นหาสถานที่ -</option>
                                     <option value="โชว์รูม">โชว์รูม</option>
                                     <option value="เดอะมอลล์โคราช">บูธเดอะมอลล์โคราช</option>
                                     <option value="เซ็นทรัลโคราช">เซ็นทรัลโคราช</option>
@@ -103,6 +103,19 @@
                                 <div id="location_detail" class="mt-2">
                                     <small class="text-cyan">หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "อื่นๆ" เพื่อกรอกข้อมูล</small>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">กลุ่มของลูกค้า</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="target" id="target">
+                                    <option value="" selected disabled>- เลือกกลุ่มของลูกค้า -</option>
+                                    <option value="single">คนเดียว</option>
+                                    <option value="both">สามี-ภรรยา</option>
+                                    <option value="family">ครอบครัว</option>
+                                    <option friend="friend">เพื่อน</option>
+                                </select>
                             </div>
                         </div>
 
@@ -128,7 +141,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">แนวโน้ม</label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="dicision" id="dicision">
+                                <select class="form-control" name="tenor" id="tenor">
                                     <option value="" selected disabled>- เลือกแนวโน้ม -</option>
                                     <option value="high">สูง</option>
                                     <option value="medium">ปานกลาง</option>

@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <form action="{{ route('user.update',['user' => $user->id]) }}" method="post" id='formsubmit' name="formsubmit" onsubmit="return confirmpass()">
+    <form action="{{ route('user.update',['user' => $user->id]) }}" method="post" id='formsubmit' name="formsubmit" onsubmit="return confirmpass()" enctype="multipart/form-data">
         @method('PUT')
         @csrf
         <div class="row">
@@ -34,11 +34,11 @@
                 <div class="card card-info card-outline">
                     <div class="card-body">
                         <div class="text-center">
-                            <img class="rounded-circle" src="{{ asset('image/no-image.jpg') }}" alt="User profile picture" width="150" height="150">
+                            <img class="rounded-circle" id="showimg" src="@if($user->getFirstMediaUrl('user')) {{asset($user->getFirstMediaUrl('user'))}} @else {{asset('image/no-image.jpg')}} @endif" alt="User profile picture" width="150" height="150">
                         </div>
 
                         <div class="input-group mt-3">
-                            <input name="logologin" type="file" class="custom-file-input" id="imgInp2">
+                            <input name="imgs" type="file" class="custom-file-input" id="imgInp">
                             <label class="custom-file-label" for="imgInp">เพิ่มรูปภาพ</label>
                         </div>
                     </div>
@@ -155,8 +155,6 @@
                     <button class='btn btn-info'><i class="fas fa-save mr-2"></i>บันทึก</button>
                 </div>
             </div>
-
-
             </div>
         </div>
     </form>
@@ -166,6 +164,13 @@
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@11"])
 @push('js')
     <script>
+        imgInp.onchange = evt => {
+                const [file] = imgInp.files
+                if (file) {
+                    showimg.src = URL.createObjectURL(file)
+                }
+        }
+
         function formsubmit() {
             $('#formsubmit').submit();
         }

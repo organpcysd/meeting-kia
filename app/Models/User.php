@@ -8,11 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\HasMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia;
 
@@ -56,13 +55,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function activestatus(){
+        return $this->status == 1;
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('user');
-    }
-
-    public function activestatus(){
-        return $this->status == 1;
     }
 
     public function user_prefix()

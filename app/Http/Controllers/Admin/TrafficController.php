@@ -68,7 +68,29 @@ class TrafficController extends Controller
      */
     public function store(Request $request)
     {
+
         dd($request);
+
+        $traffic = new Traffic();
+
+        if($request->dicision_input != null){
+            $traffic->dicision = $request->dicision_input;
+        }
+
+        if($request->location_input != null){
+            $traffic->location = $request->dicision_input;
+        }
+
+        $traffic->customer_id = $request->customer;
+        $traffic->user_id = $request->user;
+        $traffic->dicision = $request->dicision;
+        $traffic->source_id = $request->traffic_source;
+        $traffic->location = $request->location;
+        $traffic->target = $request->target;
+        $traffic->contact_result = $request->contact_result;
+        $traffic->channel_id = $request->traffic_channel;
+        $traffic->tenor = $request->tenor;
+
     }
 
     /**
