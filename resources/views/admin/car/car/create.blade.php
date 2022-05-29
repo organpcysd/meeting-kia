@@ -1,5 +1,4 @@
 @extends('adminlte::page')
-@section('title', setting('title'). ' | เพิ่มข้อมูลรถยนต์')
 @php $pagename = 'เพิ่มข้อมูลรถยนต์'; @endphp
 @section('content')
 <div class="contrainer p-4">
@@ -7,7 +6,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb" style="background-color: transparent;">
                 <li class="breadcrumb-item"><a href="{{url('admin')}}" class="text-info"><i class="fa fa-home fa-fw" aria-hidden="true"></i>  หน้าแรก</a></li>
-                <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">จัดการรถยนต์</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="history.back()" class="text-info">จัดการโมเดลรถ</a></li>
                 <li class="breadcrumb-item active">{{ $pagename }}</li>
             </ol>
         </nav>

@@ -128,7 +128,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="float-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-arrow-left mr-2"></i>ยกเลิก</button>
                         <button type="submit" class="btn btn-info"><i class="fas fa-save mr-2"></i>บันทึก</button>
                     </div>
                 </div>
@@ -147,21 +147,21 @@
 
                 <div class="modal-body">
 
-                    <input type="hidden" id = "car_stock_id_edit" name = "car_stock_id_edit">
-                        <div class="form-group row">
-                            <label for="message-text" class="col-sm-4 col-form-label">หมายเลข chassis รถยนต์</label>
-                            <input type="text" class="col-sm-8 form-control" id="number_chassis_edit" name="number_chassis">
-                        </div>
+                    <input type="hidden" id = "car_stock_id_edit" name = "car_stock_id" value="">
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">หมายเลข chassis รถยนต์</label>
+                        <textarea class="form-control" id="number_chassis_edit" name="number_chassis"></textarea>
+                    </div>
 
-                        <div class="form-group row">
-                            <label for="message-text" class="col-sm-4 col-form-label">หมายเลขเครื่อง</label>
-                            <input type="text" class="col-sm-8 form-control" id="number_engine_edit" name="number_engine">
-                        </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">หมายเลขเครื่อง</label>
+                        <textarea class="form-control" id="number_engine_edit" name="number_engine"></textarea>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <input type="submit" onclick="updatecarstock()" class="btn btn-info savebtn" value="บันทึก">
+                    <input type="submit" onclick="updatecarstock()" class="btn btn-success savebtn" value="บันทึก">
                 </div>
             </div>
         </div>
@@ -204,9 +204,6 @@
                     type: "get",
                     url: "{{ url('admin/car/stock') }}/" + id,
                     success: function (response) {
-
-                        // console.log(response);
-
                         $("#car_stock_id_edit").val(response.id);
                         $("#number_chassis_edit").val(response.number_chassis);
                         $("#number_engine_edit").val(response.number_engine);
@@ -218,14 +215,11 @@
 
             function updatecarstock(){
                 id = $('#car_stock_id_edit').val();
-                car_id = $('#car_id').val();
                 number_chassis = $('#number_chassis_edit').val();
                 number_engine = $('#number_engine_edit').val();
 
-                console.log(number_chassis)
                 var data = {
                     _token : CSRF_TOKEN,
-                    car_id : car_id,
                     number_chassis_edit : number_chassis,
                     number_engine_edit : number_engine,
                 }

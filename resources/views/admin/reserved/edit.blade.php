@@ -78,10 +78,10 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ผู้มาติดต่อ</label>
                                         <div class="col-sm-8">
-                                            <select class="sel2 form-control" name="contact" id="contact">
-                                                <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
-                                                @foreach($customers as $item)
-                                                    <option @if ($reserved->contact_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                            <select class="sel2 form-control" name="car" id="car">
+                                                <option value="" selected disabled>- ค้นหารถยนต์ -</option>
+                                                @foreach($cars as $item)
+                                                    <option @if ($reserved->car_id === $item->id) selected @endif value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
