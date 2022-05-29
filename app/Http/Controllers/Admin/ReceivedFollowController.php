@@ -14,7 +14,7 @@ class ReceivedFollowController extends Controller
      */
     public function index()
     {
-        return view('admin.received.follow.index');
+        return view('admin.received.follow.follow');
     }
 
     /**

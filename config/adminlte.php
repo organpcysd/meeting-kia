@@ -243,13 +243,13 @@ return [
         ],
         [
             'text' => 'รายงานผล',
-            'icon' => 'fas fa-fw fa-home',
+            'icon' => 'fas fa-fw fa-area-chart',
             'url'  => '',
         ],
         ['header' => 'การตั้งค่าผู้ใช้งาน'],
         [
             'text'       => 'จัดการผู้ดูแล',
-            'icon'       => 'fas fa-fw fa-user',
+            'icon'       => 'fas fa-fw fa-users-gear',
             'route'      => 'user.index',
         ],
         ['header' => 'ตั้งค่าทั่วไป'],
@@ -271,17 +271,17 @@ return [
         ],
         [
             'text'      => 'จองรถยนต์',
-            'icon'      => 'fas fa-fw fa-file',
+            'icon'      => 'fas fa-fw fa-book',
             'route'       => 'reserved.index',
         ],
         [
             'text'      => 'ส่งมอบรถยนต์',
-            'icon'      => 'fas fa-fw fa-file',
+            'icon'      => 'fas fa-fw fa-car-side',
             'route'       => 'received.index',
         ],
         [
             'text'      => 'ติดตามหลังการขาย',
-            'icon'      => 'fas fa-fw fa-file',
+            'icon'      => 'fas fa-fw fa-chart-bar',
             'route'       => 'receivedfollow.index',
         ],
         [
@@ -327,30 +327,35 @@ return [
         ],
         ['header' => 'จัดการระบบ'],
         [
+            'text'       => 'คำนำหน้าชื่อ',
+            'icon'       => 'fas fa-fw fa-user-tag',
+            'route'      => 'userprefix.index',
+            'can' => 'manageprefix',
+        ],
+        [
+            'text'       => 'ตำแหน่ง',
+            'icon'       => 'fas fa-fw fa-briefcase',
+            'route'      => 'position.index',
+            'can' => 'manageposition',
+        ],
+        [
+            'text'       => 'บทบาท',
+            'icon'       => 'fas fa-fw fa-user-shield',
+            'route'      => 'role.index',
+            'can' => 'managerole',
+        ],
+        [
+            'text'       => 'สิทธิ์การเข้าถึง',
+            'icon'       => 'fas fa-fw fa-shield',
+            'route'      => 'permission.index',
+            'can' => 'managepermission',
+        ],
+        [
             'text'       => 'ตั้งค่าเว็บไซต์',
             'icon'       => 'fas fa-fw fa-cogs',
             'icon_color' => 'maroon',
-            'route'        => 'setting.index',
-        ],
-        [
-            'text'       => 'จัดการคำนำหน้าชื่อ',
-            'icon'       => 'fas fa-fw fa-user',
-            'route'      => 'userprefix.index',
-        ],
-        [
-            'text'       => 'จัดการตำแหน่ง',
-            'icon'       => 'fas fa-fw fa-user-secret',
-            'route'      => 'position.index',
-        ],
-        [
-            'text'       => 'จัดการบทบาท',
-            'icon'       => 'fas fa-fw fa-users',
-            'route'      => 'role.index',
-        ],
-        [
-            'text'       => 'จัดการสิทธิ์การเข้าถึง',
-            'icon'       => 'fas fa-fw fa-id-card',
-            'route'      => 'permission.index',
+            'route'      => 'setting.index',
+            'can' => 'managewebsite',
         ],
     ],
 
