@@ -54,10 +54,10 @@
                                         <label class="col-sm-4 col-form-label">ลูกค้า</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="customer" id="customer">
-                                                {{-- <option value="" selected disabled>- ค้นหาลูกค้า -</option> --}}
-                                                {{-- @foreach($customers as $item)
+                                                <option value="" selected disabled>- ค้นหาลูกค้า -</option>
+                                                @foreach($customers as $item)
                                                     <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -66,10 +66,10 @@
                                         <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="user" id="user">
-                                                {{-- <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
+                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
                                                 @foreach($users as $item)
                                                     <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -78,10 +78,10 @@
                                         <label class="col-sm-4 col-form-label">ผู้มาติดต่อ</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="contact" id="contact">
-                                                {{-- <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
+                                                <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
                                                 @foreach($customers as $item)
                                                     <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -89,10 +89,10 @@
                                         <label class="col-sm-4 col-form-label">รถยนต์</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="car" id="car">
-                                                {{-- <option value="" selected disabled>- ค้นหารถยนต์ -</option>
+                                                <option value="" selected disabled>- ค้นหารถยนต์ -</option>
                                                 @foreach($cars as $item)
                                                     <option value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -369,9 +369,9 @@
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม</label>
                                 <div class="col-sm-9">
                                     <select class="sel2 form-control" name="gift[]" id="gift" multiple>
-                                        {{-- @foreach($accessories as $item)
+                                        @foreach($accessories as $item)
                                             <option value="{{$item->id}}">{{$item->gift_name}}</option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -451,47 +451,13 @@
                 }
             });
 
-            $.ajax({
-                type: "get",
-                url: "{{ url('admin/reserved/quotation') }}/1",
-                success: function (response) {
-
-                    let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
-                    let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
-                    let contact_option = '<option selected disabled>- ค้นหาผู้มาติดต่อ -</option>';
-                    let car_option = '<option selected disabled>- ค้นหารถยนต์ -</option>';
-                    let accessories_option = '';
-
-                    response.customers.forEach(customers => {
-                        customer_option += '<option value="' + customers.id + '">' + customers.f_name + ' ' + customers.l_name + ' (' + customers.phone + ')' + '</option>';
-                    });
-
-                    response.users.forEach(users => {
-                        user_option += '<option value="' + users.id + '">' + users.f_name + ' ' + users.l_name + ' (' + users.phone + ')' + '</option>';
-                    });
-
-                    response.customers.forEach(contacts => {
-                        contact_option += '<option value="' + contacts.id + '">' + contacts.f_name + ' ' + contacts.l_name + ' (' + contacts.phone + ')' + '</option>';
-                    });
-
-                    response.cars.forEach(cars => {
-                        // console.log(cars.car_model.model_name);
-                        car_option += '<option value="' + cars.id + '">' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
-                    });
-
-                    response.car_gifts.forEach(gift => {
-                        // console.log(cars.car_model.model_name);
-                        accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
-                    });
-
-                    $('#customer').html(customer_option);
-                    $('#user').html(user_option);
-                    $('#contact').html(contact_option);
-                    $('#car').html(car_option);
-                    $('#gift').html(accessories_option);
-
-                }
-            });
+            let car_change = $("#car_change").val();
+            if(car_change == "no") {
+                let ele = document.getElementById("carturn");
+                ele.style.display = "none";
+                $("#payment_car_turn").val('');
+                cal()
+            }
 
         });
 
@@ -595,7 +561,6 @@
                         let ele = document.getElementById("cal");
                         ele.style.display = "";
                     }
-
                     $('#price_car').val(response.quotation_detail.price_car);
                     $('#payment_discount').val(response.quotation_detail.payment_discount);
                     $('#price_car_net').val(response.quotation_detail.price_car_net);
@@ -607,6 +572,13 @@
                     $('#payment_decorate').val(response.quotation_detail.payment_decorate);
                     $('#payment_insurance').val(response.quotation_detail.payment_insurance);
                     $('#payment_other').val(response.quotation_detail.payment_other);
+                    $('#car_change').val(response.quotation_detail.car_change);
+                        if($("#car_change").val() == "no") {
+                            let ele = document.getElementById("carturn");
+                            ele.style.display = "none";
+                            $("#payment_car_turn").val('');
+                            cal()
+                        }
                     $('#payment_car_turn').val(response.quotation_detail.payment_car_turn);
                     $('#hire_purchase').val(response.quotation_detail.hire_purchase);
                     $('#term_payment').val(response.quotation_detail.term_payment);

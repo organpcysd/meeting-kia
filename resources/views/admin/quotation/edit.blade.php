@@ -67,7 +67,7 @@
                                             <select class="sel2 form-control" name="contact" id="contact">
                                                 <option value="" disabled>- ค้นหาผู้มาติดต่อ -</option>
                                                 @foreach($customers as $item)
-                                                    <option @if ($quotation->user_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                    <option @if ($quotation->contact_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
