@@ -611,6 +611,7 @@
                     $('#hire_purchase').val(response.quotation_detail.hire_purchase);
                     $('#term_payment').val(response.quotation_detail.term_payment);
                     $('#subtotal').val(response.quotation_detail.subtotal);
+                    $('#accessories').val(response.quotation_detail.accessories);
 
                     cal();
 

@@ -51,72 +51,61 @@
                                     <hr/>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">ลูกค้า</label>
-                                        <div class="col-sm-8">
-                                            <select class="sel2 form-control" name="customer" id="customer">
-                                                {{-- <option value="" selected disabled>- ค้นหาลูกค้า -</option> --}}
-                                                {{-- @foreach($customers as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="user" id="user">
-                                                {{-- <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
+                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
                                                 @foreach($users as $item)
                                                     <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">ผู้มาติดต่อ</label>
+                                        <label class="col-sm-4 col-form-label">ลูกค้า</label>
                                         <div class="col-sm-8">
-                                            <select class="sel2 form-control" name="contact" id="contact">
-                                                {{-- <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
+                                            <select class="sel2 form-control" name="customer" id="customer">
+                                                <option value="" selected disabled>- ค้นหาลูกค้า -</option>
                                                 @foreach($customers as $item)
                                                     <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">รถยนต์</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="car" id="car">
-                                                {{-- <option value="" selected disabled>- ค้นหารถยนต์ -</option>
+                                                <option value="" selected disabled>- ค้นหารถยนต์ -</option>
                                                 @foreach($cars as $item)
                                                     <option value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">สถานที่จัดส่ง</label>
+                                        <label class="col-sm-4 col-form-label">เลขตัวถัง</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="place_send" name="place_send">
+                                            <select class="sel2 form-control" name="chassis" id="chassis">
+                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">ประมาณการส่งมอบ</label>
+                                        <label class="col-sm-4 col-form-label">เลขตัวเครื่อง</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="estimate_send"
-                                                name="estimate_send">
+                                            <input type="text" class="form-control" id="engine" name="engine" readonly>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">วันที่จอง</label>
+                                        <label class="col-sm-4 col-form-label">วันที่รับรถยนต์</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="reserved_date"
-                                                name="reserved_date">
+                                            <input type="date" class="form-control" id="received_date"
+                                                name="received_date">
                                         </div>
                                     </div>
                                 </div>
@@ -149,23 +138,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div id="payment_condition">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">ธนาคาร</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="payment_bank" name="payment_bank">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">เลขที่</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="payment_no" name="payment_no">
-                                    </div>
-                                </div>
-                            </div>
-
 
                         </div>
                     </div>
@@ -355,27 +327,9 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม</label>
-                                <div class="col-sm-9">
-                                    <select class="sel2 form-control" name="gift[]" id="gift" multiple>
-                                        {{-- @foreach($accessories as $item)
-                                            <option value="{{$item->id}}">{{$item->gift_name}}</option>
-                                        @endforeach --}}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม เพิ่มเติม</label>
                                 <div class="col-sm-9">
                                     <textarea type="text" class="form-control" id="accessories" name="accessories"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่ซื้อ</label>
-                                <div class="col-sm-9">
-                                    <textarea type="text" class="form-control" id="accessories_buy" name="accessories_buy"></textarea>
                                 </div>
                             </div>
 
@@ -428,58 +382,14 @@
                 disable_payment_detail();
             }
 
-            let payment = document.getElementById("payment_condition");
-            payment.style.display = "none";
-
-            $('#payment_by').change(function(){
-                let payment_by = $('#payment_by').val();
-                if(payment_by != 'cash'){
-                    payment.style.display = "";
-                }else{
-                    payment.style.display = "none";
-                }
+            $('#car').change(function(){
+                var id = $('#car').val();
+                getCarStock(id);
             });
 
-            $.ajax({
-                type: "get",
-                url: "{{ url('admin/received/reserved') }}/1",
-                success: function (response) {
-
-                    let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
-                    let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
-                    let contact_option = '<option selected disabled>- ค้นหาผู้มาติดต่อ -</option>';
-                    let car_option = '<option selected disabled>- ค้นหารถยนต์ -</option>';
-                    let accessories_option = '';
-
-                    response.customers.forEach(customers => {
-                        customer_option += '<option value="' + customers.id + '">' + customers.f_name + ' ' + customers.l_name + ' (' + customers.phone + ')' + '</option>';
-                    });
-
-                    response.users.forEach(users => {
-                        user_option += '<option value="' + users.id + '">' + users.f_name + ' ' + users.l_name + ' (' + users.phone + ')' + '</option>';
-                    });
-
-                    response.customers.forEach(contacts => {
-                        contact_option += '<option value="' + contacts.id + '">' + contacts.f_name + ' ' + contacts.l_name + ' (' + contacts.phone + ')' + '</option>';
-                    });
-
-                    response.cars.forEach(cars => {
-                        // console.log(cars.car_model.model_name);
-                        car_option += '<option value="' + cars.id + '">' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
-                    });
-
-                    response.car_gifts.forEach(gift => {
-                        // console.log(cars.car_model.model_name);
-                        accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
-                    });
-
-                    $('#customer').html(customer_option);
-                    $('#user').html(user_option);
-                    $('#contact').html(contact_option);
-                    $('#car').html(car_option);
-                    $('#gift').html(accessories_option);
-
-                }
+            $('#chassis').change(function(){
+                var id = $('#chassis').val();
+                getEngine(id);
             });
 
         });
@@ -495,9 +405,7 @@
             document.getElementById("payment_other").disabled = true;
             document.getElementById("car_change").disabled = true;
             document.getElementById("payment_car_turn").disabled = true;
-            document.getElementById("gift").disabled = true;
             document.getElementById("accessories").disabled = true;
-            document.getElementById("accessories_buy").disabled = true;
             document.getElementById("backbtn").disabled = true;
             $('#savebtn').attr('onclick','return false');
         }
@@ -513,12 +421,42 @@
             document.getElementById("payment_other").disabled = false;
             document.getElementById("car_change").disabled = false;
             document.getElementById("payment_car_turn").disabled = false;
-            document.getElementById("gift").disabled = false;
             document.getElementById("accessories").disabled = false;
-            document.getElementById("accessories_buy").disabled = false;
             document.getElementById("backbtn").disabled = false;
             $('#savebtn').attr('onclick','formsubmit()');
         }
+
+        //ดึง car stock
+        function getCarStock(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/received/getcarstock') }}/" + id,
+                success: function (response) {
+                    var chassis = '';
+                    if(response.carstock.length === 0){
+                        chassis = '<option selected disabled>- ไม่มีรถยนต์ -</option>';
+                    }else{
+                        chassis = '<option selected disabled>- เลือกเลขตัวถังรถยนต์ -</option>';
+                        response.carstock.forEach(carstock =>{
+                            chassis += '<option value="' + carstock.id + '">' + carstock.number_chassis + '</option>';
+                        });
+                    }
+                    $('#chassis').html(chassis);
+                }
+            });
+        }
+
+        //ดึง engine number
+        function getEngine(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/received/getengine') }}/" + id,
+                success: function (response) {
+                    $('#engine').val(response.carstock.number_engine);
+                }
+            });
+        }
+
 
         //ดึงข้อมูลตอนเลือกใบเสนอราคา
         $('#reserved').on('change',function(){
@@ -557,27 +495,15 @@
                         car_option += '<option value="' + cars.id + '"' + selected +'>' + cars.car_model.model_name + ' ' + cars.car_level.level_name + ' ' + cars.car_color.color_name + ' ' + cars.price + ' ' + cars.years + '</option>';
                     });
 
-                    // response.car_gifts.map((gift,key) =>{
-                    //     let organ = 0;
-                    //     for(let i=0;i<response.accessories.length;i++){
-                    //         if(gift.id === response.accessories[i].id){
-                    //             organ = 1;
-                    //             accessories_option += '<option value="' + gift.id + '" selected>' + gift.gift_name + '</option>';
-                    //         }
-                    //     }
-                    //         if(organ != 1){
-                    //             accessories_option += '<option value="' + gift.id + '">' + gift.gift_name + '</option>';
-                    //         }
-                    // });
-
                     $('#user').html(user_option);
                     $('#customer').html(customer_option);
                     $('#contact').html(contact_option);
                     $('#car').html(car_option);
-                    // $('#gift').html(accessories_option);
 
-                    $('#place_send').val(response.reserved.place_send);
-                    $('#estimate_send').val(response.reserved.estimate_send);
+
+                    $('#payment_by').val(response.reserved.payment_by);
+                    $('#payable').val(response.reserved_detail.payable);
+
                     $('#condition').val(response.reserved_detail.condition);
                     if ($('#condition').val() == "cash") {
                         let ele = document.getElementById("cal");
@@ -602,8 +528,10 @@
                     $('#hire_purchase').val(response.reserved_detail.hire_purchase);
                     $('#term_payment').val(response.reserved_detail.term_payment);
                     $('#subtotal').val(response.reserved_detail.subtotal);
+                    $('#accessories').val(response.reserved_detail.accessories);
 
                     cal();
+                    getCarStock(response.reserved.car_id);
 
                 }
             });

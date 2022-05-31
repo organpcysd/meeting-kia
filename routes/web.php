@@ -80,6 +80,8 @@ Route::prefix('admin')->group(function(){
 
         Route::resource('/received', App\Http\Controllers\Admin\ReceivedController::class);
         Route::get('/received/reserved/{reserved}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataReserved']);
+        Route::get('/received/getcarstock/{car}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataCarstock']);
+        Route::get('/received/getengine/{carstock}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataEngine']);
         Route::resource('/receivedfollow', App\Http\Controllers\Admin\ReceivedFollowController::class);
 
 

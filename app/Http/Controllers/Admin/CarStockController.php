@@ -90,6 +90,7 @@ class CarStockController extends Controller
     public function show($id)
     {
         $car_stock = Car_stock::whereId($id)->first();
+        return response()->json($car_stock);
     }
 
     /**
@@ -112,7 +113,20 @@ class CarStockController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $status = false;
+        $message = 'ไม่สามารถอัพเดทข้อมูลได้';
+
+        $carstock = Car_stock::whereId($id)->first();
+        $carstock->number_chassis = $request->number_chassis_edit;
+        $carstock->number_engine = $request->number_engine_edit;
+        $carstock->updated_at = Carbon::now();
+
+        if($carstock->save()){
+            $status = true;
+            $message = 'บันทึกข้อมูล';
+        }
+
+        return response()->json(['status' => $status, 'message' => $message]);
     }
 
     /**

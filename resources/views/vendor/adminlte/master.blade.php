@@ -20,6 +20,7 @@
     </title>
 
     {{-- Custom stylesheets (pre AdminLTE) --}}
+    <script src="https://kit.fontawesome.com/bf73e6b3c9.js" crossorigin="anonymous"></script>
     @yield('adminlte_css_pre')
 
     {{-- Base Stylesheets --}}

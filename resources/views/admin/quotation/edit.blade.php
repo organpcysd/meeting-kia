@@ -294,7 +294,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งอื่นๆ</label>
                                 <div class="col-sm-9">
-                                    <textarea type="text" class="form-control" id="accessories" name="accessories" value="{{ $quotation->quotation_detail->accessories }}"></textarea>
+                                    <textarea type="text" class="form-control" id="accessories" name="accessories">{{ $quotation->quotation_detail->accessories }}</textarea>
                                 </div>
                             </div>
 

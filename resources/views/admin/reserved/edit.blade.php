@@ -378,14 +378,14 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่แถม เพิ่มเติม</label>
                                 <div class="col-sm-9">
-                                    <textarea type="text" class="form-control" id="accessories" name="accessories" value="{{ $reserved->reserved_detail->accessories }}"></textarea>
+                                    <textarea type="text" class="form-control" id="accessories" name="accessories">{{ $reserved->reserved_detail->accessories }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">อุปกรณ์แต่งที่ซื้อ</label>
                                 <div class="col-sm-9">
-                                    <textarea type="text" class="form-control" id="accessories_buy" name="accessories_buy" value="{{ $reserved->reserved_detail->accessories_buy }}"></textarea>
+                                    <textarea type="text" class="form-control" id="accessories_buy" name="accessories_buy">{{ $reserved->reserved_detail->accessories_buy }}</textarea>
                                 </div>
                             </div>
 

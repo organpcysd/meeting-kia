@@ -14,7 +14,7 @@ use App\Models\Received_detail;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Car;
-use App\Models\Car_gift;
+use App\Models\Car_stock;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class ReceivedController extends Controller
@@ -68,8 +68,7 @@ class ReceivedController extends Controller
         $customers = Customer::all();
         $users = User::all();
         $cars = Car::all();
-        $accessories = Car_gift::all();
-        return view('admin.received.received.create',compact('reserved','customers','users','cars','accessories'));
+        return view('admin.received.received.create',compact('reserved','customers','users','cars'));
     }
 
     /**
@@ -132,8 +131,16 @@ class ReceivedController extends Controller
         $customers= Customer::all();
         $users = User::all();
         $cars = Car::with('car_model','car_level','car_type','car_color')->get();
-        $car_gifts = Car_gift::all();
         $reserved_detail = Reserved_detail::whereId($reserved->id)->first();
-        return response()->json(['reserved' => $reserved, 'customers' => $customers, 'users' => $users, 'cars' => $cars, 'reserved_detail' => $reserved_detail, 'car_gifts' => $car_gifts]);
+        return response()->json(['reserved' => $reserved, 'customers' => $customers, 'users' => $users, 'cars' => $cars, 'reserved_detail' => $reserved_detail]);
+    }
+
+    public function getDataCarstock(Car $car){
+        $carstock = $car->car_stock;
+        return response()->json(['carstock' => $carstock]);
+    }
+
+    public function getDataEngine(Car_stock $carstock){
+        return response()->json(['carstock' => $carstock]);
     }
 }

@@ -147,21 +147,21 @@
 
                 <div class="modal-body">
 
-                    <input type="hidden" id = "car_stock_id_edit" name = "car_stock_id" value="">
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">หมายเลข chassis รถยนต์</label>
-                        <textarea class="form-control" id="number_chassis_edit" name="number_chassis"></textarea>
-                    </div>
+                    <input type="hidden" id = "car_stock_id_edit" name = "car_stock_id_edit">
+                        <div class="form-group row">
+                            <label for="message-text" class="col-sm-4 col-form-label">หมายเลข chassis รถยนต์</label>
+                            <input type="text" class="col-sm-8 form-control" id="number_chassis_edit" name="number_chassis_edit">
+                        </div>
 
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">หมายเลขเครื่อง</label>
-                        <textarea class="form-control" id="number_engine_edit" name="number_engine"></textarea>
-                    </div>
+                        <div class="form-group row">
+                            <label for="message-text" class="col-sm-4 col-form-label">หมายเลขเครื่อง</label>
+                            <input type="text" class="col-sm-8 form-control" id="number_engine_edit" name="number_engine_edit">
+                        </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <input type="submit" onclick="updatecarstock()" class="btn btn-success savebtn" value="บันทึก">
+                    <button type="submit" class="btn btn-info" onclick="updatecarstock()"><i class="fas fa-save mr-2"></i>บันทึก</button>
                 </div>
             </div>
         </div>
