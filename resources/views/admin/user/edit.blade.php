@@ -96,13 +96,13 @@
                                     </div>
                                     <div class="form-group col-lg-5 col-md-4 col-sm-5">
                                       <label for="inputPassword4">นามสกุล</label>
-                                      <input type="text" class="form-control" id="lname" name="lname" value = "{{ $user->l_name }}"required>
+                                      <input type="text" class="form-control" id="lname" name="lname" value = "{{ $user->l_name }}">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>ชื่อเล่น</label>
-                                    <input type="text" class="form-control" id="nickname" name="nickname" value = "{{ $user->nickname }}" required>
+                                    <input type="text" class="form-control" id="nickname" name="nickname" value = "{{ $user->nickname }}">
                                 </div>
 
                                 <div class="form-group">
@@ -118,7 +118,7 @@
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                 <div class="form-group">
                                     <label>เบอร์โทรศัพท์</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value = "{{ $user->phone }}" required>
+                                    <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value = "{{ $user->phone }}">
                                 </div>
 
                                 <div class="form-group">

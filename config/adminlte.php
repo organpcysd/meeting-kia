@@ -244,13 +244,15 @@ return [
         [
             'text' => 'รายงานผล',
             'icon' => 'fas fa-fw fa-area-chart',
-            'url'  => '',
+            'route'  => 'admin',
+            'can'   => 'report',
         ],
-        ['header' => 'การตั้งค่าผู้ใช้งาน'],
+        ['header' => 'การตั้งค่าผู้ใช้งาน', 'can'   => 'manageusers',],
         [
             'text'       => 'จัดการผู้ดูแล',
             'icon'       => 'fas fa-fw fa-users-gear',
             'route'      => 'user.index',
+            'can'   => 'manageusers',
         ],
         ['header' => 'ตั้งค่าทั่วไป'],
         [
@@ -287,6 +289,7 @@ return [
         [
             'text'      => 'ตั้งค่าระบบ',
             'icon'      => 'fas fa-fw fa-car',
+            'can'   => 'managecar',
             'submenu'   => [
                 ['header' => 'จัดการข้อมูลรถยนต์'],
                 [
@@ -325,37 +328,37 @@ return [
                 ],
             ]
         ],
-        ['header' => 'จัดการระบบ'],
+        ['header' => 'จัดการระบบ','can' => 'managesystem' ],
         [
             'text'       => 'คำนำหน้าชื่อ',
             'icon'       => 'fas fa-fw fa-user-tag',
             'route'      => 'userprefix.index',
-            'can' => 'manageprefix',
+            'can' => 'managesystem',
         ],
         [
             'text'       => 'ตำแหน่ง',
             'icon'       => 'fas fa-fw fa-briefcase',
             'route'      => 'position.index',
-            'can' => 'manageposition',
+            'can' => 'managesystem',
         ],
         [
             'text'       => 'บทบาท',
             'icon'       => 'fas fa-fw fa-user-shield',
             'route'      => 'role.index',
-            'can' => 'managerole',
+            'can' => 'managesystem',
         ],
         [
             'text'       => 'สิทธิ์การเข้าถึง',
             'icon'       => 'fas fa-fw fa-shield',
             'route'      => 'permission.index',
-            'can' => 'managepermission',
+            'can' => 'managesystem',
         ],
         [
             'text'       => 'ตั้งค่าเว็บไซต์',
             'icon'       => 'fas fa-fw fa-cogs',
             'icon_color' => 'maroon',
             'route'      => 'setting.index',
-            'can' => 'managewebsite',
+            'can' => 'managesystem',
         ],
     ],
 

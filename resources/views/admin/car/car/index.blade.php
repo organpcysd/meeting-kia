@@ -74,7 +74,7 @@
                         {data: 'type'},
                         {data: 'color'},
                         {data: 'years'},
-                        {data: 'total_qty'},
+                        {data: 'stock'},
                         {data: 'price'},
                         {data: 'btn'},
                     ],

@@ -23,8 +23,8 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_prefix_id')->comment('คำนำหน้า');
             $table->string('f_name')->comment('ชื่อ');
-            $table->string('l_name')->comment('นามสกุล');
-            $table->string('nickname')->comment('ชื่อเล่น');
+            $table->string('l_name')->nullable()->comment('นามสกุล');
+            $table->string('nickname')->nullable()->comment('ชื่อเล่น');
             $table->date('born')->nullable()->comment('วันเกิด');
             $table->string('line_id')->nullable()->comment('ไอดีไลน์');
             $table->text('phone')->nullable()->comment('เบอร์โทรศัพท์');

@@ -20,7 +20,7 @@ class Received extends Migration
             $table->unsignedBigInteger('customer_id')->comment('ลูกค้า');
             $table->unsignedBigInteger('reserved_id')->nullable()->comment('ใบจองรถยนต์');
             $table->unsignedBigInteger('car_id')->comment('รถยนต์');
-            $table->unsignedBigInteger('stock_id')->comment('เลขตัวถัง');
+            $table->unsignedBigInteger('stock_id')->nullable()->comment('เลขตัวถัง');
             $table->string('payment_by')->comment('วิธีการชำระเงิน');
             $table->date('received_date')->nullable()->comment('วันที่จอง');
             $table->timestamps();
@@ -54,10 +54,9 @@ class Received extends Migration
             $table->string('payment_car_turn')->nullable()->comment('ราคาหักจากรถยนต์คันเก่า');
             $table->string('subtotal')->nullable()->comment('ค่าใช้จ่ายวันออกรถ');
             $table->string('accessories')->nullable()->comment('อุปกรณ์แต่งอื่นๆ');
+            $table->timestamps();
 
             $table->foreign('received_id')->references('id')->on('received')->onDelete('cascade');
-
-            $table->timestamps();
         });
 
         Schema::create('received_follow', function (Blueprint $table) {
@@ -67,8 +66,10 @@ class Received extends Migration
             $table->string('follow_up_customer')->nullable()->comment('การตอบสนองจากลูกค้า');
             $table->string('recomment_ceo')->nullable()->comment('คำแนะนำจาก ผจก.');
             $table->date('follow_date')->nullable()->comment('วันที่ติดตาม');
-
             $table->timestamps();
+
+            $table->foreign('received_id')->references('id')->on('received')->onDelete('cascade');
+
         });
     }
 

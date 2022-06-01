@@ -217,7 +217,7 @@
             })
 
             function modaledit(id){
-                console.log(id)
+                // console.log(id)
                 $.ajax({
                     type: "get",
                     url: "{{ url('admin/customer/follow') }}/" + id,
@@ -249,7 +249,7 @@
                     follow_date_edit : follow_date,
                 }
 
-                console.log(data)
+                // console.log(data)
 
                 $.ajax({
                     type: "PUT",

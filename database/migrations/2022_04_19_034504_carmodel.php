@@ -53,10 +53,10 @@ class Carmodel extends Migration
             $table->float('price', 10, 2)->nullable()->comment('ราคา');
             $table->year('years')->nullable()->comment('ปี');
             $table->string('other')->nullable()->comment('อื่นๆ');
-            $table->float('total_qty', 10, 2)->nullable()->comment('ราคาสุทธิ');
-            $table->float('sold_qty', 10, 2)->nullable()->comment('');
-            $table->float('book_qty', 10, 2)->nullable()->comment('');
-            $table->float('defect_qty', 10, 2)->nullable()->comment('');
+            $table->integer('total_qty')->nullable()->comment('');
+            $table->integer('sold_qty')->nullable()->comment('');
+            $table->integer('book_qty')->nullable()->comment('');
+            $table->integer('defect_qty')->nullable()->comment('');
             $table->boolean('available')->nullable()->comment('คงเหลือ');
             $table->timestamps();
 

@@ -125,6 +125,8 @@ class ReceivedController extends Controller
             $received_detail->accessories = $request->accessories;
 
             if($received_detail->save()){
+                $carstock = Car_stock::whereId($request->chassis)->first();
+                $carstock->status = "sold";
                 alert::success('เพิ่มข้อมูลสำเร็จ');
                 return redirect()->route('received.index');
             }

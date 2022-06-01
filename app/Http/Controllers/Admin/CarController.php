@@ -12,6 +12,7 @@ use App\Models\Car_model;
 use App\Models\Car_color;
 use App\Models\Car_type;
 use App\Models\Car_level;
+use App\Models\Car_stock;
 
 class CarController extends Controller
 {
@@ -32,6 +33,11 @@ class CarController extends Controller
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
+            ->addColumn('stock',function($data){
+                $stock = count($data->car_stock);
+                return $stock;
+            })
+
             ->addColumn('model',function($data){
                 $model = $data->car_model->model_name;
                 return $model;
@@ -51,7 +57,7 @@ class CarController extends Controller
                 $color = $data->car_color->color_name . ' ' . $data->car_color->color_code;
                 return $color;
             })
-            ->rawColumns(['btn','color','model','level','type'])
+            ->rawColumns(['btn','color','model','level','type','stock'])
             ->make(true);
         }
         return view('admin.car.car.index');

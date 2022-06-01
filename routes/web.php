@@ -31,7 +31,6 @@ Route::prefix('admin')->group(function(){
 
         Route::resource('/user', App\Http\Controllers\Admin\UserController::class);
         Route::resource('/userprefix', App\Http\Controllers\Admin\UserPrefixController::class);
-        Route::resource('/profile', App\Http\Controllers\Admin\ProfileController::class);
         Route::get('/user/status/{id}',[App\Http\Controllers\Admin\UserController::class, 'status']);
 
         Route::resource('/position', App\Http\Controllers\Admin\PositionController::class);
@@ -82,8 +81,9 @@ Route::prefix('admin')->group(function(){
         Route::get('/received/reserved/{reserved}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataReserved']);
         Route::get('/received/getcarstock/{car}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataCarstock']);
         Route::get('/received/getengine/{carstock}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataEngine']);
-        Route::resource('/receivedfollow', App\Http\Controllers\Admin\ReceivedFollowController::class);
 
+        Route::resource('/receivedfollow', App\Http\Controllers\Admin\ReceivedFollowController::class);
+        Route::get('/receivedfollow/getreceivedfollow/{receivedfollow}', [App\Http\Controllers\Admin\ReceivedFollowController::class,'getDataReceivedfollow']);
 
     });
 });

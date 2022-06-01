@@ -44,15 +44,30 @@ class UserController extends Controller
                 })
                 ->addColumn('status',function($data){
                     if($data['status']){
-                        $status = '<label class="switch">
+                        if(Auth::user()->id == $data['id']){
+                            $status = '<label class="switch">
+                                    <input type="checkbox" checked value= "0" id="' . $data['id'] . '" onchange="status(this)" disabled>
+                                    <span class="slider round"></span>
+                                    </label>';
+                        }else{
+                            $status = '<label class="switch">
                                     <input type="checkbox" checked value= "0" id="' . $data['id'] . '" onchange="status(this)">
                                     <span class="slider round"></span>
                                     </label>';
+                        }
                     }else{
-                        $status = '<label class="switch">
+                        if(Auth::user()->id == $data['id']){
+                            $status = '<label class="switch">
+                                  <input type="checkbox" value="1" id="'.$data['id'].'" onchange="status(this)" disabled>
+                                  <span class="slider round"></span>
+                                </label>';
+                        }else{
+                            $status = '<label class="switch">
                                   <input type="checkbox" value="1" id="'.$data['id'].'" onchange="status(this)">
                                   <span class="slider round"></span>
                                 </label>';
+                        }
+
                     }
 
                     return $status;
@@ -114,7 +129,6 @@ class UserController extends Controller
             $users->user_position()->attach($request->position);
             $users->assignRole($request->role);
 
-
             if($request->file('imgs')){
                 // dd($request->file('imgs'));
                 $getImage = $request->file('imgs');
@@ -173,9 +187,6 @@ class UserController extends Controller
 
         $request->validate([
             'fname'=>'required',
-            'lname'=>'required',
-            'nickname'=>'required',
-            'phone'=>'required',
             'email' => 'required|unique:users,email,'. $users->id,
         ],
         [

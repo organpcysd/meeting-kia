@@ -221,8 +221,8 @@ class CarSeeder extends Seeder
                 'color_id' => 3,
                 'price' => 2495000,
                 'years' => '2022',
-                'total_qty' => 1,
-                'available' => 1,
+                'total_qty' => 0,
+                'available' => 0,
             ],
             [
                 'type_id' => 1,
