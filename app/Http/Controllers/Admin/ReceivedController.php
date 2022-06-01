@@ -47,7 +47,7 @@ class ReceivedController extends Controller
                 return $user_name;
             })
             ->addColumn('btn',function($data){
-                $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('reserved.edit', ['reserved' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
+                $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('received.edit', ['received' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
@@ -79,7 +79,59 @@ class ReceivedController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //pattern
+        $config = [
+            'table' => 'received',
+            'field' => 'serial_number',
+            'length' => 11,
+            'prefix' => 'TRC' . date('y') . date('m')
+        ];
+        // now use it
+        $serial_number = IdGenerator::generate($config);
+
+        $received = new Received();
+        $received->serial_number = $serial_number;
+        $received->user_id = $request->user;
+        $received->customer_id = $request->customer;
+        $received->reserved_id = $request->reserved;
+        $received->car_id = $request->car;
+        $received->stock_id = $request->chassis;
+        $received->payment_by = $request->payment_by;
+        $received->received_date = $request->received_date;
+        $received->created_at = Carbon::now();
+        $received->updated_at = Carbon::now();
+
+        if($received->save()){
+            $received_detail = new received_detail();
+            $received_detail->received_id = $received->id;
+            $received_detail->condition = $request->condition;
+            $received_detail->payable = $request->payable;
+            $received_detail->price_car = $request->price_car;
+            $received_detail->payment_discount = $request->payment_discount;
+            $received_detail->price_car_net = $request->price_car_net;
+            $received_detail->term_credit = $request->term_credit;
+            $received_detail->interest = $request->interest;
+            $received_detail->hire_purchase = $request->hire_purchase;
+            $received_detail->term_payment = $request->term_payment;
+            $received_detail->payment_down = $request->payment_down;
+            $received_detail->payment_down_discount = $request->payment_down_discount;
+            $received_detail->deposit_roll = $request->deposit_roll;
+            $received_detail->payment_decorate = $request->payment_decorate;
+            $received_detail->payment_insurance = $request->payment_insurance;
+            $received_detail->payment_other = $request->payment_other;
+            $received_detail->car_change = $request->car_change;
+            $received_detail->payment_car_turn = $request->payment_car_turn;
+            $received_detail->subtotal = $request->subtotal;
+            $received_detail->accessories = $request->accessories;
+
+            if($received_detail->save()){
+                alert::success('เพิ่มข้อมูลสำเร็จ');
+                return redirect()->route('received.index');
+            }
+        }
+
+        alert::error('ไม่สามารถเพิ่มข้อมูลได้');
+        return redirect()->route('received.create');
     }
 
     /**
@@ -101,7 +153,14 @@ class ReceivedController extends Controller
      */
     public function edit($id)
     {
-        //
+        $received = Received::whereId($id)->first();
+        $reserved = Reserved::all();
+        $customers = Customer::whereIn('status',['pending','traffic','quotation'])->get();
+        $users = User::all();
+        $cars = Car::all();
+        $carstocks = Car_stock::where('car_id',$received->car_id)->get();
+
+        return view('admin.received.received.edit',compact('received','reserved','users','cars','customers','carstocks'));
     }
 
     /**
@@ -113,7 +172,48 @@ class ReceivedController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $received = Received::whereId($id)->first();
+        $received->serial_number = $serial_number;
+        $received->user_id = $request->user;
+        $received->customer_id = $request->customer;
+        $received->reserved_id = $request->reserved;
+        $received->car_id = $request->car;
+        $received->stock_id = $request->chassis;
+        $received->payment_by = $request->payment_by;
+        $received->received_date = $request->received_date;
+        $received->updated_at = Carbon::now();
+
+        if($received->save()){
+            $received_detail = Received_detail::where('received_id',$id)->first();
+            $received_detail->received_id = $received->id;
+            $received_detail->condition = $request->condition;
+            $received_detail->payable = $request->payable;
+            $received_detail->price_car = $request->price_car;
+            $received_detail->payment_discount = $request->payment_discount;
+            $received_detail->price_car_net = $request->price_car_net;
+            $received_detail->term_credit = $request->term_credit;
+            $received_detail->interest = $request->interest;
+            $received_detail->hire_purchase = $request->hire_purchase;
+            $received_detail->term_payment = $request->term_payment;
+            $received_detail->payment_down = $request->payment_down;
+            $received_detail->payment_down_discount = $request->payment_down_discount;
+            $received_detail->deposit_roll = $request->deposit_roll;
+            $received_detail->payment_decorate = $request->payment_decorate;
+            $received_detail->payment_insurance = $request->payment_insurance;
+            $received_detail->payment_other = $request->payment_other;
+            $received_detail->car_change = $request->car_change;
+            $received_detail->payment_car_turn = $request->payment_car_turn;
+            $received_detail->subtotal = $request->subtotal;
+            $received_detail->accessories = $request->accessories;
+
+            if($received_detail->save()){
+                alert::success('บันทึกข้อมูลสำเร็จ');
+                return redirect()->route('received.index');
+            }
+        }
+
+        alert::error('ไม่สามารถแก้ไขข้อมูลได้');
+        return redirect()->route('received.edit');
     }
 
     /**
@@ -124,7 +224,16 @@ class ReceivedController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $status = false;
+        $message = 'ไม่สามารถลบข้อมูลได้';
+
+        $page = Received::whereId($id)->first();
+
+        if ($page->delete()) {
+            $status = true;
+            $message = 'ลบข้อมูลเรียบร้อย';
+        }
+        return response()->json(['status' => $status, 'message' => $message]);
     }
 
     public function getDataReserved(Reserved $reserved){

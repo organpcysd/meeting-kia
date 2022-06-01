@@ -29,6 +29,7 @@ class Received extends Migration
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
             $table->foreign('reserved_id')->references('id')->on('reserved')->onDelete('cascade');
             $table->foreign('car_id')->references('id')->on('car')->onDelete('cascade');
+            $table->foreign('stock_id')->references('id')->on('car_stock')->onDelete('cascade');
         });
 
         Schema::create('received_detail', function (Blueprint $table) {

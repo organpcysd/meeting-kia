@@ -79,7 +79,7 @@
                                         <label class="col-sm-4 col-form-label">ผู้มาติดต่อ</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="contact" id="contact">
-                                                <option value="" selected disabled>- ค้นหารถยนต์ -</option>
+                                                <option value="" selected disabled>- ค้นหาผู้มาติดต่อ -</option>
                                                 @foreach($customers as $item)
                                                     <option @if ($reserved->contact_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
                                                 @endforeach
@@ -594,7 +594,6 @@
                             let ele = document.getElementById("carturn");
                             ele.style.display = "none";
                             $("#payment_car_turn").val('');
-                            cal()
                         }
                     $('#payment_car_turn').val(response.quotation_detail.payment_car_turn);
                     $('#hire_purchase').val(response.quotation_detail.hire_purchase);
