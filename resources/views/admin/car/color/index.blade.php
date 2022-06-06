@@ -58,32 +58,35 @@
         <div class="col-lg-8 col-md-7 col-sm-8">
             <div class="card card-info">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-12 p-2">
-                            <a href="" id = "delete_all" class="btn btn-danger float-right"><i class="fa fa-trash px-2"></i>ลบที่เลือก</a>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="mt-1">
-                                <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
-                                    <thead>
-                                    <tr>
-                                        <td>##</td>
-                                        <td><input type="checkbox" id="selectall"/></td>
-                                        <td>สี</td>
-                                        <td>โค๊ดสี</td>
-                                        <td>การจัดการ</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                        <form method="post" action="{{ route('carcolor.multidel') }}" id="form_multidel">
+                        @csrf
+                            <div class="row">
+                                <div class="col-sm-12 p-2">
+                                    <a class="btn btn-danger float-right" onclick='form_multidel()'><i class="fa fa-trash px-2"></i>ลบที่เลือก</a>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="mt-1">
+                                        <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
+                                            <thead>
+                                            <tr>
+                                                <td>##</td>
+                                                <td><input type="checkbox" id="selectall"/></td>
+                                                <td>สี</td>
+                                                <td>โค๊ดสี</td>
+                                                <td>การจัดการ</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                    </form>
                     </div>
-
                 </div>
             </div>
-        </div>
+
     </div>
 
     {{-- Model Edit --}}
@@ -147,65 +150,36 @@
                 });
 
                 //selectall
-                $('#selectall').click(function(){
-                    if($(this).is(':checked')){
-                        $('.select').prop('checked', true);
+                $('#selectall').on('click',function(){
+                    if (this.checked) {
+                        $('.select').each(function(){
+                            this.checked = true;
+                        })
                     }else{
-                        $('.select').prop('checked', false);
+                        $('.select').each(function(){
+                            this.checked = false;
+                        })
                     }
-                });
-
+                })
 
             });
 
-            // function create(){
-            //     var carcolor = $('#carcolor').val();
-            //     var colorcode = $('#colorcode').val();
-
-            //     if (carcolor != '') {
-            //         Swal.fire({
-            //         icon: 'info',
-            //         title: 'ท่านต้องการเพิ่มข้อมูลหรือไม่',
-            //         text: '',
-            //         showCancelButton: true,
-            //         confirmButtonText: 'ยืนยัน',
-            //         cancelButtonText: 'ยกเลิก',
-            //         showLoaderOnConfirm: true,
-            //         preConfirm: (e) => {
-            //             return new Promise(function (resolve) {
-            //                 $.ajax({
-            //                     type: "post",
-            //                     url: "{{ route('carcolor.store') }}",
-            //                     data: {_token:CSRF_TOKEN,carcolor:carcolor,colorcode:colorcode},
-            //                     dataType: "json",
-            //                     success: function (response) {
-            //                         if (response.status === true) {
-            //                             Swal.fire({
-            //                                 icon: 'success',
-            //                                 title: response.message,
-            //                                 animation: false,
-            //                             })
-            //                             $('#carcolor').val('');
-            //                             $('#carcolor').val('');
-            //                             document.getElementById('error').innerHTML = "";
-            //                             table.ajax.reload();
-            //                         } else {
-            //                             Swal.fire({
-            //                                 icon: 'error',
-            //                                 title: response.message,
-            //                                 animation: false,
-            //                             })
-            //                         }
-            //                     }
-            //                 });
-            //             })
-            //         },
-            //     })
-            //     }else{
-            //         document.getElementById('error').innerHTML = "กรุณากรอกชื่อสีรถ";
-            //     }
-
-            // }
+            function form_multidel() {
+                Swal.fire({
+                    title: 'ยืนยัน',
+                    text: "ยืนยันการลบข้อมูล?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#17a2b8',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'ยืนยัน',
+                    cancelButtonText: 'ยกเลิก',
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#form_multidel').submit();
+                    }
+                })
+            }
 
             // edit
             function modaledit(id) {

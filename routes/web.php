@@ -31,6 +31,7 @@ Route::prefix('admin')->group(function(){
 
         Route::resource('/user', App\Http\Controllers\Admin\UserController::class);
         Route::resource('/userprefix', App\Http\Controllers\Admin\UserPrefixController::class);
+        Route::post('/userprefix/multidel', [App\Http\Controllers\Admin\UserPrefixController::class,'multidel'])->name('userprefix.multidel');
         Route::get('/user/status/{id}',[App\Http\Controllers\Admin\UserController::class, 'status']);
 
         Route::resource('/position', App\Http\Controllers\Admin\PositionController::class);
@@ -41,14 +42,21 @@ Route::prefix('admin')->group(function(){
         Route::resource('/setting', App\Http\Controllers\Admin\SettingController::class);
 
         Route::resource('/car', App\Http\Controllers\Admin\CarController::class)->except(['show']);
+        Route::post('/car/multidel', [App\Http\Controllers\Admin\CarController::class,'multidel'])->name('car.multidel');
         Route::post('/car/getmodel',[App\Http\Controllers\Admin\CarController::class,'getDataCarmodel'])->name('car.getmodel');
 
         Route::resource('/carmodel', App\Http\Controllers\Admin\CarModelController::class);
+        Route::post('/carmodel/multidel', [App\Http\Controllers\Admin\CarModelController::class,'multidel'])->name('carmodel.multidel');
         Route::resource('/cartype', App\Http\Controllers\Admin\CarTypeController::class);
+        Route::post('/cartype/multidel', [App\Http\Controllers\Admin\CarTypeController::class,'multidel'])->name('cartype.multidel');
         Route::resource('/carcolor', App\Http\Controllers\Admin\CarColorController::class);
+        Route::post('/carcolor/multidel', [App\Http\Controllers\Admin\CarColorController::class,'multidel'])->name('carcolor.multidel');
         Route::resource('/carlevel', App\Http\Controllers\Admin\CarLevelController::class);
+        Route::post('/carlevel/multidel', [App\Http\Controllers\Admin\CarLevelController::class,'multidel'])->name('carlevel.multidel');
         Route::resource('/cargift', App\Http\Controllers\Admin\CarGiftController::class);
+        Route::post('/cargift/multidel', [App\Http\Controllers\Admin\CarGiftController::class,'multidel'])->name('cargift.multidel');
         Route::resource('/car/stock', App\Http\Controllers\Admin\CarStockController::class);
+        Route::post('/car/stock/multidel', [App\Http\Controllers\Admin\CarStockController::class,'multidel'])->name('stock.multidel');
         Route::get('/car/stock/data/{car}',[App\Http\Controllers\Admin\CarStockController::class,'getData'])->name('stock.getData');
 
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
@@ -68,7 +76,9 @@ Route::prefix('admin')->group(function(){
         Route::resource('traffic', App\Http\Controllers\Admin\TrafficController::class)->except(['show']);
         Route::prefix('traffic/')->group(function () {
             Route::resource('channel', App\Http\Controllers\Admin\TrafficChannelController::class);
+            Route::post('channel_multidel', [App\Http\Controllers\Admin\TrafficChannelController::class,'multidel'])->name('channel.multidel');
             Route::resource('source', App\Http\Controllers\Admin\TrafficSourceController::class);
+            Route::post('source_multidel', [App\Http\Controllers\Admin\TrafficSourceController::class,'multidel'])->name('source.multidel');
             Route::post('getcarlevel',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarlevels'])->name('traffic.getcarlevel');
             Route::post('getcarcolor',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarcolors'])->name('traffic.getcarcolor');
 

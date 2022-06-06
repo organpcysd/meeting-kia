@@ -253,8 +253,8 @@ class UserController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = User::whereId($id)->first();
-        $page->removeRole($page->roles()->get()[0]->name);
+        $users = User::whereId($id)->first();
+        $users->removeRole($page->roles()->get()[0]->name);
 
         if ($page->delete()) {
             $status = true;
@@ -267,10 +267,10 @@ class UserController extends Controller
         $status = false;
         $message = 'ไม่สามารถบันทึกข้อมูลได้';
 
-        $page = User::whereId($id)->first();
-        $page->status = $request->data;
-        $page->updated_at = Carbon::now();
-        if($page->save()){
+        $users = User::whereId($id)->first();
+        $users->status = $request->data;
+        $users->updated_at = Carbon::now();
+        if($users->save()){
             $status = true;
             $message = 'บันทึกข้อมูลเรียบร้อย';
         }

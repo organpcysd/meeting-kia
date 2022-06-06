@@ -167,9 +167,9 @@ class ReceivedFollowController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Receivedfollow::whereId($id)->first();
+        $receivedfollow = Receivedfollow::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($receivedfollow->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

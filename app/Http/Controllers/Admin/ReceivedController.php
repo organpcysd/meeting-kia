@@ -229,9 +229,9 @@ class ReceivedController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Received::whereId($id)->first();
+        $received = Received::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($received->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

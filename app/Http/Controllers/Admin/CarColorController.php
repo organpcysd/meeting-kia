@@ -23,7 +23,7 @@ class CarColorController extends Controller
             return DataTables::make($data)
             ->addIndexColumn()
             ->addColumn('select',function($data){
-                $select = '<input type="checkbox" class="select" id="select">';
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
                 return $select;
             })
             ->addColumn('btn',function($data){
@@ -75,7 +75,7 @@ class CarColorController extends Controller
         }
 
         Alert::error('ไม่สามารถเพิ่มข้อมูลได้');
-        return redirect()->route('carcolor.create');
+        return redirect()->route('carcolor.index');
     }
 
     /**
@@ -138,12 +138,25 @@ class CarColorController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Car_color::whereId($id)->first();
+        $carcolor = Car_color::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($carcolor->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }
         return response()->json(['status' => $status, 'message' => $message]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $carcolor = Car_color::whereIn('id',$ids);
+
+        if($carcolor->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('carcolor.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('carcolor.index');
     }
 }

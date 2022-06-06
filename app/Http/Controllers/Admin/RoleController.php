@@ -150,10 +150,10 @@ class RoleController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Role::whereId($id)->first();
-        $page->revokePermissionTo($page->getPermissionNames()->toarray());
+        $role = Role::whereId($id)->first();
+        $role->revokePermissionTo($role->getPermissionNames()->toarray());
 
-        if ($page->delete()) {
+        if ($role->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

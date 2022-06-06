@@ -28,12 +28,16 @@ class CarLevelController extends Controller
                 $model = $data->car_model->model_name;
                 return $model;
             })
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<button class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></button>
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['btn','model'])
+            ->rawColumns(['btn','model','select'])
             ->make(true);
         }
 
@@ -160,12 +164,25 @@ class CarLevelController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Car_level::whereId($id)->first();
+        $carlevel = Car_level::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($carlevel->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }
         return response()->json(['status' => $status, 'message' => $message]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $carlevel = Car_level::whereIn('id',$ids);
+
+        if($carlevel->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('carlevel.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('carlevel.index');
     }
 }

@@ -252,9 +252,9 @@ class ReservedController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Reserved::whereId($id)->first();
+        $reserved = Reserved::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($reserved->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

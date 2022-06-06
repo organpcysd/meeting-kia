@@ -29,6 +29,10 @@ class CarStockController extends Controller
             $data = Car_stock::where('car_id',$car->id);
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<button id = "editbtn" type="button" class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen"></i></button>
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
@@ -42,7 +46,7 @@ class CarStockController extends Controller
 
                 return $status;
             })
-            ->rawColumns(['btn','status'])
+            ->rawColumns(['btn','status','select'])
             ->make(true);
         }
         return view('admin.car.stock.index',compact('car'));
@@ -140,13 +144,26 @@ class CarStockController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Car_stock::whereId($id)->first();
+        $carstock = Car_stock::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($carstock->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }
 
         return response()->json(['status' => $status, 'message' => $message]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $carstock = Car_stock::whereIn('id',$ids);
+
+        if($carstock->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->back();
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->back();
     }
 }

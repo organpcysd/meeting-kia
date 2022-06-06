@@ -145,9 +145,9 @@ class PermissionController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Permission::whereId($id)->first();
+        $permission = Permission::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($permission->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

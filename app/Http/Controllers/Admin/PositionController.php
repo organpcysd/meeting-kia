@@ -162,9 +162,9 @@ class PositionController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = User_position::whereId($id)->first();
+        $position = User_position::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($position->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }
@@ -175,14 +175,14 @@ class PositionController extends Controller
         $status = false;
         $message = 'ไม่สามารถบันทึกข้อมูลได้';
 
-        $page = User_position::whereId($id)->first();
-        $page->publish = $request->data;
+        $position = User_position::whereId($id)->first();
+        $position->publish = $request->data;
 
-        $page->updated_at = Carbon::now();
+        $position->updated_at = Carbon::now();
 
         // $user_has_position = User_has_position::where('position_id',3)->pluck('user_id')->all();
 
-        if($page->save()){
+        if($position->save()){
             $status = true;
             $message = 'บันทึกข้อมูลเรียบร้อย';
         }

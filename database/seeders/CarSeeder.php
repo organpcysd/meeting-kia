@@ -53,7 +53,7 @@ class CarSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'color_name' => 'สีดำ',
+                'color_name' => 'สีเงิน',
                 'color_code' => NULL,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

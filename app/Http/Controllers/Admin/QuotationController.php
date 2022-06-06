@@ -226,9 +226,9 @@ class QuotationController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Quotation::whereId($id)->first();
+        $quotation = Quotation::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($quotation->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

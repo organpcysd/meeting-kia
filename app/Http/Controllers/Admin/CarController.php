@@ -27,6 +27,10 @@ class CarController extends Controller
             $data = Car::all();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<a class="btn btn-info" href="'. route('stock.getData',['car' => $data['id']]) .'"><i class="fa fa-archive" data-toggle="tooltip" title="สต๊อก"></i></a>
                         <a class="btn btn-warning" href="'.route('car.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
@@ -57,7 +61,7 @@ class CarController extends Controller
                 $color = $data->car_color->color_name . ' ' . $data->car_color->color_code;
                 return $color;
             })
-            ->rawColumns(['btn','color','model','level','type','stock'])
+            ->rawColumns(['btn','color','model','level','type','stock','select'])
             ->make(true);
         }
         return view('admin.car.car.index');
@@ -195,5 +199,18 @@ class CarController extends Controller
     {
         $level = car_level::where('model_id',$request->id)->get();
         return $level;
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $car = Car::whereIn('id',$ids);
+
+        if($car->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('car.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('car.index');
     }
 }

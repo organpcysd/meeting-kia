@@ -229,9 +229,9 @@ class CustomerController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Customer::whereId($id)->first();
+        $customer = Customer::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($customer->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

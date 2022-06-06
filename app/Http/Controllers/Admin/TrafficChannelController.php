@@ -22,12 +22,16 @@ class TrafficChannelController extends Controller
             $data = Traffic_channel::all();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<button id = "editbtn" type="button" class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen"></i></button>
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['btn'])
+            ->rawColumns(['btn','select'])
             ->make(true);
         }
         return view('admin.traffic.channel.index');
@@ -131,12 +135,25 @@ class TrafficChannelController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Traffic_channel::whereId($id)->first();
+        $channel = Traffic_channel::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($channel->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }
         return response()->json(['status' => $status, 'message' => $message]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $channel = Traffic_channel::whereIn('id',$ids);
+
+        if($channel->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('channel.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('channel.index');
     }
 }

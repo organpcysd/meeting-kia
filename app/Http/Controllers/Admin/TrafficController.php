@@ -68,28 +68,114 @@ class TrafficController extends Controller
      */
     public function store(Request $request)
     {
+        $carmodel = $request->carmodel;
+        $carlevel = $request->carlevel;
+        $carcolor = $request->carcolor;
 
-        dd($request);
 
-        $traffic = new Traffic();
-
-        if($request->dicision_input != null){
-            $traffic->dicision = $request->dicision_input;
+        for($c2 = 0; $c2 < count($carcolor); $c2++){
+            $color = array( $carcolor[$c2]);
+            $color_data[] = $color;
         }
 
-        if($request->location_input != null){
-            $traffic->location = $request->dicision_input;
+        for($c1 = 0; $c1 < count($carlevel); $c1++){
+            $level = array(
+                'level' => $carlevel[$c1],
+            );
+            $color_data[] = $level;
         }
 
-        $traffic->customer_id = $request->customer;
-        $traffic->user_id = $request->user;
-        $traffic->dicision = $request->dicision;
-        $traffic->source_id = $request->traffic_source;
-        $traffic->location = $request->location;
-        $traffic->target = $request->target;
-        $traffic->contact_result = $request->contact_result;
-        $traffic->channel_id = $request->traffic_channel;
-        $traffic->tenor = $request->tenor;
+        for($c = 0; $c < count($carmodel); $c++){
+            $model = array(
+            'model' => $carmodel[$c],
+            );
+            $model_data[] = $model;
+
+            $car = array('model' => $model_data,'level' => $color_data,'color' => $color_data);
+            $car_data[] = $car;
+        }
+
+        dd($car_data);
+
+
+        // for($c = 0; $c < count($carcolor); $c++){
+        //     $color = array(
+        //         'color' => $carcolor[$c],
+        //     );
+        //     $color_data[] = $color;
+        //     for($c1 = 0; $c1 < count($carlevel); $c1++){
+        //         $level = array(
+        //             'level' => $carlevel[$c1],
+        //         );
+        //         $level_data[] = $level;
+        //         for($c2 = 0; $c2 < count($carmodel); $c2++){
+        //         $model = array(
+        //             'model' => $carmodel[$c2],
+        //             'level' => $level_data[$c1]
+        //         );
+        //         $model_data[] = $model;
+        //         }
+        //     }
+        // }
+
+        // dd($model_data);
+
+        // for($c = 0; $c < count($carmodel); $c++){
+        //     $model = array(
+        //         'model' => $carmodel[$c],
+        //     );
+        //     $model_data[] = $model;
+        //     for($c1 = 0; $c1 < count($carlevel); $c1++){
+        //         $level = array(
+        //             'model' => $model_data[$c],
+        //             'level' => $carlevel[$c1],
+        //         );
+        //         $level_data[] = $level;
+        //         for($c2 = 0; $c2 < count($carcolor); $c2++){
+        //             $color = array(
+        //                 'model' => $model_data[$c],
+        //                 'level' => $level_data[$c1],
+        //                 'color' => $carcolor[$c2],
+        //             );
+        //             $color_data[] = $color;
+        //         }
+        //     }
+        // }
+
+        // dd($color_data);
+        // for($count = 0; $count < count($carmodel); $count++){
+        //     for($count1 = 0; $count1 < count($carlevel); $count1++){
+        //         for($count2 = 0; $count2 < count($carcolor); $count2++){
+        //             $insert = array(
+        //             'model' => $carmodel[$count],
+        //             'level' => $carlevel[$count1],
+        //             'color' => $carcolor[$count2]
+        //         );
+        //         $insert_data[] = $insert;
+        //         }
+        //     }
+        // }
+        dd($insert_data);
+
+        // $traffic = new Traffic();
+
+        // if($request->dicision_input != null){
+        //     $traffic->dicision = $request->dicision_input;
+        // }
+
+        // if($request->location_input != null){
+        //     $traffic->location = $request->dicision_input;
+        // }
+
+        // $traffic->customer_id = $request->customer;
+        // $traffic->user_id = $request->user;
+        // $traffic->dicision = $request->dicision;
+        // $traffic->source_id = $request->traffic_source;
+        // $traffic->location = $request->location;
+        // $traffic->target = $request->target;
+        // $traffic->contact_result = $request->contact_result;
+        // $traffic->channel_id = $request->traffic_channel;
+        // $traffic->tenor = $request->tenor;
 
     }
 

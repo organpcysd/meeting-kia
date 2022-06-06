@@ -143,9 +143,9 @@ class CustomerFollowController extends Controller
         $status = false;
         $message = 'ไม่สามารถลบข้อมูลได้';
 
-        $page = Customer_follow::whereId($id)->first();
+        $customer_follow = Customer_follow::whereId($id)->first();
 
-        if ($page->delete()) {
+        if ($customer_follow->delete()) {
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }
