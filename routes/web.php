@@ -60,6 +60,7 @@ Route::prefix('admin')->group(function(){
         Route::get('/car/stock/data/{car}',[App\Http\Controllers\Admin\CarStockController::class,'getData'])->name('stock.getData');
 
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
+        Route::post('/customer/multidel', [App\Http\Controllers\Admin\CustomerController::class,'multidel'])->name('customer.multidel');
         Route::resource('/customer/follow', App\Http\Controllers\Admin\CustomerFollowController::class);
         Route::get('/customer/follow/data/{customer}',[App\Http\Controllers\Admin\CustomerFollowController::class,'getData'])->name('follow.getData');
         Route::post('/customer/follow/data/changestatus',[App\Http\Controllers\Admin\CustomerFollowController::class,'changestatus'])->name('follow.changestatus');
@@ -69,30 +70,35 @@ Route::prefix('admin')->group(function(){
         Route::post('/customer/getcanton',[App\Http\Controllers\Admin\CustomerController::class,'getDataCanton'])->name('customer.getcanton');
         Route::post('/customer/getzipcode',[App\Http\Controllers\Admin\CustomerController::class,'getDataZipcode'])->name('customer.getzipcode');
 
-        Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);
-        Route::post('/quotation/getDataCar',[App\Http\Controllers\Admin\QuotationController::class,'getDataCar'])->name('quotation.car');
-
-
         Route::resource('traffic', App\Http\Controllers\Admin\TrafficController::class)->except(['show']);
+        Route::post('/traffic/multidel', [App\Http\Controllers\Admin\TrafficController::class,'multidel'])->name('traffic.multidel');
         Route::prefix('traffic/')->group(function () {
             Route::resource('channel', App\Http\Controllers\Admin\TrafficChannelController::class);
-            Route::post('channel_multidel', [App\Http\Controllers\Admin\TrafficChannelController::class,'multidel'])->name('channel.multidel');
+            Route::post('channel/multidel', [App\Http\Controllers\Admin\TrafficChannelController::class,'multidel'])->name('channel.multidel');
             Route::resource('source', App\Http\Controllers\Admin\TrafficSourceController::class);
-            Route::post('source_multidel', [App\Http\Controllers\Admin\TrafficSourceController::class,'multidel'])->name('source.multidel');
+            Route::post('source/multidel', [App\Http\Controllers\Admin\TrafficSourceController::class,'multidel'])->name('source.multidel');
             Route::post('getcarlevel',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarlevels'])->name('traffic.getcarlevel');
             Route::post('getcarcolor',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarcolors'])->name('traffic.getcarcolor');
 
         });
 
+        Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);
+        Route::post('/quotation/multidel', [App\Http\Controllers\Admin\QuotationController::class,'multidel'])->name('quotation.multidel');
+        Route::post('/quotation/getDataCar',[App\Http\Controllers\Admin\QuotationController::class,'getDataCar'])->name('quotation.car');
+
         Route::resource('/reserved', App\Http\Controllers\Admin\ReservedController::class);
+        Route::post('/reserved/multidel', [App\Http\Controllers\Admin\ReservedController::class,'multidel'])->name('reserved.multidel');
         Route::get('/reserved/quotation/{quotation}',[App\Http\Controllers\Admin\ReservedController::class,'getDataQuotation'])->name('reserved.quotation');
 
         Route::resource('/received', App\Http\Controllers\Admin\ReceivedController::class);
+        Route::post('/received/multidel', [App\Http\Controllers\Admin\ReceivedController::class,'multidel'])->name('received.multidel');
         Route::get('/received/reserved/{reserved}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataReserved']);
+        Route::get('/received/getcustomeraddress/{customer}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataCustomeraddress']);
         Route::get('/received/getcarstock/{car}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataCarstock']);
         Route::get('/received/getengine/{carstock}',[App\Http\Controllers\Admin\ReceivedController::class,'getDataEngine']);
 
         Route::resource('/receivedfollow', App\Http\Controllers\Admin\ReceivedFollowController::class);
+        Route::post('/receivedfollow/multidel', [App\Http\Controllers\Admin\ReceivedFollowController::class,'multidel'])->name('receivedfollow.multidel');
         Route::get('/receivedfollow/getreceivedfollow/{receivedfollow}', [App\Http\Controllers\Admin\ReceivedFollowController::class,'getDataReceivedfollow']);
 
     });

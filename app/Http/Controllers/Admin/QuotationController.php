@@ -44,12 +44,16 @@ class QuotationController extends Controller
                 $created_at = $data['created_at'];
                 return $created_at;
             })
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('quotation.edit', ['quotation' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['btn','nickname','created_at','customer_name','user_name'])
+            ->rawColumns(['btn','nickname','created_at','customer_name','user_name','select'])
             ->make(true);
         }
         return view('admin.quotation.index');
@@ -238,5 +242,18 @@ class QuotationController extends Controller
     public function getDataCar(Request $request){
         $car = Car::whereId($request->id)->first();
         return response()->json($car);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $quotation = Quotation::whereIn('id',$ids);
+
+        if($quotation->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('quotation.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('quotation.index');
     }
 }

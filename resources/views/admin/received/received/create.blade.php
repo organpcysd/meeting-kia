@@ -75,6 +75,13 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">ที่อยู่</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="address" name="address">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">รถยนต์</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="car" id="car">
@@ -392,6 +399,11 @@
                 getEngine(id);
             });
 
+            $('#customer').change(function(){
+                var id = $('#customer').val();
+                getCustomerAddress(id);
+            });
+
         });
 
         function disable_payment_detail(){
@@ -426,6 +438,27 @@
             $('#savebtn').attr('onclick','formsubmit()');
         }
 
+        function getCustomerAddress(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/received/getcustomeraddress') }}/" +id,
+                success: function (response) {
+                    response.address.forEach(address =>{
+                            let cus_address = "";
+                            let village = address.village == null ? "" : cus_address += address.village + " ";
+                            let house_number = address.house_number == null ? "" : cus_address += "บ้านเลขที่ " + address.house_number + " ";
+                            let alley = address.alley == null ? "" : cus_address += "ตรอก/ซอย " + address.alley + " ";
+                            let group = address.group == null ? "" : cus_address += "หมู่ที่ " + address.group + " ";
+                            let road = address.road == null ? "" : cus_address += "ถ. " +address.road + " ";
+                            let canton = address.canton.name_th == null ? "" : cus_address += "ต. " + address.canton.name_th + " ";
+                            let district = address.districts.name_th == null ? "" : cus_address += "อ. " + address.districts.name_th + " ";
+                            let province = address.provinces.name_th == null ? "" : cus_address +=  "จ. " + address.provinces.name_th + " ";
+                            let zipcode = address.zipcode == null ? "" : cus_address += address.zipcode + " ";
+                            $('#address').val(cus_address);
+                        });
+                }
+            });
+        }
         //ดึง car stock
         function getCarStock(id){
             $.ajax({
@@ -467,7 +500,7 @@
                 url: "{{ url('admin/received/reserved') }}/" + id,
                 success: function (response) {
 
-                    console.log(response);
+                    // console.log(response);
 
                     let customer_option = '<option selected disabled>- ค้นหาลูกค้า -</option>';
                     let user_option = '<option selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>';
@@ -524,6 +557,7 @@
                     $('#payment_decorate').val(response.reserved_detail.payment_decorate);
                     $('#payment_insurance').val(response.reserved_detail.payment_insurance);
                     $('#payment_other').val(response.reserved_detail.payment_other);
+                    $('#payable_show').val(response.reserved_detail.payable);
                     $('#payment_car_turn').val(response.reserved_detail.payment_car_turn);
                     $('#hire_purchase').val(response.reserved_detail.hire_purchase);
                     $('#term_payment').val(response.reserved_detail.term_payment);
@@ -532,6 +566,7 @@
 
                     cal();
                     getCarStock(response.reserved.car_id);
+                    getCustomerAddress(response.reserved.customer_id);
 
                 }
             });

@@ -30,6 +30,10 @@ class ReceivedController extends Controller
             $data = Received::all();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('customer_name',function($data){
                 $customer_name = $data->customer->f_name . ' ' . $data->customer->l_name;
                 return $customer_name;
@@ -51,7 +55,7 @@ class ReceivedController extends Controller
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['customer_name','nickname','car','user_name','btn'])
+            ->rawColumns(['customer_name','nickname','car','user_name','btn','select'])
             ->make(true);
         }
         return view('admin.received.received.index');
@@ -125,8 +129,10 @@ class ReceivedController extends Controller
             $received_detail->accessories = $request->accessories;
 
             if($received_detail->save()){
-                $carstock = Car_stock::whereId($request->chassis)->first();
-                $carstock->status = "sold";
+                if($request->chassis){
+                    $carstock = Car_stock::whereId($request->chassis)->first();
+                    $carstock->status = "sold";
+                }
                 alert::success('เพิ่มข้อมูลสำเร็จ');
                 return redirect()->route('received.index');
             }
@@ -253,5 +259,23 @@ class ReceivedController extends Controller
 
     public function getDataEngine(Car_stock $carstock){
         return response()->json(['carstock' => $carstock]);
+    }
+
+    public function getDataCustomeraddress(Customer $customer){
+        $address = $customer->customer_address->with('provinces','districts','canton')->get();
+        return response()->json(['address' => $address]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $received = Received::whereIn('id',$ids);
+
+        if($received->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('received.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('received.index');
     }
 }

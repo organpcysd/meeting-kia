@@ -33,7 +33,10 @@ class CustomerController extends Controller
                 $name = $data['f_name'] . ' ' . $data['l_name'];
                 return $name;
             })
-            //url('admin/customer/follow')."/".$data['id']
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<a class="btn btn-info" href="'. route('follow.getData',['customer' => $data['id']]) .'">ติดตาม</a>
                         <a class="btn btn-warning" href="'.route('customer.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
@@ -63,7 +66,7 @@ class CustomerController extends Controller
 
                 return $status;
             })
-            ->rawColumns(['btn','name','staff_name','status'])
+            ->rawColumns(['btn','name','staff_name','status','select'])
             ->make(true);
         }
         return view('admin.customer.customer.index');
@@ -251,5 +254,18 @@ class CustomerController extends Controller
     public function getDataZipcode(Request $request){
         $zipcode = Canton::where('id',$request->id)->get();
         return $zipcode;
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $customer = Customer::whereIn('id',$ids);
+
+        if($customer->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('customer.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('customer.index');
     }
 }

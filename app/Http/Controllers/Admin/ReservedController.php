@@ -54,12 +54,16 @@ class ReservedController extends Controller
                 }
                 return $payable;
             })
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('reserved.edit', ['reserved' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
                         <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['customer_name','nickname','car','user_name','btn','payable'])
+            ->rawColumns(['customer_name','nickname','car','user_name','btn','payable','select'])
             ->make(true);
         }
         return view('admin.reserved.index');
@@ -269,5 +273,18 @@ class ReservedController extends Controller
         $accessories = $quotation->quotation_detail->car_gift()->get();
         $quotation_detail = Quotation_detail::whereId($quotation->id)->first();
         return response()->json(['quotation' => $quotation, 'customers' => $customers, 'users' => $users, 'cars' => $cars, 'quotation_detail' => $quotation_detail, 'accessories' => $accessories, 'car_gifts' => $car_gifts]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $reserved = Reserved::whereIn('id',$ids);
+
+        if($reserved->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('reserved.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('reserved.index');
     }
 }

@@ -548,6 +548,7 @@
                     $('#payment_decorate').val(response.reserved_detail.payment_decorate);
                     $('#payment_insurance').val(response.reserved_detail.payment_insurance);
                     $('#payment_other').val(response.reserved_detail.payment_other);
+                    $('#payable_show').val(response.reserved_detail.payable);
                     $('#car_change').val(response.reserved_detail.car_change);
                         if($("#car_change").val() == "no") {
                             let ele = document.getElementById("carturn");

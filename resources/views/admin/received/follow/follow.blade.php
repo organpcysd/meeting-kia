@@ -22,26 +22,34 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    {{-- <a href="{{ route('customer.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มการติดตาม</a> --}}
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addcustomerfollow">
-                        <i class="fa fa-plus-circle px-2"></i> เพิ่มการติดตาม
-                    </button>
-                    <div class="mt-4">
-                        <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap table-hover" style="width: 100%;">
-                            <thead>
-                            <tr>
-                                <td>##</td>
-                                <td>ผลการติดตาม</td>
-                                <td>การตอบสนองต่อลูกค้า</td>
-                                <td>คำแนะนำจาก ผจก.</td>
-                                <td>วันที่ติดตาม</td>
-                                <td>การจัดการ</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                    <form method="post" action="{{ route('receivedfollow.multidel') }}" id="form_multidel">
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-12 p-2">
+                                <button type="button" class="btn btn-success float-left" data-toggle="modal" data-target="#addcustomerfollow">
+                                    <i class="fa fa-plus-circle px-2"></i> เพิ่มการติดตาม
+                                </button>
+                                <a class="btn btn-danger float-right" onclick='form_multidel()'><i class="fa fa-trash px-2"></i>ลบที่เลือก</a>
+                            </div>
+                            <div class="col-sm-12">
+                                <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap table-hover" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <td>##</td>
+                                        <td><input type="checkbox" id="selectall"/></td>
+                                        <td>ผลการติดตาม</td>
+                                        <td>การตอบสนองต่อลูกค้า</td>
+                                        <td>คำแนะนำจาก ผจก.</td>
+                                        <td>วันที่ติดตาม</td>
+                                        <td>การจัดการ</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -153,6 +161,7 @@
                     ajax: "{{route('receivedfollow.show',['receivedfollow' => $receivedfollow->id])}}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'id'},
+                        {data: 'select', orderable: false},
                         {data: 'follow_up'},
                         {data: 'follow_up_customer'},
                         {data: 'recomment_ceo'},
@@ -160,7 +169,37 @@
                         {data: 'btn'},
                     ],
                 });
+
+                //selectall
+                $('#selectall').on('click',function(){
+                    if (this.checked) {
+                        $('.select').each(function(){
+                            this.checked = true;
+                        })
+                    }else{
+                        $('.select').each(function(){
+                            this.checked = false;
+                        })
+                    }
+                });
             });
+
+            function form_multidel() {
+                Swal.fire({
+                    title: 'ยืนยัน',
+                    text: "ยืนยันการลบข้อมูล?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#17a2b8',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'ยืนยัน',
+                    cancelButtonText: 'ยกเลิก',
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#form_multidel').submit();
+                    }
+                })
+            }
 
             function modaledit(id){
                 $.ajax({
