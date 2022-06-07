@@ -35,6 +35,7 @@ Route::prefix('admin')->group(function(){
         Route::get('/user/status/{id}',[App\Http\Controllers\Admin\UserController::class, 'status']);
 
         Route::resource('/position', App\Http\Controllers\Admin\PositionController::class);
+        Route::post('/position/multidel', [App\Http\Controllers\Admin\PositionController::class,'multidel'])->name('position.multidel');
         Route::get('/position/publish/{id}',[App\Http\Controllers\Admin\PositionController::class, 'publish']);
 
         Route::resource('/role', App\Http\Controllers\Admin\RoleController::class);

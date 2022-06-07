@@ -61,6 +61,7 @@
                                     <thead>
                                     <tr>
                                         <td>##</td>
+                                        <td>รูปภาพ</td>
                                         <td><input type="checkbox" id="selectall"/></td>
                                         <td>คำนำหน้าชื่อ</td>
                                         <td>การจัดการ</td>
@@ -88,7 +89,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label>ชื่อประเภทรถ</label>
+                            <label>คำนำหน้าชื่อ</label>
                             <input type="hidden" id="title_id" value="">
                             <input type="text" class="form-control" id="title_edit" name="title_edit" required>
                         </div>
@@ -179,8 +180,6 @@
             function updateprefix(){
                 id = $("#title_id").val();
                 title_edit = $("#title_edit").val();
-
-                console.log(title_edit);
 
                 var data = {
                     _token : CSRF_TOKEN,

@@ -25,8 +25,12 @@ class PositionController extends Controller
             $data = User_position::all();
             return DataTables::make($data)
                 ->addIndexColumn()
+                ->addColumn('select',function($data){
+                    $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                    return $select;
+                })
                 ->addColumn('btn',function ($data){
-                    $btn = '<a class="btn btn-warning" href="'.route('position.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
+                    $btn = '<button id = "editbtn" type="button" class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen"></i></button>
                             <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                     return $btn;
                 })
@@ -45,7 +49,7 @@ class PositionController extends Controller
 
                     return $publish;
                 })
-                ->rawColumns(['btn','publish'])
+                ->rawColumns(['btn','publish','select'])
                 ->make(true);
         }
         return view('admin.position.index');
@@ -98,7 +102,8 @@ class PositionController extends Controller
      */
     public function show($id)
     {
-        //
+        $position = User_position::whereId($id)->first();
+        return response()->json($position);
     }
 
     /**
@@ -109,8 +114,7 @@ class PositionController extends Controller
      */
     public function edit($id)
     {
-        $position = User_position::whereId($id)->first();
-        return view('admin.position.edit',compact('position'));
+        //
     }
 
     /**
@@ -122,32 +126,20 @@ class PositionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $status = false;
+        $message = 'ไม่สามารถอัพเดทข้อมูลได้';
+
         $position = User_position::whereId($id)->first();
 
-        $request->validate([
-            'position' => 'required',
-        ],[
-            'position.required' => 'กรุณากรอกตำแหน่ง',
-        ]);
-
-        if($request->has('position') && $position->name != $request->position){
-            $request->validate([
-                'position' => 'unique:user_positions,name'
-            ],[
-                'position.unique' => 'มีตำแหน่งนี้อยู่แล้ว'
-            ]);
-        }
-
-        $position->name = $request->position;
+        $position->name = $request->position_edit;
         $position->updated_at = Carbon::now();
 
-        if($position->save()){
-            alert::success('บันทึกข้อมูล');
-            return redirect()->route('position.index');
+        if ($position->save()){
+            $status = true;
+            $message = 'อัพเดทข้อมูลเรียบร้อย';
         }
 
-        Alert::error('ไม่สามารถบันทึกข้อมูลได้');
-        return redirect()->route('position.edit');
+        return response()->json(['status' => $status, 'message' => $message]);
 
     }
 
@@ -187,5 +179,18 @@ class PositionController extends Controller
             $message = 'บันทึกข้อมูลเรียบร้อย';
         }
         return response()->json(['status' => $status, 'message' => $message]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $position = User_position::whereIn('id',$ids);
+
+        if($position->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('position.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('position.index');
     }
 }

@@ -23,15 +23,20 @@ class RoleController extends Controller
             $data = Role::all();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('permission',function($data){
+                $permission = $data->getPermissionNames()->toArray();
+                return $permission;
+            })
             ->addColumn('btn',function($data){
-                $btn = '<a class="btn btn-warning" href="'.route('role.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
+                $btn = '<button id = "editbtn" type="button" class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen"></i></button>
                             <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['btn'])
+            ->rawColumns(['btn','permission'])
             ->make(true);
         }
-        return view('admin.role.index');
+        $permissions = Permission::all();
+        return view('admin.role.index',compact('permissions'));
     }
 
     /**
@@ -84,7 +89,10 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $role = Role::whereId($id)->first();
+        $permissions = Permission::all();
+        $perm = $role->getPermissionNames();
+        return response()->json(['role' => $role,'permissions' => $permissions,'perm' => $perm]);
     }
 
     /**
@@ -95,9 +103,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::whereId($id)->first();
-        $permissions = Permission::all();
-        return view('admin.role.edit',compact('role','permissions'));
+        //
     }
 
     /**
@@ -109,34 +115,21 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $status = false;
+        $message = 'ไม่สามารถอัพเดทข้อมูลได้';
+
         $role = Role::whereId($id)->first();
 
-        $request->validate([
-            'role' => 'required',
-        ],[
-            'role.required' => 'กรุณากรอกบทบาท',
-        ]);
-
-        if($request->has('role') && $role->name != $request->role){
-            $request->validate([
-                'role' => 'unique:roles,name'
-            ],[
-                'role.unique' => 'มีบทบาทนี้อยู่แล้ว'
-            ]);
-        }
-
-        $role->name = $request->role;
+        $role->name = $request->role_edit;
         $role->updated_at = Carbon::now();
-        $role->save();
 
-        if($role->save()){
-            $role->syncPermissions([$request->permission]);
-            Alert::success('บันทึกข้อมูล');
-            return redirect()->route('role.index');
+        if ($role->save()){
+            $role->syncPermissions([$request->perm_edit]);
+            $status = true;
+            $message = 'อัพเดทข้อมูลเรียบร้อย';
         }
 
-        Alert::error('ไม่สามารถบันทึกข้อมูลได้');
-        return redirect()->route('role.edit');
+        return response()->json(['status' => $status, 'message' => $message]);
     }
 
     /**

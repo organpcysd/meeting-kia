@@ -106,7 +106,7 @@ class UserPrefixController extends Controller
 
         $prefix = User_prefix::whereId($id)->first();
 
-        $prefix->title = $request->titledd_edit;
+        $prefix->title = $request->title_edit;
         $prefix->updated_at = Carbon::now();
 
         if ($prefix->save()){

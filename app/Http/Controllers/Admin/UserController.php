@@ -28,6 +28,18 @@ class UserController extends Controller
             $data = User::all();
             return DataTables::make($data)
                 ->addIndexColumn()
+                ->addColumn('image',function($data){
+                    if($data->getFirstMediaUrl('user')){
+                     $image = '<img src="'. asset($data->getFirstMediaUrl('user')) . '" alt="User profile picture" width="50" height="50">';
+                    }else{
+                        $image = '<img src="'. asset("image/no-image.jpg") . '" alt="User profile picture" width="50" height="50">';
+                    }
+                    return $image;
+                })
+                ->addColumn('select',function($data){
+                    $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                    return $select;
+                })
                 ->addColumn('btn',function ($data){
                     if(Auth::user()->id == $data['id']){
                         $btn = '<a class="btn btn-warning" href="'.route('user.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
@@ -42,13 +54,22 @@ class UserController extends Controller
                     $fullname = $data['f_name'] . ' ' . $data['l_name'];
                     return $fullname;
                 })
+                ->addColumn('position',function($data){
+                    if($data->user_position){
+                        $position = $data->user_position->name;
+                    }else{
+                        $position = '';
+                    }
+                    return $position;
+                })
+                ->addColumn('role',function($data){
+                    $role = "สิทธิ์การใช้งาน";
+                    return $role;
+                })
                 ->addColumn('status',function($data){
                     if($data['status']){
                         if(Auth::user()->id == $data['id']){
-                            $status = '<label class="switch">
-                                    <input type="checkbox" checked value= "0" id="' . $data['id'] . '" onchange="status(this)" disabled>
-                                    <span class="slider round"></span>
-                                    </label>';
+                            $status = '';
                         }else{
                             $status = '<label class="switch">
                                     <input type="checkbox" checked value= "0" id="' . $data['id'] . '" onchange="status(this)">
@@ -57,22 +78,18 @@ class UserController extends Controller
                         }
                     }else{
                         if(Auth::user()->id == $data['id']){
-                            $status = '<label class="switch">
-                                  <input type="checkbox" value="1" id="'.$data['id'].'" onchange="status(this)" disabled>
-                                  <span class="slider round"></span>
-                                </label>';
+                            $status = '';
                         }else{
                             $status = '<label class="switch">
                                   <input type="checkbox" value="1" id="'.$data['id'].'" onchange="status(this)">
                                   <span class="slider round"></span>
                                 </label>';
                         }
-
                     }
 
                     return $status;
                 })
-                ->rawColumns(['btn','status'])
+                ->rawColumns(['btn','status','select','image','position','role'])
                 ->make(true);
         }
         return view('admin.user.index');
