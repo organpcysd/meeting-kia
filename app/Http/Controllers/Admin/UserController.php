@@ -37,7 +37,11 @@ class UserController extends Controller
                     return $image;
                 })
                 ->addColumn('select',function($data){
-                    $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                    if(Auth::user()->id == $data['id']){
+                        $select = '';
+                    }else{
+                        $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                    }
                     return $select;
                 })
                 ->addColumn('btn',function ($data){
@@ -56,14 +60,14 @@ class UserController extends Controller
                 })
                 ->addColumn('position',function($data){
                     if($data->user_position){
-                        $position = $data->user_position->name;
+                        $position = $data->user_position->pluck('name')->toArray();
                     }else{
                         $position = '';
                     }
                     return $position;
                 })
                 ->addColumn('role',function($data){
-                    $role = "สิทธิ์การใช้งาน";
+                    $role = $data->roles->pluck('name')->toArray();
                     return $role;
                 })
                 ->addColumn('status',function($data){
@@ -116,17 +120,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'fname'=>'required',
-        //     'lname'=>'required',
-        //     'nickname'=>'required',
-        //     'born'=>'required',
-        //     'phone'=>'required',
-        //     'password' => 'required',
-        //     'email' => 'required|unique:users,email',
-        // ],[
-        //     'email.unique' => "อีเมลนี้ถูกใช้งานแล้ว",
-        // ]);
+        $request->validate([
+            'fname'=>'required',
+            'lname'=>'required',
+            'nickname'=>'required',
+            'born'=>'required',
+            'phone'=>'required',
+            'password' => 'required',
+            'email' => 'required|unique:users,email',
+        ],[
+            'email.unique' => "อีเมลนี้ถูกใช้งานแล้ว",
+        ]);
 
         $users = new User();
         $users->user_prefix_id = $request->user_prefix;
@@ -292,5 +296,18 @@ class UserController extends Controller
             $message = 'บันทึกข้อมูลเรียบร้อย';
         }
         return response()->json(['status' => $status, 'message' => $message]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $users = User::whereIn('id',$ids);
+
+        if($users->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('user.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('user.index');
     }
 }

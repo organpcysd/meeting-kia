@@ -263,7 +263,7 @@ return [
         ],
         [
             'text'      => 'ลูกค้า Traffic',
-            'icon'      => 'fas fa-fw fa-list',
+            'icon'      => 'fas fa-fw fa-users-between-lines',
             'route'       => 'traffic.index',
         ],
         [
@@ -438,7 +438,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js',
                 ],
             ],
         ],

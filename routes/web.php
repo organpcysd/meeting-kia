@@ -28,8 +28,10 @@ Route::post('logout', [App\Http\Controllers\Auth\LoginController::class,'logout'
 Route::prefix('admin')->group(function(){
     Route::group(['middleware' => ['IsActive']],function(){
         Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
+        Route::get('getData', [App\Http\Controllers\Admin\HomeController::class,'getData']);
 
         Route::resource('/user', App\Http\Controllers\Admin\UserController::class);
+        Route::post('/user/multidel', [App\Http\Controllers\Admin\UserController::class,'multidel'])->name('user.multidel');
         Route::resource('/userprefix', App\Http\Controllers\Admin\UserPrefixController::class);
         Route::post('/userprefix/multidel', [App\Http\Controllers\Admin\UserPrefixController::class,'multidel'])->name('userprefix.multidel');
         Route::get('/user/status/{id}',[App\Http\Controllers\Admin\UserController::class, 'status']);

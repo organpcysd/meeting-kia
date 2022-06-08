@@ -61,7 +61,6 @@
                                     <thead>
                                     <tr>
                                         <td>##</td>
-                                        <td>รูปภาพ</td>
                                         <td><input type="checkbox" id="selectall"/></td>
                                         <td>คำนำหน้าชื่อ</td>
                                         <td>การจัดการ</td>

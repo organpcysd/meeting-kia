@@ -101,12 +101,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-12 col-form-label">สิทธิ์การเข้าถึง</label>
+                            <label class="col col-form-label">สิทธิ์การเข้าถึง</label>
                             <div class="col-sm-12">
                                 <select class="sel2 form-control" id="permission_edit" multiple>
-                                    {{-- @foreach($permissions as $item)
-                                        <option @if(in_array($item->name,$role->getPermissionNames()->toArray())) selected @endif value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach --}}
+                                    @foreach($permissions as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                     $('#role_id').val(response.role.id);
                     $('#role_edit').val(response.role.name);
 
-                    let permission_option = "<option selected disabled>- เลือกสิทธิ์การเข้าถึง -</option>";
+                    let permission_option;
 
                     response.permissions.map((permissions,key) =>{
                         let organ = 0;
