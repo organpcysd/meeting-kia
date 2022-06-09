@@ -30,12 +30,16 @@ class CustomerFollowController extends Controller
 
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
-                $btn = '<button id = "editbtn" type="button" class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen"></i></button>
-                        <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                $btn = '<a id = "editbtn" type="button" class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen"></i></a>
+                        <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
-            ->rawColumns(['btn'])
+            ->rawColumns(['btn','select'])
             ->make(true);
         }
         return view('admin.customer.follow.index',compact('customer'));
@@ -167,5 +171,18 @@ class CustomerFollowController extends Controller
         }
 
         return response()->json(['status' => $status, 'message' => $message]);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $customer_follow = Customer_follow::whereIn('id',$ids);
+
+        if($customer_follow->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->back();
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->back();
     }
 }

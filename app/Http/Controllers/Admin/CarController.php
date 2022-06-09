@@ -34,7 +34,7 @@ class CarController extends Controller
             ->addColumn('btn',function($data){
                 $btn = '<a class="btn btn-info" href="'. route('stock.getData',['car' => $data['id']]) .'"><i class="fa fa-archive" data-toggle="tooltip" title="สต๊อก"></i></a>
                         <a class="btn btn-warning" href="'.route('car.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
-                        <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                        <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
             ->addColumn('stock',function($data){

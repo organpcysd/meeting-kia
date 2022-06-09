@@ -25,7 +25,7 @@ class PermissionController extends Controller
             ->addIndexColumn()
             ->addColumn('btn',function($data){
                 $btn = '<a class="btn btn-warning" href="'.route('permission.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
-                            <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                        <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
             ->rawColumns(['btn'])

@@ -151,20 +151,32 @@
             });
 
             function form_multidel() {
-                Swal.fire({
-                    title: 'ยืนยัน',
-                    text: "ยืนยันการลบข้อมูล?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#17a2b8',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'ยืนยัน',
-                    cancelButtonText: 'ยกเลิก',
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#form_multidel').submit();
-                    }
-                })
+                let sel = $('input.select:checkbox:checked').length;
+
+                // console.log(sel);
+                if(sel === 0) {
+                    Swal.fire({
+                        title: 'โปรดเลือกข้อมูลก่อนกดลบ',
+                        icon: 'error',
+                        confirmButtonColor: '#17a2b8',
+                        confirmButtonText: 'ตกลง',
+                    })
+                }else{
+                    Swal.fire({
+                        title: 'ยืนยัน',
+                        text: "ยืนยันการลบข้อมูล?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#17a2b8',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'ยืนยัน',
+                        cancelButtonText: 'ยกเลิก',
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#form_multidel').submit();
+                        }
+                    })
+                }
             }
 
             function modaledit(id) {

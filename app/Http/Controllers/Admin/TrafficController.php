@@ -8,14 +8,15 @@ use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Traffic;
+use App\Models\Traffic_car_item;
+use App\Models\Traffic_source;
+use App\Models\Traffic_channel;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Car;
 use App\Models\Car_model;
 use App\Models\Car_level;
 use App\Models\Car_color;
-use App\Models\Traffic_source;
-use App\Models\Traffic_channel;
 
 class TrafficController extends Controller
 {
@@ -30,13 +31,16 @@ class TrafficController extends Controller
             $data = Traffic::all();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('select',function($data){
+                $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
+                return $select;
+            })
             ->addColumn('btn',function($data){
-                $btn = '<a class="btn btn-info" href="'. route('follow.getData',['customer' => $data['id']]) .'">ติดตาม</a>
-                        <a class="btn btn-warning" href="'.route('customer.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
-                        <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                $btn = '<a class="btn btn-warning" href="'.route('traffic.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
+                        <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
-            ->rawColumns(['btn'])
+            ->rawColumns(['btn','select'])
             ->make(true);
         }
         return view('admin.traffic.traffic.index');
@@ -68,114 +72,60 @@ class TrafficController extends Controller
      */
     public function store(Request $request)
     {
-        $carmodel = $request->carmodel;
-        $carlevel = $request->carlevel;
-        $carcolor = $request->carcolor;
+        $traffic = new Traffic();
 
-
-        for($c2 = 0; $c2 < count($carcolor); $c2++){
-            $color = array( $carcolor[$c2]);
-            $color_data[] = $color;
+        if($request->dicision_input != null){
+            $traffic->dicision = $request->dicision_input;
+        }else{
+            $traffic->dicision = $request->dicision;
         }
 
-        for($c1 = 0; $c1 < count($carlevel); $c1++){
-            $level = array(
-                'level' => $carlevel[$c1],
-            );
-            $color_data[] = $level;
+        if($request->location_input != null){
+            $traffic->location = $request->location_input;
+        }else{
+            $traffic->location = $request->location;
         }
 
-        for($c = 0; $c < count($carmodel); $c++){
-            $model = array(
-            'model' => $carmodel[$c],
-            );
-            $model_data[] = $model;
-
-            $car = array('model' => $model_data,'level' => $color_data,'color' => $color_data);
-            $car_data[] = $car;
+        if($request->staff_pick != null){
+            $traffic->testdrive = "Y";
+        }else{
+            $traffic->testdrive = "N";
         }
 
-        dd($car_data);
+        $traffic->customer_id = $request->customer;
+        $traffic->user_id = $request->user;
+        $traffic->dicision = $request->dicision;
+        $traffic->source_id = $request->traffic_source;
+        $traffic->target = $request->target;
+        $traffic->contact_result = $request->contact_result;
+        $traffic->channel_id = $request->traffic_channel;
+        $traffic->tenor = $request->tenor;
+        $traffic->staff_pick = $request->staff_pick;
+        $traffic->created_at = Carbon::now();
+        $traffic->updated_at = Carbon::now();
 
+        if($traffic->save()){
+            $traffic_car_item = new Traffic_car_item();
+            $traffic_car_item->traffic_id = $traffic->id;
+            $traffic_car_item->model_id = json_encode($request->carmodel);
+            $traffic_car_item->level_id = json_encode($request->carlevel);
+            $traffic_car_item->color_id = json_encode($request->carcolor);
 
-        // for($c = 0; $c < count($carcolor); $c++){
-        //     $color = array(
-        //         'color' => $carcolor[$c],
-        //     );
-        //     $color_data[] = $color;
-        //     for($c1 = 0; $c1 < count($carlevel); $c1++){
-        //         $level = array(
-        //             'level' => $carlevel[$c1],
-        //         );
-        //         $level_data[] = $level;
-        //         for($c2 = 0; $c2 < count($carmodel); $c2++){
-        //         $model = array(
-        //             'model' => $carmodel[$c2],
-        //             'level' => $level_data[$c1]
-        //         );
-        //         $model_data[] = $model;
-        //         }
-        //     }
-        // }
+            if($request->file('imgs')){
+                $getImage = $request->file('imgs');
+                $newname = time().'.'.$getImage->extension();
+                Storage::putFileAs('public', $getImage, $newname);
+                $traffic->addMedia(storage_path('app\public\\').$newname)->toMediaCollection('traffic');
+            }
 
-        // dd($model_data);
+            if($traffic_car_item->save()){
+                Alert::success('เพิ่มข้อมูลสำเร็จ');
+                return redirect()->route('traffic.index');
+            }
+        }
 
-        // for($c = 0; $c < count($carmodel); $c++){
-        //     $model = array(
-        //         'model' => $carmodel[$c],
-        //     );
-        //     $model_data[] = $model;
-        //     for($c1 = 0; $c1 < count($carlevel); $c1++){
-        //         $level = array(
-        //             'model' => $model_data[$c],
-        //             'level' => $carlevel[$c1],
-        //         );
-        //         $level_data[] = $level;
-        //         for($c2 = 0; $c2 < count($carcolor); $c2++){
-        //             $color = array(
-        //                 'model' => $model_data[$c],
-        //                 'level' => $level_data[$c1],
-        //                 'color' => $carcolor[$c2],
-        //             );
-        //             $color_data[] = $color;
-        //         }
-        //     }
-        // }
-
-        // dd($color_data);
-        // for($count = 0; $count < count($carmodel); $count++){
-        //     for($count1 = 0; $count1 < count($carlevel); $count1++){
-        //         for($count2 = 0; $count2 < count($carcolor); $count2++){
-        //             $insert = array(
-        //             'model' => $carmodel[$count],
-        //             'level' => $carlevel[$count1],
-        //             'color' => $carcolor[$count2]
-        //         );
-        //         $insert_data[] = $insert;
-        //         }
-        //     }
-        // }
-        dd($insert_data);
-
-        // $traffic = new Traffic();
-
-        // if($request->dicision_input != null){
-        //     $traffic->dicision = $request->dicision_input;
-        // }
-
-        // if($request->location_input != null){
-        //     $traffic->location = $request->dicision_input;
-        // }
-
-        // $traffic->customer_id = $request->customer;
-        // $traffic->user_id = $request->user;
-        // $traffic->dicision = $request->dicision;
-        // $traffic->source_id = $request->traffic_source;
-        // $traffic->location = $request->location;
-        // $traffic->target = $request->target;
-        // $traffic->contact_result = $request->contact_result;
-        // $traffic->channel_id = $request->traffic_channel;
-        // $traffic->tenor = $request->tenor;
+        Alert::error('ไม่สามารถเพิ่มข้อมูลได้');
+        return redirect()->route('traffic.create');
 
     }
 
@@ -187,7 +137,7 @@ class TrafficController extends Controller
      */
     public function show($id)
     {
-        dd($id);
+        //
     }
 
     /**
@@ -198,7 +148,15 @@ class TrafficController extends Controller
      */
     public function edit($id)
     {
-        //
+        $traffic = Traffic::whereId($id)->first();
+        $customers = Customer::all();
+        $users = User::all();
+        $sources = Traffic_source::all();
+        $channels = Traffic_channel::all();
+        $carmodels = Car_model::all();
+        $carlevels = Car_level::all();
+        $carcolors = Car_color::all();
+        return view('admin.traffic.traffic.edit',compact('traffic','customers','users','sources','channels','carmodels','carlevels','carcolors'));
     }
 
     /**
@@ -221,7 +179,16 @@ class TrafficController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $status = false;
+        $message = 'ไม่สามารถลบข้อมูลได้';
+
+        $traffic = Traffic::whereId($id)->first();
+
+        if ($traffic->delete()) {
+            $status = true;
+            $message = 'ลบข้อมูลเรียบร้อย';
+        }
+        return response()->json(['status' => $status, 'message' => $message]);
     }
 
     public function getDataCarlevels(Request $request){
@@ -237,5 +204,18 @@ class TrafficController extends Controller
         $colors = Car_color::whereIn('id',$carcolors)->get();
         // dd($colors);
         return response()->json($colors);
+    }
+
+    public function multidel(Request $request){
+        $ids = $request->select;
+        $traffic = traffic::whereIn('id',$ids);
+
+        if($traffic->delete()) {
+            Alert::success('ลบข้อมูลเรียบร้อย');
+            return redirect()->route('traffic.index');
+        }
+
+        Alert::error('ไม่สามารถลบข้อมูลได้');
+        return redirect()->route('traffic.index');
     }
 }

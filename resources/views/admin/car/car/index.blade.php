@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 @section('title', setting('title'). ' | จัดการรถยนต์')
-@php $pagename = 'จัดการรถ'; @endphp
+@php $pagename = 'รายชื่อรถยนต์ที่มีจำหน่าย'; @endphp
 @section('content')
 <div class="contrainer p-4">
     <div class="row">
@@ -106,20 +106,32 @@
             });
 
             function form_multidel() {
-                Swal.fire({
-                    title: 'ยืนยัน',
-                    text: "ยืนยันการลบข้อมูล?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#17a2b8',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'ยืนยัน',
-                    cancelButtonText: 'ยกเลิก',
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#form_multidel').submit();
-                    }
-                })
+                let sel = $('input.select:checkbox:checked').length;
+
+                // console.log(sel);
+                if(sel === 0) {
+                    Swal.fire({
+                        title: 'โปรดเลือกข้อมูลก่อนกดลบ',
+                        icon: 'error',
+                        confirmButtonColor: '#17a2b8',
+                        confirmButtonText: 'ตกลง',
+                    })
+                }else{
+                    Swal.fire({
+                        title: 'ยืนยัน',
+                        text: "ยืนยันการลบข้อมูล?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#17a2b8',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'ยืนยัน',
+                        cancelButtonText: 'ยกเลิก',
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#form_multidel').submit();
+                        }
+                    })
+                }
             }
 
 

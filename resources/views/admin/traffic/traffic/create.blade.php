@@ -114,7 +114,7 @@
                                     <option value="single">คนเดียว</option>
                                     <option value="both">สามี-ภรรยา</option>
                                     <option value="family">ครอบครัว</option>
-                                    <option friend="friend">เพื่อน</option>
+                                    <option value="friend">เพื่อน</option>
                                 </select>
                             </div>
                         </div>
@@ -260,6 +260,13 @@
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
             $('.sel2').select2();
+
+            imgInp.onchange = evt => {
+                const [file] = imgInp.files
+                if (file) {
+                    showimg.src = URL.createObjectURL(file)
+                }
+            }
 
             let ele_level = document.getElementById("divlevel");
                 ele_level.style.display = "none";

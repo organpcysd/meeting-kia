@@ -24,4 +24,9 @@ class Car_model extends Model
     {
         return $this->hasOne(Car_level::class);
     }
+
+    public function traffic_car_item()
+    {
+        return $this->hasMany(Traffic_car_item::class);
+    }
 }

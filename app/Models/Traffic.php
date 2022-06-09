@@ -22,6 +22,8 @@ class Traffic extends Model
         'contact_result',
         'channel_id',
         'tenor',
+        'testdrive',
+        'staff_pick'
     ];
 
     public function registerMediaCollections(): void

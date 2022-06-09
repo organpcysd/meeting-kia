@@ -39,8 +39,9 @@ class HomeController extends Controller
     }
 
     public function getData(){
-        $traffic = Traffic::all();
+        $traffic = Traffic::with('source')->get();
         $traffic_source = Traffic_source::all();
+
         return response()->json(['traffic' => $traffic,'traffic_source' => $traffic_source]);
     }
 

@@ -60,7 +60,8 @@
 @section('plugins.Sweetalert2', true)
 
 @push('js')
-    <script>
+<script>
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var table;
             $(document).ready( function () {
                 table = $('#table').DataTable({
@@ -101,20 +102,32 @@
             });
 
             function form_multidel() {
-                Swal.fire({
-                    title: 'ยืนยัน',
-                    text: "ยืนยันการลบข้อมูล?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#17a2b8',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'ยืนยัน',
-                    cancelButtonText: 'ยกเลิก',
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#form_multidel').submit();
-                    }
-                })
+                let sel = $('input.select:checkbox:checked').length;
+
+                // console.log(sel);
+                if(sel === 0) {
+                    Swal.fire({
+                        title: 'โปรดเลือกข้อมูลก่อนกดลบ',
+                        icon: 'error',
+                        confirmButtonColor: '#17a2b8',
+                        confirmButtonText: 'ตกลง',
+                    })
+                }else{
+                    Swal.fire({
+                        title: 'ยืนยัน',
+                        text: "ยืนยันการลบข้อมูล?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#17a2b8',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'ยืนยัน',
+                        cancelButtonText: 'ยกเลิก',
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#form_multidel').submit();
+                        }
+                    })
+                }
             }
 
             function deleteConfirmation(id) {
@@ -129,7 +142,6 @@
                     animation: false,
                     preConfirm: (e) => {
                         return new Promise(function (resolve) {
-                            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                             $.ajax({
                                 type: 'DELETE',
                                 url: "{{url('admin/traffic/')}}/" + id,

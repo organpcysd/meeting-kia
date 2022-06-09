@@ -65,6 +65,7 @@ Route::prefix('admin')->group(function(){
         Route::resource('/customer', App\Http\Controllers\Admin\CustomerController::class);
         Route::post('/customer/multidel', [App\Http\Controllers\Admin\CustomerController::class,'multidel'])->name('customer.multidel');
         Route::resource('/customer/follow', App\Http\Controllers\Admin\CustomerFollowController::class);
+        Route::post('/customer/follow/multidel', [App\Http\Controllers\Admin\CustomerFollowController::class,'multidel'])->name('follow.multidel');
         Route::get('/customer/follow/data/{customer}',[App\Http\Controllers\Admin\CustomerFollowController::class,'getData'])->name('follow.getData');
         Route::post('/customer/follow/data/changestatus',[App\Http\Controllers\Admin\CustomerFollowController::class,'changestatus'])->name('follow.changestatus');
 

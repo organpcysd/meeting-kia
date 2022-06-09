@@ -50,7 +50,7 @@ class QuotationController extends Controller
             })
             ->addColumn('btn',function($data){
                 $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('quotation.edit', ['quotation' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
-                        <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                        <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
             ->rawColumns(['btn','nickname','created_at','customer_name','user_name','select'])

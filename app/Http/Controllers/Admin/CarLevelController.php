@@ -33,8 +33,8 @@ class CarLevelController extends Controller
                 return $select;
             })
             ->addColumn('btn',function($data){
-                $btn = '<button class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></button>
-                        <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                $btn = '<a class="btn btn-warning" onclick="modaledit('. $data['id'] .')"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
+                        <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
             ->rawColumns(['btn','model','select'])

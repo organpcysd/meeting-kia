@@ -52,7 +52,7 @@ class ReceivedController extends Controller
             })
             ->addColumn('btn',function($data){
                 $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('received.edit', ['received' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
-                        <button class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
+                        <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
             ->rawColumns(['customer_name','nickname','car','user_name','btn','select'])
