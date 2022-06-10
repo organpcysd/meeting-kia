@@ -50,4 +50,8 @@ class Traffic extends Model
     {
         return $this->belongsTo(Traffic_channel::class, 'channel_id', 'id');
     }
+
+    public function traffic_car_item(){
+        return $this->hasOne(Traffic_car_item::class);
+    }
 }

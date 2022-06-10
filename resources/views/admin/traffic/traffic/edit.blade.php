@@ -33,6 +33,8 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <input type="hidden" value="{{ $traffic->id }}" id="traffic_id">
+
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">ลูกค้า</label>
                             <div class="col-sm-8">
@@ -63,15 +65,15 @@
                             <label class="col-sm-4 col-form-label">ผู้มีอำนาจในการตัดสินใจซื้อ</label>
                             <div class="col-sm-8">
                                 <select class="sel2 form-control" name="dicision" id="dicision">
-                                    <option value="" selected disabled>- ค้นหาผู้มีอำนาจในการตัดสินใจซื้อ -</option>
-                                    <option value="ตัวลูกค้าเอง">ตัวลูกค้าเอง</option>
-                                    <option value="พ่อ">พ่อ</option>
-                                    <option value="แม่">แม่</option>
-                                    <option value="พ่อ-แม่">พ่อ-แม่</option>
-                                    <option value="สามี">สามี</option>
-                                    <option value="ภรรยา">ภรรยา</option>
-                                    <option value="ครอบครัว">ครอบครัว</option>
-                                    <option value="other">อื่นๆ</option>
+                                    <option @if($traffic->dicision === null) selected @endif value="" disabled>- ค้นหาผู้มีอำนาจในการตัดสินใจซื้อ -</option>
+                                    <option @if($traffic->dicision === "ตัวลูกค้าเอง") selected @endif value="ตัวลูกค้าเอง">ตัวลูกค้าเอง</option>
+                                    <option @if($traffic->dicision === "พ่อ") selected @endif value="พ่อ">พ่อ</option>
+                                    <option @if($traffic->dicision === "แม่") selected @endif value="แม่">แม่</option>
+                                    <option @if($traffic->dicision === "พ่อ-แม่") selected @endif value="พ่อ-แม่">พ่อ-แม่</option>
+                                    <option @if($traffic->dicision === "สามี") selected @endif value="สามี">สามี</option>
+                                    <option @if($traffic->dicision === "ภรรยา") selected @endif value="ภรรยา">ภรรยา</option>
+                                    <option @if($traffic->dicision === "ครอบครัว") selected @endif value="ครอบครัว">ครอบครัว</option>
+                                    <option @if($traffic->dicision === "other") selected @endif value="other">อื่นๆ</option>
                                 </select>
                                 <div id="dicision_detail" class="mt-2">
                                     <small class="text-cyan">หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "อื่นๆ" เพื่อกรอกข้อมูล</small>
@@ -85,7 +87,7 @@
                                 <select class="sel2 form-control" name="traffic_source" id="traffic_source">
                                     <option value="" selected disabled>- ค้นหาแหล่งข้อมูลลูกค้า -</option>
                                         @foreach($sources as $item)
-                                            <option value="{{$item->id}}">{{$item->source_name}}</option>
+                                            <option @if($traffic->source_id === $item->id) selected @endif value="{{$item->id}}">{{$item->source_name}}</option>
                                         @endforeach
                                 </select>
                             </div>
@@ -111,11 +113,11 @@
                             <label class="col-sm-4 col-form-label">กลุ่มของลูกค้า</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="target" id="target">
-                                    <option value="" selected disabled>- เลือกกลุ่มของลูกค้า -</option>
-                                    <option value="single">คนเดียว</option>
-                                    <option value="both">สามี-ภรรยา</option>
-                                    <option value="family">ครอบครัว</option>
-                                    <option value="friend">เพื่อน</option>
+                                    <option value="" disabled>- เลือกกลุ่มของลูกค้า -</option>
+                                    <option @if($traffic->target === "single") selected @endif value="single">คนเดียว</option>
+                                    <option @if($traffic->target === "both") selected @endif value="both">สามี-ภรรยา</option>
+                                    <option @if($traffic->target === "family") selected @endif value="family">ครอบครัว</option>
+                                    <option @if($traffic->target === "friend") selected @endif value="friend">เพื่อน</option>
                                 </select>
                             </div>
                         </div>
@@ -133,7 +135,7 @@
                                 <select class="sel2 form-control" name="traffic_channel" id="traffic_channel">
                                     <option value="" selected disabled>- ค้นหาช่องทางการรับรู้ -</option>
                                     @foreach($channels as $item)
-                                        <option value="{{$item->id}}">{{$item->channel_name}}</option>
+                                        <option value="{{$item->id}}">{{$item->channel_id}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -143,10 +145,10 @@
                             <label class="col-sm-4 col-form-label">แนวโน้ม</label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="tenor" id="tenor">
-                                    <option value="" selected disabled>- เลือกแนวโน้ม -</option>
-                                    <option value="high">สูง</option>
-                                    <option value="medium">ปานกลาง</option>
-                                    <option value="low">ต่ำ</option>
+                                    <option value="" disabled>- เลือกแนวโน้ม -</option>
+                                    <option @if($traffic->tenor === "high") selected @endif value="high">สูง</option>
+                                    <option @if($traffic->tenor === "medium") selected @endif value="medium">ปานกลาง</option>
+                                    <option @if($traffic->tenor === "low") selected @endif value="low">ต่ำ</option>
                                 </select>
                             </div>
                         </div>
@@ -170,7 +172,9 @@
                             <div class="col-lg-10 col-sm-8">
                                 <div class="btn-group-toggle" data-toggle="buttons">
                                     @foreach($carmodels as $item)
-                                        <label class="btn btn-outline-info p-1 mt-1"> <input type="checkbox" name="carmodel[]" id="carmodel" value="{{ $item->id }}" onclick="Carmodel()"> {{ $item->model_name }} </label>
+                                        <label class="btn btn-outline-info p-1 mt-1">
+                                            <input type="checkbox" name="carmodel[]" id="carmodel" value="{{ $item->id }}" onclick="Carmodel()" @if(in_array($item->id,json_decode($traffic->traffic_car_item->model_id))) checked @endif> {{ $item->model_name }}
+                                        </label>
                                     @endforeach
                                 </div>
                             </div>
@@ -180,9 +184,9 @@
                             <label class="col-lg-2 col-sm-4 col-form-label">รุ่นย่อย</label>
                             <div class="col-lg-10 col-sm-8">
                                 <div class="btn-group-toggle" data-toggle="buttons" id="carlevels">
-                                    {{-- @foreach($carlevels as $item)
-                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carlevel[]" id="carlevel" value="{{ $item->id }}"> {{ $item->level_name }} </label>
-                                    @endforeach --}}
+                                    @foreach($carlevels as $item)
+                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carlevel[]" id="carlevel" value="{{ $item->id }}" @if(in_array($item->id,json_decode($traffic->traffic_car_item->level_id))) checked @endif> {{ $item->level_name }} </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -191,9 +195,9 @@
                             <label class="col-lg-2 col-sm-4 col-form-label">สีรถยนต์</label>
                             <div class="col-lg-10 col-sm-8">
                                 <div class="btn-group-toggle" data-toggle="buttons" id="carcolors">
-                                    {{-- @foreach($carcolors as $item)
-                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carcolor[]" id="carcolor" value="{{ $item->id }}"> {{ $item->color_name }} </label>
-                                    @endforeach --}}
+                                    @foreach($carcolors as $item)
+                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carcolor[]" id="carcolor" value="{{ $item->id }}" @if(in_array($item->id,json_decode($traffic->traffic_car_item->color_id))) checked @endif> {{ $item->color_name }} </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -216,7 +220,7 @@
                                 <select class="sel2 form-control" name="staff_pick" id="staff_pick">
                                     <option value="" selected disabled>- ค้นหาชื่อผู้เบิกรถยนต์ -</option>
                                     @foreach($users as $item)
-                                        <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                        <option @if ($traffic->staff_pick === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -229,7 +233,7 @@
                             <div class="col-sm-10">
                                 <div class="row row-cols-2 align-items-center">
                                     <div class="col-sm-4 text-center">
-                                        <img src="{{ asset('image/no-image.jpg') }}" height="100px" width="100px" id="showimg">
+                                        <img src="{{asset('image/no-image.jpg')}}" height="100px" width="100px" id="showimg">
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="input-group">
@@ -258,117 +262,148 @@
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@11"])
 @push('js')
     <script>
-        // alert('organ == ไม่ผ่านสหกิจ!!!!!!');
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
+            $('.sel2').select2();
 
-            let id = $('#provinces').val();
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('customer.getprovinces') }}",
-                    data: {_token:CSRF_TOKEN,id:id},
-                    dataType: "json",
-                    success: function (response) {
-                        let option = '<option selected disabled>-กรุณาเลือกอำเภอ-</option>';
-                        let district_id = parseInt(document.getElementById('district_id').value);
+            imgInp.onchange = evt => {
+                const [file] = imgInp.files
+                if (file) {
+                    showimg.src = URL.createObjectURL(file)
+                }
+            }
 
-                        response.forEach(districts => {
-                            let selected = (districts.id === district_id ? ' selected' : '');
-                            option += '<option value="' + districts.id + '"' + selected +'>' + districts.name_th + '</option>';
-                        });
+            // let ele_level = document.getElementById("divlevel");
+            //     ele_level.style.display = "none";
 
-                        $('#districts').html(option);
+            // let ele_color = document.getElementById("divcolor");
+            //     ele_color.style.display = "none";
 
-                    }
-                });
-
-            let id2 = $('#district_id').val();
+            let id = $('#traffic_id').val();
             $.ajax({
-                type: "post",
-                url: "{{ route('customer.getdistricts') }}",
-                data: {_token:CSRF_TOKEN,id:id2},
-                dataType: "json",
+                type: "get",
+                url: "{{ url('admin/traffic/gettraffic') }}/" + id,
                 success: function (response) {
-                    let option = '<option selected disabled>-กรุณาเลือกตำบล-</option>';
-                    let canton_id = parseInt(document.getElementById('canton_id').value);
-
-                    response.forEach(canton => {
-                        let selected = (canton.id === canton_id ? ' selected' : '');
-                        option += '<option value="' + canton.id + '"' + selected +'>' + canton.name_th + '</option>';
-                    });
-
-                    $('#canton').html(option);
-
+                    // for(x in response.traffic_car_item){
+                    //     console.log(JSON.parse(response.traffic_car_item[x].color_id));
+                    // }
+                    // console.log(response.traffic_car_item);
                 }
             });
 
-            $('#provinces').on('change',function(){
-                let id = $('#provinces').val();
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('customer.getprovinces') }}",
-                    data: {_token:CSRF_TOKEN,id:id},
-                    dataType: "json",
-                    success: function (response) {
-                        let option = ''
-                        option = '<option selected disabled>-กรุณาเลือกอำเภอ-</option>';
-
-                        response.forEach(districts => {
-                            option += '<option value="' + districts.id + '">' + districts.name_th + '</option>';
-                        });
-
-                        $('#districts').html(option);
-                        $('#canton').html('<option selected disabled>-กรุณาเลือกตำบล-</option>');
-                        $('#zipcode').val('');
-
-                    }
-                });
-            })
-
-            $('#districts').on('change',function(){
-                let id = $('#districts').val();
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('customer.getdistricts') }}",
-                    data: {_token:CSRF_TOKEN,id:id},
-                    dataType: "json",
-                    success: function (response) {
-                        let option = '<option selected disabled>-กรุณาเลือกตำบล-</option>';
-                        let option2 = '';
-
-                        response.forEach(canton => {
-                            option += '<option value="' + canton.id + '">' + canton.name_th + '</option>';
-                        });
-
-                        $('#canton').html(option);
-
-                    }
-                });
-            })
-
-            $('#canton').on('change',function(){
-                let id = $('#canton').val();
-                console.log(id)
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('customer.getzipcode') }}",
-                    data: {_token:CSRF_TOKEN,id:id},
-                    dataType: "json",
-                    success: function (response) {
-                        let option = '';
-                        response.forEach(zipcode => {
-                            option = zipcode.zip_code;
-                        });
-
-                        $('#zipcode').val(option);
-
-                    }
-                });
-            })
-
-
         });
 
+        $('#dicision').on('change',function(){
+            dicision = $('#dicision').val();
+            if(dicision === "other"){
+                dicision_input = "<input type='text' class='form-control' name='dicision_input' placeholder='ตัวอย่าง: อาม่า'>"
+                $('#dicision_detail').html(dicision_input);
+            }else{
+                dicision_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
+                $('#dicision_detail').html(dicision_input);
+            }
+        });
+
+        function disition_div(dicision){
+            if(dicision === "other"){
+                dicision_input = "<input type='text' class='form-control' name='dicision_input' placeholder='ตัวอย่าง: อาม่า'> value='{{ $traffic->dicision }}"
+                $('#dicision_detail').html(dicision_input);
+            }else{
+                dicision_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
+                $('#dicision_detail').html(dicision_input);
+            }
+        }
+
+        function location_div(location){
+            if(locations === "other"){
+                location_input = "<input type='text' class='form-control' name='location_input' placeholder='ตัวอย่าง: มือถือส่วนตัว'>"
+                $('#location_detail').html(location_input);
+            }else{
+                location_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
+                $('#location_detail').html(location_input);
+            }
+        }
+
+        $('#locations').on('change',function(){
+            locations = $('#locations').val();
+            if(locations === "other"){
+                location_input = "<input type='text' class='form-control' name='location_input' placeholder='ตัวอย่าง: มือถือส่วนตัว'>"
+                $('#location_detail').html(location_input);
+            }else{
+                location_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
+                $('#location_detail').html(location_input);
+            }
+        });
+
+        function Carmodel(){
+            var model_array = [];
+            $("input:checkbox[id=carmodel]:checked").each(function() {
+                model_array.push($(this).val());
+            });
+            if (model_array.length != 0) {
+                $.ajax({
+                type: "POST",
+                url: "{{ route('traffic.getcarlevel') }}",
+                data: { _token:CSRF_TOKEN,model_id:model_array},
+                dataType: "json",
+                success: function (response) {
+                    let levels = '';
+                    response.forEach(carlevels => {
+                        levels += '<label class="btn btn-outline-info p-1 mt-1"> <input type="checkbox" onclick="Carlevel()" name="carlevel[]" id="carlevel" data-id="'+ carlevels.id +'" value="'+ carlevels.id +'">' + carlevels.level_name + '</label> ';
+                    });
+                    let ele = document.getElementById("divlevel");
+                    ele.style.display = "";
+                    $('#carlevels').html(levels);
+                    Carlevel();
+                }
+            });
+
+            }else{
+                let ele = document.getElementById("divlevel");
+                ele.style.display = "none";
+
+                let levels = '';
+                $('#carlevels').html(levels);
+                Carlevel();
+            }
+
+        }
+
+        function Carlevel(){
+            var level_array = [];
+            $("input:checkbox[id=carlevel]:checked").each(function() {
+                level_array.push($(this).val());
+            });
+            if (level_array.length != 0) {
+                $.ajax({
+                type: "POST",
+                url: "{{ route('traffic.getcarcolor') }}",
+                data: { _token:CSRF_TOKEN,level_id:level_array},
+                dataType: "json",
+                success: function (response) {
+                    let colors = '';
+                    response.forEach(carcolors => {
+                        if(carcolors.color_code === null) {
+                            colorname = carcolors.color_name;
+                        }else{
+                            colorname = carcolors.color_name + ' ' + carcolors.color_code;
+                        }
+                        colors += '<label class="btn btn-outline-info p-1 mt-1"> <input type="checkbox" name="carcolor[]" id="carcolor" data-id="'+ carcolors.id +'" value="'+ carcolors.id +'">' + colorname + '</label> ';
+                    });
+                    let ele_color = document.getElementById("divcolor");
+                    ele_color.style.display = "";
+                    $('#carcolors').html(colors);
+                }
+                });
+            }else{
+                let ele_color = document.getElementById("divcolor");
+                    ele_color.style.display = "none";
+
+                let colors = '';
+                $('#carcolors').html(colors);
+            }
+
+        }
     </script>
 @endpush
 @endsection

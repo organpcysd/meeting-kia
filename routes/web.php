@@ -83,7 +83,7 @@ Route::prefix('admin')->group(function(){
             Route::post('source/multidel', [App\Http\Controllers\Admin\TrafficSourceController::class,'multidel'])->name('source.multidel');
             Route::post('getcarlevel',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarlevels'])->name('traffic.getcarlevel');
             Route::post('getcarcolor',[App\Http\Controllers\Admin\TrafficController::class,'getDataCarcolors'])->name('traffic.getcarcolor');
-
+            Route::get('gettraffic/{traffic}',[App\Http\Controllers\Admin\TrafficController::class,'getDataTraffic'])->name('traffic.gettraffic');
         });
 
         Route::resource('/quotation', App\Http\Controllers\Admin\QuotationController::class);

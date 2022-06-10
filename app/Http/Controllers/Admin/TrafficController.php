@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\Traffic;
 use App\Models\Traffic_car_item;
 use App\Models\Traffic_source;
@@ -17,6 +19,7 @@ use App\Models\Car;
 use App\Models\Car_model;
 use App\Models\Car_level;
 use App\Models\Car_color;
+
 
 class TrafficController extends Controller
 {
@@ -217,5 +220,10 @@ class TrafficController extends Controller
 
         Alert::error('ไม่สามารถลบข้อมูลได้');
         return redirect()->route('traffic.index');
+    }
+
+    public function getDataTraffic(Traffic $traffic){
+        $traffic_car_item = Traffic_car_item::where('traffic_id',$traffic->id)->get();
+        return response()->json(['traffic' => $traffic,'traffic_car_item' => $traffic_car_item]);
     }
 }

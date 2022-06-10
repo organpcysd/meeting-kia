@@ -415,7 +415,6 @@
                 getEngine(id);
             });
 
-
         });
 
         function disable_payment_detail(){

@@ -273,9 +273,6 @@
 
             let ele_color = document.getElementById("divcolor");
                 ele_color.style.display = "none";
-            // option = '<label class="btn btn-outline-info p-1"> <input type="checkbox" name="carmodel[]" id="carmodel"> adwdw </label>'
-            // $('#carmodels').html(option);
-            // console.log(option);
 
         });
 
@@ -306,7 +303,6 @@
             $("input:checkbox[id=carmodel]:checked").each(function() {
                 model_array.push($(this).val());
             });
-            // console.log(model_array);
             if (model_array.length != 0) {
                 $.ajax({
                 type: "POST",
@@ -314,12 +310,10 @@
                 data: { _token:CSRF_TOKEN,model_id:model_array},
                 dataType: "json",
                 success: function (response) {
-                    // console.log(response)
-                    let levels = '';
+                     let levels = '';
                     response.forEach(carlevels => {
                         levels += '<label class="btn btn-outline-info p-1 mt-1"> <input type="checkbox" onclick="Carlevel()" name="carlevel[]" id="carlevel" data-id="'+ carlevels.id +'" value="'+ carlevels.id +'">' + carlevels.level_name + '</label> ';
                     });
-                    // console.log(levels);
                     let ele = document.getElementById("divlevel");
                     ele.style.display = "";
                     $('#carlevels').html(levels);
@@ -335,18 +329,6 @@
                 $('#carlevels').html(levels);
                 Carlevel();
             }
-
-            // var checkboxes = document.getElementsByName('carmodel[]');
-            // var result = "";
-
-            // for (var i = 0; i < checkboxes.length; i++) {
-            //     if (checkboxes[i].checked) {
-            //         result += checkboxes[i].value + ",";
-            //         model_id = result.slice(0,-1);
-            //         console.log(model_id);
-            //     }
-            // }
-
         }
 
         function Carlevel(){
@@ -354,7 +336,6 @@
             $("input:checkbox[id=carlevel]:checked").each(function() {
                 level_array.push($(this).val());
             });
-            // console.log(level_array);
             if (level_array.length != 0) {
                 $.ajax({
                 type: "POST",
@@ -362,10 +343,8 @@
                 data: { _token:CSRF_TOKEN,level_id:level_array},
                 dataType: "json",
                 success: function (response) {
-                    // console.log(response);
                     let colors = '';
                     response.forEach(carcolors => {
-                        // console.log(carcolors);
                         if(carcolors.color_code === null) {
                             colorname = carcolors.color_name;
                         }else{
@@ -373,7 +352,6 @@
                         }
                         colors += '<label class="btn btn-outline-info p-1 mt-1"> <input type="checkbox" name="carcolor[]" id="carcolor" data-id="'+ carcolors.id +'" value="'+ carcolors.id +'">' + colorname + '</label> ';
                     });
-                    // console.log(levels);
                     let ele_color = document.getElementById("divcolor");
                     ele_color.style.display = "";
                     $('#carcolors').html(colors);

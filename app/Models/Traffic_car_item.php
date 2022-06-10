@@ -17,15 +17,7 @@ class Traffic_car_item extends Model
         'color_id',
     ];
 
-    public function car_color(){
-        return $this->belongsTo(Car_color::class,'color_id','id');
-    }
-
-    public function car_model(){
-        return $this->belongsTo(Car_model::class,'model_id', 'id');
-    }
-
-    public function car_level(){
-        return $this->belongsTo(Car_level::class,'level_id', 'id');
+    public function traffic(){
+        return $this->belongsTo(Traffic::class,'traffic_id','id');
     }
 }
