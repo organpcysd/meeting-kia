@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <form action="{{ route('traffic.store') }}" method="post">
+    <form action="{{ route('traffic.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-lg-7 col-md-12 col-sm-7">
@@ -232,7 +232,7 @@
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="input-group">
-                                            <input name="favicon" type="file" class="custom-file-input" id="imgInp">
+                                            <input name="imgs" type="file" class="custom-file-input" id="imgInp">
                                             <label class="custom-file-label" for="imgInp">เพิ่มรูปภาพ</label>
                                         </div>
                                     </div>

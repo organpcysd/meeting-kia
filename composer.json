@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "anlutro/l4-settings": "^1.1",
+        "barryvdh/laravel-dompdf": "^1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "haruncpi/laravel-id-generator": "^1.1",

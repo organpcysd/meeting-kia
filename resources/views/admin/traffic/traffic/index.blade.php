@@ -79,10 +79,10 @@
                         {data: 'DT_RowIndex', name: 'id'},
                         {data: 'select', orderable: false},
                         {data: 'created_at'},
-                        {data: 'customer_id'},
-                        {data: 'customer_id'},
+                        {data: 'name'},
+                        {data: 'nickname'},
                         {data: 'tenor'},
-                        {data: 'user_id'},
+                        {data: 'user'},
                         {data: 'btn'},
                     ],
                 });
@@ -144,7 +144,7 @@
                         return new Promise(function (resolve) {
                             $.ajax({
                                 type: 'DELETE',
-                                url: "{{url('admin/traffic/')}}/" + id,
+                                url: "{{url('admin/traffic')}}/" + id,
                                 data: {_token: CSRF_TOKEN},
                                 dataType: 'JSON',
                                 success: function (results) {

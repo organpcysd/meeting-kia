@@ -277,7 +277,14 @@ class UserController extends Controller
         $users = User::whereId($id)->first();
         $users->removeRole($page->roles()->get()[0]->name);
 
-        if ($page->delete()) {
+        if ($users->delete()) {
+
+            $medias = $users->getMedia('user');
+                if(count($medias) > 0){
+                    foreach ($medias as $media) {
+                        $media->delete();
+                    }
+                }
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }

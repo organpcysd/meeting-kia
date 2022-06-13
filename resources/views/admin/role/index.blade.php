@@ -154,7 +154,6 @@
             });
 
             function modaledit(id) {
-
             $.ajax({
                 type: "get",
                 url: "{{ url('admin/role')}}/" + id,
@@ -171,6 +170,8 @@
                             if(permissions.name === response.perm[i]){
                                 organ = 1;
                                 permission_option += '<option value="' + permissions.id + '" selected>' + permissions.name + '</option>';
+                            }else{
+                                organ = 0;
                             }
                         }
                             if(organ != 1){

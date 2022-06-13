@@ -73,7 +73,7 @@
                                     <option @if($traffic->dicision === "สามี") selected @endif value="สามี">สามี</option>
                                     <option @if($traffic->dicision === "ภรรยา") selected @endif value="ภรรยา">ภรรยา</option>
                                     <option @if($traffic->dicision === "ครอบครัว") selected @endif value="ครอบครัว">ครอบครัว</option>
-                                    <option @if($traffic->dicision === "other") selected @endif value="other">อื่นๆ</option>
+                                    <option @if(!in_array($traffic->dicision,array(null,'ตัวลูกค้าเอง','พ่อ','แม่','พ่อ-แม่','สามี','ภรรยา','ครอบครัว'))) selected @endif value="other">อื่นๆ</option>
                                 </select>
                                 <div id="dicision_detail" class="mt-2">
                                     <small class="text-cyan">หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "อื่นๆ" เพื่อกรอกข้อมูล</small>
@@ -97,11 +97,11 @@
                             <label class="col-sm-4 col-form-label">สถานที่</label>
                             <div class="col-sm-8">
                                 <select class="sel2 form-control" name="location" id="locations">
-                                    <option value="" selected disabled>- ค้นหาสถานที่ -</option>
-                                    <option value="โชว์รูม">โชว์รูม</option>
-                                    <option value="เดอะมอลล์โคราช">บูธเดอะมอลล์โคราช</option>
-                                    <option value="เซ็นทรัลโคราช">เซ็นทรัลโคราช</option>
-                                    <option value="other">อื่นๆ</option>
+                                    <option @if($traffic->location === null) selected @endif value="" disabled>- ค้นหาสถานที่ -</option>
+                                    <option @if($traffic->location === "โชว์รูม") selected @endif value="โชว์รูม">โชว์รูม</option>
+                                    <option @if($traffic->location === "เดอะมอลล์โคราช") selected @endif value="เดอะมอลล์โคราช">บูธเดอะมอลล์โคราช</option>
+                                    <option @if($traffic->location === "เซ็นทรัลโคราช") selected @endif value="เซ็นทรัลโคราช">เซ็นทรัลโคราช</option>
+                                    <option @if(!in_array($traffic->location,array(null,'โชว์รูม','เดอะมอลล์โคราช','เซ็นทรัลโคราช'))) selected @endif value="other">อื่นๆ</option>
                                 </select>
                                 <div id="location_detail" class="mt-2">
                                     <small class="text-cyan">หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "อื่นๆ" เพื่อกรอกข้อมูล</small>
@@ -135,7 +135,7 @@
                                 <select class="sel2 form-control" name="traffic_channel" id="traffic_channel">
                                     <option value="" selected disabled>- ค้นหาช่องทางการรับรู้ -</option>
                                     @foreach($channels as $item)
-                                        <option value="{{$item->id}}">{{$item->channel_id}}</option>
+                                        <option @if($traffic->channel_id === $item->id) selected @endif value="{{$item->id}}">{{$item->channel_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -196,7 +196,7 @@
                             <div class="col-lg-10 col-sm-8">
                                 <div class="btn-group-toggle" data-toggle="buttons" id="carcolors">
                                     @foreach($carcolors as $item)
-                                        <label class="btn btn-outline-info p-1"> <input type="checkbox" name="carcolor[]" id="carcolor" value="{{ $item->id }}" @if(in_array($item->id,json_decode($traffic->traffic_car_item->color_id))) checked @endif> {{ $item->color_name }} </label>
+                                        <label class="btn btn-outline-info p-1 mt-1"> <input type="checkbox" name="carcolor[]" id="carcolor" value="{{ $item->id }}" @if(in_array($item->id,json_decode($traffic->traffic_car_item->color_id))) checked @endif> {{ $item->color_name . ' ' . $item->color_code }} </label>
                                     @endforeach
                                 </div>
                             </div>
@@ -233,11 +233,11 @@
                             <div class="col-sm-10">
                                 <div class="row row-cols-2 align-items-center">
                                     <div class="col-sm-4 text-center">
-                                        <img src="{{asset('image/no-image.jpg')}}" height="100px" width="100px" id="showimg">
+                                        <img src="@if($traffic->getFirstMediaUrl('traffic')) {{asset($traffic->getFirstMediaUrl('traffic'))}} @else {{asset('image/no-image.jpg')}} @endif" height="100px" width="100px" id="showimg">
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="input-group">
-                                            <input name="favicon" type="file" class="custom-file-input" id="imgInp">
+                                            <input name="imgs" type="file" class="custom-file-input" id="imgInp">
                                             <label class="custom-file-label" for="imgInp">เพิ่มรูปภาพ</label>
                                         </div>
                                     </div>
@@ -284,12 +284,26 @@
                 type: "get",
                 url: "{{ url('admin/traffic/gettraffic') }}/" + id,
                 success: function (response) {
-                    // for(x in response.traffic_car_item){
-                    //     console.log(JSON.parse(response.traffic_car_item[x].color_id));
-                    // }
-                    // console.log(response.traffic_car_item);
+                    console.log(response);
                 }
             });
+
+            dicision = $('#dicision').val();
+            if(dicision === "other"){
+                dicision_input = "<input type='text' class='form-control' name='dicision_input' placeholder='ตัวอย่าง: อาม่า' value='{{ $traffic->dicision }}'>"
+                $('#dicision_detail').html(dicision_input);
+            }else{
+                dicision_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
+                $('#dicision_detail').html(dicision_input);
+            }
+            locations = $('#locations').val();
+            if(locations === "other"){
+                location_input = "<input type='text' class='form-control' name='location_input' placeholder='ตัวอย่าง: มือถือส่วนตัว' value='{{ $traffic->location }}'>"
+                $('#location_detail').html(location_input);
+            }else{
+                location_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
+                $('#location_detail').html(location_input);
+            }
 
         });
 
@@ -303,26 +317,6 @@
                 $('#dicision_detail').html(dicision_input);
             }
         });
-
-        function disition_div(dicision){
-            if(dicision === "other"){
-                dicision_input = "<input type='text' class='form-control' name='dicision_input' placeholder='ตัวอย่าง: อาม่า'> value='{{ $traffic->dicision }}"
-                $('#dicision_detail').html(dicision_input);
-            }else{
-                dicision_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
-                $('#dicision_detail').html(dicision_input);
-            }
-        }
-
-        function location_div(location){
-            if(locations === "other"){
-                location_input = "<input type='text' class='form-control' name='location_input' placeholder='ตัวอย่าง: มือถือส่วนตัว'>"
-                $('#location_detail').html(location_input);
-            }else{
-                location_input = "<small class='text-cyan'>หากไม่มีตัวเลือกที่ต้องการกรุณาเลือก "+'อื่นๆ'+" เพื่อกรอกข้อมูล</small>"
-                $('#location_detail').html(location_input);
-            }
-        }
 
         $('#locations').on('change',function(){
             locations = $('#locations').val();

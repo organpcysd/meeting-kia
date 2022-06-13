@@ -38,12 +38,28 @@ class TrafficController extends Controller
                 $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
                 return $select;
             })
+            ->addColumn('name',function($data){
+                $name = $data->customer->f_name . ' ' . $data->customer->l_name;
+                return $name;
+            })
+            ->addColumn('nickname',function($data){
+                $nickname = $data->customer->nickname;
+                return $nickname;
+            })
+            ->addColumn('created_at',function($data){
+                $created_at = Carbon::parse($data['created_at']);
+                return $created_at;
+            })
+            ->addColumn('user',function($data){
+                $user = $data->user->f_name . ' ' . $data->user->l_name;
+                return $user;
+            })
             ->addColumn('btn',function($data){
                 $btn = '<a class="btn btn-warning" href="'.route('traffic.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
                         <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
-            ->rawColumns(['btn','select'])
+            ->rawColumns(['btn','select','name','nickname','created_at','user'])
             ->make(true);
         }
         return view('admin.traffic.traffic.index');
@@ -97,7 +113,6 @@ class TrafficController extends Controller
 
         $traffic->customer_id = $request->customer;
         $traffic->user_id = $request->user;
-        $traffic->dicision = $request->dicision;
         $traffic->source_id = $request->traffic_source;
         $traffic->target = $request->target;
         $traffic->contact_result = $request->contact_result;
@@ -171,7 +186,65 @@ class TrafficController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $traffic = Traffic::whereId($id)->first();
+
+        if($request->dicision_input != null){
+            $traffic->dicision = $request->dicision_input;
+        }else{
+            $traffic->dicision = $request->dicision;
+        }
+
+        if($request->location_input != null){
+            $traffic->location = $request->location_input;
+        }else{
+            $traffic->location = $request->location;
+        }
+
+        if($request->staff_pick != null){
+            $traffic->testdrive = "Y";
+        }else{
+            $traffic->testdrive = "N";
+        }
+
+        $traffic->customer_id = $request->customer;
+        $traffic->user_id = $request->user;
+        $traffic->source_id = $request->traffic_source;
+        $traffic->target = $request->target;
+        $traffic->contact_result = $request->contact_result;
+        $traffic->channel_id = $request->traffic_channel;
+        $traffic->tenor = $request->tenor;
+        $traffic->staff_pick = $request->staff_pick;
+        $traffic->updated_at = Carbon::now();
+
+        if($traffic->save()){
+            $traffic_car_item = Traffic_car_item::where('traffic_id',$id)->first();;
+            $traffic_car_item->traffic_id = $traffic->id;
+            $traffic_car_item->model_id = json_encode($request->carmodel);
+            $traffic_car_item->level_id = json_encode($request->carlevel);
+            $traffic_car_item->color_id = json_encode($request->carcolor);
+
+            if($request->file('imgs')){
+                $medias = $traffic->getMedia('traffic');
+                if(count($medias) > 0){
+                    foreach ($medias as $media) {
+                        $media->delete();
+                    }
+                }
+
+                $getImage = $request->file('imgs');
+                $newname = time().'.'.$getImage->extension();
+                Storage::putFileAs('public', $getImage, $newname);
+                $traffic->addMedia(storage_path('app\public\\').$newname)->toMediaCollection('traffic');
+            }
+
+            if($traffic_car_item->save()){
+                Alert::success('เพิ่มข้อมูลสำเร็จ');
+                return redirect()->route('traffic.index');
+            }
+        }
+
+        Alert::error('ไม่สามารถเพิ่มข้อมูลได้');
+        return redirect()->route('traffic.create');
     }
 
     /**
@@ -188,6 +261,12 @@ class TrafficController extends Controller
         $traffic = Traffic::whereId($id)->first();
 
         if ($traffic->delete()) {
+            $medias = $traffic->getMedia('traffic');
+            if(count($medias) > 0){
+                foreach ($medias as $media) {
+                    $media->delete();
+                }
+            }
             $status = true;
             $message = 'ลบข้อมูลเรียบร้อย';
         }
@@ -214,6 +293,7 @@ class TrafficController extends Controller
         $traffic = traffic::whereIn('id',$ids);
 
         if($traffic->delete()) {
+
             Alert::success('ลบข้อมูลเรียบร้อย');
             return redirect()->route('traffic.index');
         }

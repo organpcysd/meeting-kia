@@ -35,6 +35,33 @@ class HomeController extends Controller
         $daily_reserved = Reserved::whereDate('created_at', Carbon::today())->get();
         $daily_received = Received::whereDate('created_at', Carbon::today())->get();
 
+        $traffic_m = Traffic::select('id','source_id','created_at')->get()->groupBy(['source_id',function($date){return Carbon::parse($date->created_at)->format('m');}]);
+
+        $traffic_mcount = [];
+        $trafficArr = [];
+
+        foreach ($traffic_m as $key => $value) {
+            $traffic_mcount[(int)$key] = count($value);
+        }
+
+        for($i = 1; $i <= 12; $i++){
+            if(!empty($traffic_mcount[$i])){
+                $trafficArr[$i] = $traffic_mcount[$i];
+            }else{
+                $trafficArr[$i] = 0;
+            }
+        }
+
+
+        // for($i = 1; $i <= 12; $i++){
+        //     if(!empty($traffic_mcount[$i])){
+        //         $trafficArr[$i] = $traffic_mcount[$i];
+        //     }else{
+        //         $trafficArr[$i] = 0;
+        //     }
+        // }
+        // dd($traffic_m);
+
         return view('admin.home',compact('stocks','customers','traffic','quotations','reserved','received','daily_customers','daily_traffic','daily_quotations','daily_reserved','daily_received'));
     }
 
