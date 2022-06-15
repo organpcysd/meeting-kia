@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
+use PDF;
+
 use App\Models\Quotation;
 use App\Models\Quotation_detail;
 use App\Models\Customer;
@@ -49,7 +51,8 @@ class QuotationController extends Controller
                 return $select;
             })
             ->addColumn('btn',function($data){
-                $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('quotation.edit', ['quotation' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
+                $btn = '<a type="button" class="btn btn-warning" href="'. route('quotation.pdf', ['quotation' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
+                        <a id = "editbtn" type="button" class="btn btn-warning" href="'. route('quotation.edit', ['quotation' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
                         <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
@@ -255,5 +258,10 @@ class QuotationController extends Controller
 
         Alert::error('ไม่สามารถลบข้อมูลได้');
         return redirect()->route('quotation.index');
+    }
+
+    public function pdf(Quotation $quotation){
+        $pdf = PDF::loadView('admin.quotation.pdf',['quotation' => $quotation]);
+        return @$pdf->stream();
     }
 }

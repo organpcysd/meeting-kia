@@ -77,7 +77,7 @@
                                             <select class="sel2 form-control" name="car" id="car">
                                                 <option value="" selected disabled>- ค้นหารถยนต์ -</option>
                                                 @foreach($cars as $item)
-                                                    <option value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->years}}</option>
+                                                    <option value="{{$item->id}}">{{$item->car_model->model_name . ' ' . $item->car_level->level_name . ' ' . $item->car_color->color_name . ' ' . $item->price . ' ' . $item->years}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
