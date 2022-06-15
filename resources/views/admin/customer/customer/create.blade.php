@@ -36,12 +36,12 @@
 
                         <div class="form-group">
                             <label>เลขประจำตัวผู้เสียภาษี</label>
-                            <input type="text" class="form-control" id="itax_id" name="itax_id" required>
+                            <input type="text" class="form-control" id="itax_id" name="itax_id" minlength="13" maxlength="13" required>
                         </div>
 
                         <div class="form-group">
                             <label>เลขประจำตัวประชาชน</label>
-                            <input type="text" class="form-control" id="citizen_id" name="citizen_id" required>
+                            <input type="text" class="form-control" id="citizen_id" name="citizen_id" minlength="13" maxlength="13" required>
                         </div>
 
                         <div class="form-group row">
@@ -90,12 +90,12 @@
 
                         <div class="form-group">
                             <label>เบอร์โทรศัพท์</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" required>
+                            <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" minlength="10" required>
                         </div>
 
                         <div class="form-group">
                             <label>Fax</label>
-                            <input type="tel" class="form-control" id="fax" name="fax">
+                            <input type="tel" class="form-control" id="fax" maxlength="9" minlength="9" name="fax">
                         </div>
 
                         <div class="form-group">

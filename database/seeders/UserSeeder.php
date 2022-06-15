@@ -19,22 +19,32 @@ class UserSeeder extends Seeder
     public function run()
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
-        Permission::create(['name' => 'report']);
-        Permission::create(['name' => 'manageusers']);
-        Permission::create(['name' => 'managecar']);
-        Permission::create(['name' => 'managesystem']);
+        Permission::create(['name' => 'dashboard']);
+        Permission::create(['name' => 'users']);
+        Permission::create(['name' => 'customers']);
+        Permission::create(['name' => 'traffics']);
+        Permission::create(['name' => 'quotations']);
+        Permission::create(['name' => 'reserved']);
+        Permission::create(['name' => 'received']);
+        Permission::create(['name' => 'receivedfollow']);
+        Permission::create(['name' => 'cars']);
+        Permission::create(['name' => 'prefixes']);
+        Permission::create(['name' => 'positions']);
+        Permission::create(['name' => 'roles']);
+        Permission::create(['name' => 'permissions']);
+        Permission::create(['name' => 'website']);
 
         $role_administrator = Role::create(['name' => 'ผู้บริหาร']);
-        $role_administrator->syncPermissions(['report']);
+        $role_administrator->syncPermissions(['dashboard']);
 
         $role_manager = Role::create(['name' => 'ผู้จัดการ']);
-        $role_manager->syncPermissions(['report','manageusers','managecar','managesystem']);
+        $role_manager->syncPermissions(['dashboard','users','customers','traffics','quotations','reserved','received','receivedfollow','cars','prefixes','positions','roles','permissions','website']);
 
         $role_admin = Role::create(['name' => 'ผู้ดูแลระบบ']);
-        $role_admin->syncPermissions(['report','manageusers','managecar','managesystem']);
+        $role_admin->syncPermissions(['dashboard','users','customers','traffics','quotations','reserved','received','receivedfollow','cars','prefixes','positions','roles','permissions','website']);
 
         $role_sales = Role::create(['name' => 'ฝ่ายขาย']);
-        $role_sales->syncPermissions([]);
+        $role_sales->syncPermissions(['dashboard','customers','traffics','quotations','reserved','received','receivedfollow']);
 
         $user = \App\Models\User::create([
             'user_prefix_id' => '1',

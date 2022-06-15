@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mt-4">
-                        <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
+                        <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap table-hover" style="width: 100%;">
                             <thead>
                             <tr>
                                 <td>หมายเลขการส่งมอบรถยนต์</td>

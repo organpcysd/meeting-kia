@@ -47,7 +47,7 @@ class UserController extends Controller
                 ->addColumn('btn',function ($data){
                     if(Auth::user()->id == $data['id']){
                         $btn = '<a class="btn btn-warning" href="'.route('user.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
-                                <a class="btn btn-danger" disabled><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
+                                <button class="btn btn-danger" disabled><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></button>';
                     }else{
                         $btn = '<a class="btn btn-warning" href="'.route('user.edit',$data['id']).'"><i class="fa fa-pen" data-toggle="tooltip" title="แก้ไข"></i></a>
                                 <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';

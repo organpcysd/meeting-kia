@@ -109,7 +109,7 @@
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                 <div class="form-group">
                                     <label>เบอร์โทรศัพท์</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" maxlength="10">
+                                    <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" minlength="10" placeholder="ตัวอย่าง: 0987654321">
                                 </div>
 
                                 <div class="form-group">

@@ -38,7 +38,7 @@ class HomeController extends Controller
 
         $traffic_y = Traffic::select('source_id',Traffic::raw('month(created_at) as Month'),Traffic::raw('count(*) as total'))->whereYear('created_at','=','2022')->groupBy('source_id',Traffic::raw('month(created_at)'))->get();
         // $traffic_m = Traffic::select('id','source_id','created_at')->get()->groupBy([function($date){return Carbon::parse($date->created_at)->format('m');}]);
-        // dd($traffic_y);
+        dd($traffic_y);
 
         $arr = [];
         $months = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
@@ -47,7 +47,7 @@ class HomeController extends Controller
             $arr[(int)$t] = $val->Month;
         }
 
-        dd($arr);
+        // dd($arr);
 
         // $traffic_mcount = [];
         // $trafficArr = [];

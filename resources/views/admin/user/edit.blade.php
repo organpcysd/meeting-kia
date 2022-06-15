@@ -118,7 +118,7 @@
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                 <div class="form-group">
                                     <label>เบอร์โทรศัพท์</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value = "{{ $user->phone }}">
+                                    <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" minlength="10" value = "{{ $user->phone }}">
                                 </div>
 
                                 <div class="form-group">

@@ -30,9 +30,9 @@
                                 <a class="btn btn-danger float-right" onclick='form_multidel()'><i class="fa fa-trash px-2"></i>ลบที่เลือก</a>
                             </div>
                             <div class="col-sm-12">
-                                <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
+                                <table id="table" class="table table-hover table-striped nowrap text-center" style="width: 100%;">
                                     <thead>
-                                    <tr>
+                                    <tr class="text-center">
                                         <td>##</td>
                                         <td><input type="checkbox" id="selectall"/></td>
                                         <td>วันที่เยี่ยมชม</td>

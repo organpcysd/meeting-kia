@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <a href="{{ route('permission.create') }}" class="btn btn-success"><i class="fa fa-plus-circle px-2"></i>เพิ่มข้อมูล</a>
                     <div class="mt-4">
-                        <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
+                        <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap table-hover" style="width: 100%;">
                             <thead>
                             <tr>
                                 <td>##</td>

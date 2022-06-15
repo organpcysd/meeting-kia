@@ -66,7 +66,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap" style="width: 100%;">
+                            <table id="table" class="table table-striped dataTable no-footer dtr-inline text-center nowrap table-hover" style="width: 100%;">
                                 <thead>
                                 <tr>
                                     <td>##</td>
