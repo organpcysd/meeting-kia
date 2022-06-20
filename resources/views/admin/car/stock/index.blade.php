@@ -20,7 +20,7 @@
 
     <div class="row">
         <div class="col-lg-4 col-md-12 col-sm-4">
-            <div class="card card-info text-center">
+            <div class="card card-info">
                 <div class="card-header">
                     ข้อมูลรถยนต์
                 </div>

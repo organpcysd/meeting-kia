@@ -17,6 +17,11 @@ class UserPrefixSeeder extends Seeder
     {
         DB::table('user_prefixes')->insert([
             [
+                'title' => 'คุณ',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
                 'title' => 'นาย',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

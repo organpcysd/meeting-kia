@@ -49,6 +49,10 @@ class Customer extends Model
         return $this->hasOne(Quotation::class);
     }
 
+    public function reserved(){
+        return $this->hasOne(Reserved::class);
+    }
+
     public function traffic(){
         $this->hasOne(Traffic::class);
     }

@@ -51,6 +51,18 @@
                                     <hr/>
 
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
+                                        <div class="col-sm-8">
+                                            <select class="sel2 form-control" name="user" id="user">
+                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
+                                                @foreach($users as $item)
+                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ลูกค้า</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="customer" id="customer">
@@ -63,14 +75,16 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
+                                        <label class="col-sm-4 col-form-label">เบอร์โทรศัพท์</label>
                                         <div class="col-sm-8">
-                                            <select class="sel2 form-control" name="user" id="user">
-                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
-                                                @foreach($users as $item)
-                                                    <option value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="text" class="form-control form-control-sm" id="phone" name="phone" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">ที่อยู่</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control form-control-sm" id="address" name="address">
                                         </div>
                                     </div>
 
@@ -100,7 +114,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">สถานที่จัดส่ง</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="place_send" name="place_send">
+                                            <input type="text" class="form-control form-control-sm" id="place_send" name="place_send">
                                         </div>
                                     </div>
 
@@ -128,6 +142,11 @@
                     <div class="card card-info">
                         <div class="card-header">
                             การวางเงินมัดจำ
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="form-group row">
@@ -175,6 +194,11 @@
                     <div class="card card-info">
                         <div class="card-header">
                             รายละเอียดการชำระเงิน
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
 
@@ -200,6 +224,13 @@
                                 <label class="col-sm-3 col-form-label"><u>ส่วนลด</u> ราคารถยนต์</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="payment_discount" name="payment_discount">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">ค่าจดทะเบียน</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="payment_regis" name="payment_regis">
                                 </div>
                             </div>
 
@@ -459,13 +490,43 @@
                 cal()
             }
 
+            $('#customer').change(function(){
+                var id = $('#customer').val();
+                getCustomerAddress(id);
+            });
+
         });
+
+        //ดึงข้อมูล Customer
+        function getCustomerAddress(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/reserved/getcustomeraddress') }}/" +id,
+                success: function (response) {
+                    response.address.forEach(address =>{
+                            let cus_address = "";
+                            let village = address.village == null ? "" : cus_address += address.village + " ";
+                            let house_number = address.house_number == null ? "" : cus_address += "บ้านเลขที่ " + address.house_number + " ";
+                            let alley = address.alley == null ? "" : cus_address += "ตรอก/ซอย " + address.alley + " ";
+                            let group = address.group == null ? "" : cus_address += "หมู่ที่ " + address.group + " ";
+                            let road = address.road == null ? "" : cus_address += "ถ. " +address.road + " ";
+                            let canton = address.canton.name_th == null ? "" : cus_address += "ต. " + address.canton.name_th + " ";
+                            let district = address.districts.name_th == null ? "" : cus_address += "อ. " + address.districts.name_th + " ";
+                            let province = address.provinces.name_th == null ? "" : cus_address +=  "จ. " + address.provinces.name_th + " ";
+                            let zipcode = address.zipcode == null ? "" : cus_address += address.zipcode + " ";
+                            $('#address').val(cus_address);
+                        });
+                    $('#phone').val(response.customer.phone);
+                }
+            });
+        }
 
         function disable_payment_detail(){
             $('#payment_detail').fadeTo(0, 0.4);
 
             document.getElementById("condition").disabled = true;
             document.getElementById("payment_discount").disabled = true;
+            document.getElementById("payment_regis").disabled = true;
             document.getElementById("deposit_roll").disabled = true;
             document.getElementById("payment_decorate").disabled = true;
             document.getElementById("payment_insurance").disabled = true;
@@ -484,6 +545,7 @@
 
             document.getElementById("condition").disabled = false;
             document.getElementById("payment_discount").disabled = false;
+            document.getElementById("payment_regis").disabled = false;
             document.getElementById("deposit_roll").disabled = false;
             document.getElementById("payment_decorate").disabled = false;
             document.getElementById("payment_insurance").disabled = false;
@@ -586,7 +648,7 @@
                     $('#accessories').val(response.quotation_detail.accessories);
 
                     cal();
-
+                    getCustomerAddress(response.quotation.customer_id);
                 }
             });
 
@@ -621,12 +683,12 @@
                 let ele = document.getElementById("cal");
                 ele.style.display = "none";
 
-                cal()
+                cal();
             }else{
                 let ele = document.getElementById("cal");
                 ele.style.display = "";
 
-                cal()
+                cal();
             }
         });
 
@@ -637,7 +699,7 @@
                 let ele = document.getElementById("carturn");
                 ele.style.display = "none";
                 $("#payment_car_turn").val('');
-                cal()
+                cal();
             }else{
                 let ele = document.getElementById("carturn");
                 ele.style.display = "";
@@ -655,58 +717,64 @@
             net = price_car - payment_discount
             $('#price_car_net').val(net);
 
-            cal()
+            cal();
         });
 
         $('#payable').on('keyup',function(){
             var payable = parseInt($("#payable").val());
             $('#payable_show').val(payable);
-            cal()
+            cal();
         });
+
+        $('#payment_regis').on('keyup',function() {
+            cal();
+        });
+
         //----- credit -----//
 
         $('#payment_down').on('keyup',function() {
-            cal()
+            cal();
         });
 
         $('#payment_down_discount').on('keyup',function() {
-            cal()
+            cal();
         });
 
         $('#term_credit').on('change',function() {
-            cal()
+            cal();
         });
 
         $('#interest').on('keyup',function() {
-            cal()
+            cal();
         });
 
         //----------------//
 
         $('#deposit_roll').on('keyup',function() {
-            cal()
+            cal();
         });
 
         $('#payment_decorate').on('keyup',function() {
-            cal()
+            cal();
         });
 
         $('#payment_insurance').on('keyup',function() {
-            cal()
+            cal();
         });
 
         $('#payment_other').on('keyup',function() {
-            cal()
+            cal();
         });
 
         $('#payment_car_turn').on('keyup',function() {
-            cal()
+            cal();
         });
 
         function cal() {
             var payable = parseInt($('#payable').val()); //จำนวนเงินมัดจำ
             var price_car = parseInt($("#price_car").val()); //ราคารถยนต์
             var payment_discount = parseInt($("#payment_discount").val()); //ส่วนลดราคารถยนต์
+            var payment_regis = parseInt($("#payment_regis").val()); //ค่าจดทะเบียน
 
             var price_car_net = parseInt($("#price_car_net").val()); //ราคารถยนต์สุทธิ
             var payment_down = parseInt($("#payment_down").val()); //ดาวน์
@@ -722,6 +790,10 @@
 
             if(isNaN(payment_discount)) {
                 payment_discount = 0;
+            }
+
+            if(isNaN(payment_regis)) {
+                payment_regis = 0;
             }
 
             if(isNaN(payable)) {
@@ -766,7 +838,7 @@
 
             condition = $("#condition").val();
             if (condition === "cash") {
-                let subtotal = ( price_car - payment_discount ) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
+                let subtotal = ( price_car - payment_discount ) + ( payment_regis + deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
                 $("#subtotal").val(subtotal);
             } else if ( condition === "credit") {
                 hire = (price_car - payment_discount) - payment_down;
@@ -777,7 +849,7 @@
                 $("#hire_purchase").val(hire); //ยอดจัดเช่าซื้อ
                 $("#term_payment").val(net_payment); //ค่างวดต่อเดือน
 
-                let subtotal = (payment_down - payment_down_discount) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
+                let subtotal = (payment_down - payment_down_discount) + ( payment_regis + deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
                 $("#subtotal").val(subtotal);
             }
 

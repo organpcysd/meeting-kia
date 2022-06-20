@@ -93,7 +93,9 @@ Route::prefix('admin')->group(function(){
 
         Route::resource('/reserved', App\Http\Controllers\Admin\ReservedController::class);
         Route::post('/reserved/multidel', [App\Http\Controllers\Admin\ReservedController::class,'multidel'])->name('reserved.multidel');
+        Route::get('/reserved/getcustomeraddress/{customer}',[App\Http\Controllers\Admin\ReservedController::class,'getDataCustomeraddress']);
         Route::get('/reserved/quotation/{quotation}',[App\Http\Controllers\Admin\ReservedController::class,'getDataQuotation'])->name('reserved.quotation');
+        Route::get('/reserved/print/{reserved}',[App\Http\Controllers\Admin\ReservedController::class,'pdf'])->name('reserved.pdf');
 
         Route::resource('/received', App\Http\Controllers\Admin\ReceivedController::class);
         Route::post('/received/multidel', [App\Http\Controllers\Admin\ReceivedController::class,'multidel'])->name('received.multidel');

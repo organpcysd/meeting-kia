@@ -48,4 +48,8 @@ class Car extends Model
         return $this->hasMany(Car_stock::class);
     }
 
+    public function quotation(){
+        return $this->hasOne(Quotation::class);
+    }
+
 }

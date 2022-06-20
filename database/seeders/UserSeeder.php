@@ -61,6 +61,7 @@ class UserSeeder extends Seeder
         $user2 = \App\Models\User::create([
             'user_prefix_id' => '1',
             'f_name' => 'สิทธิพล',
+            'l_name' => 'ดอนราชลี',
             'status' => '1',
             'email' => 'sittipol.do@gmail.com',
             'password' => bcrypt('sittipol1123'),

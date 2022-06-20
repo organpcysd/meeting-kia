@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Models\Reserved;
 use App\Models\Reserved_detail;
 use App\Models\quotation;
@@ -59,7 +61,8 @@ class ReservedController extends Controller
                 return $select;
             })
             ->addColumn('btn',function($data){
-                $btn = '<a id = "editbtn" type="button" class="btn btn-warning" href="'. route('reserved.edit', ['reserved' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
+                $btn = '<a type="button" class="btn btn-info" href="'. route('reserved.pdf', ['reserved' => $data['id']]) .'" target="_blank"><i class="fa fa-print"></i></a>
+                        <a id = "editbtn" type="button" class="btn btn-warning" href="'. route('reserved.edit', ['reserved' => $data['id']]) .'"><i class="fa fa-pen"></i></a>
                         <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
@@ -275,6 +278,11 @@ class ReservedController extends Controller
         return response()->json(['quotation' => $quotation, 'customers' => $customers, 'users' => $users, 'cars' => $cars, 'quotation_detail' => $quotation_detail, 'accessories' => $accessories, 'car_gifts' => $car_gifts]);
     }
 
+    public function getDataCustomeraddress(Customer $customer){
+        $address = $customer->customer_address->with('provinces','districts','canton')->get();
+        return response()->json(['customer' => $customer,'address' => $address]);
+    }
+
     public function multidel(Request $request){
         $ids = $request->select;
         $reserved = Reserved::whereIn('id',$ids);
@@ -286,5 +294,10 @@ class ReservedController extends Controller
 
         Alert::error('ไม่สามารถลบข้อมูลได้');
         return redirect()->route('reserved.index');
+    }
+
+    public function pdf(Reserved $reserved){
+        $pdf = PDF::loadView('admin.reserved.pdf',['reserved' => $reserved]);
+        return @$pdf->stream();
     }
 }

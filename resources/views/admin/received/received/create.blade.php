@@ -77,7 +77,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ที่อยู่</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="address" name="address">
+                                            <input type="text" class="form-control form-control-sm" id="address" name="address">
                                         </div>
                                     </div>
 
@@ -104,7 +104,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">เลขตัวเครื่อง</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="engine" name="engine" readonly>
+                                            <input type="text" class="form-control form-control-sm" id="engine" name="engine" readonly>
                                         </div>
                                     </div>
 
@@ -438,6 +438,7 @@
             $('#savebtn').attr('onclick','formsubmit()');
         }
 
+        //ดึงข้อมูล Customer
         function getCustomerAddress(id){
             $.ajax({
                 type: "get",

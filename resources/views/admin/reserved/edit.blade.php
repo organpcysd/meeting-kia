@@ -52,6 +52,18 @@
                                     <hr/>
 
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
+                                        <div class="col-sm-8">
+                                            <select class="sel2 form-control" name="user" id="user">
+                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
+                                                @foreach($users as $item)
+                                                    <option @if ($reserved->user_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ลูกค้า</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="customer" id="customer">
@@ -64,14 +76,16 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">ที่ปรึกษาการขาย</label>
+                                        <label class="col-sm-4 col-form-label">เบอร์โทรศัพท์</label>
                                         <div class="col-sm-8">
-                                            <select class="sel2 form-control" name="user" id="user">
-                                                <option value="" selected disabled>- ค้นหาที่ปรึกษาการขาย -</option>
-                                                @foreach($users as $item)
-                                                    <option @if ($reserved->user_id === $item->id) selected @endif value="{{$item->id}}">{{$item->f_name . ' ' . $item->l_name . ' (' . $item->phone . ' )'}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="text" class="form-control form-control-sm" id="phone" name="phone" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">ที่อยู่</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control form-control-sm" id="address" name="address" readonly>
                                         </div>
                                     </div>
 
@@ -127,6 +141,11 @@
                     <div class="card card-info">
                         <div class="card-header">
                             การวางเงินมัดจำ
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="form-group row">
@@ -140,7 +159,7 @@
                                 <label class="col-sm-4 col-form-label">วิธีการชำระเงิน</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" name="payment_by" id="payment_by">
-                                        <option value="" selected disabled>- เลือกวิธีการชำระเงิน -</option>
+                                        <option @if($reserved->payment_by === null) selected @endif value="" disabled>- เลือกวิธีการชำระเงิน -</option>
                                         <option @if($reserved->payment_by === 'cash') selected @endif value="cash">เงินสด</option>
                                         <option @if($reserved->payment_by === 'credit') selected @endif value="credit">บัตรเครดิต</option>
                                         <option @if($reserved->payment_by === 'cheque') selected @endif value="cheque">เช็ค</option>
@@ -174,6 +193,11 @@
                     <div class="card card-info">
                         <div class="card-header">
                             รายละเอียดการชำระเงิน
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
 
@@ -199,6 +223,13 @@
                                 <label class="col-sm-3 col-form-label"><u>ส่วนลด</u> ราคารถยนต์</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="payment_discount" name="payment_discount" value="{{ $reserved->reserved_detail->payment_discount }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">ค่าจดทะเบียน</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="payment_regis" name="payment_regis" value="{{ $reserved->reserved_detail->payment_regis }}">
                                 </div>
                             </div>
 
@@ -438,15 +469,19 @@
                 disable_payment_detail();
             }
 
-            let payment = document.getElementById("payment_condition");
-            payment.style.display = "none";
-
+            var payment = document.getElementById("payment_condition");
             let payment_by = $('#payment_by').val();
-                if(payment_by != 'cash'){
-                    payment.style.display = "";
-                }else{
-                    payment.style.display = "none";
-                }
+
+            console.log(payment_by);
+            if(payment_by === null) {
+                payment.style.display = "none";
+            }
+
+            if(payment_by != 'cash' && payment_by != null){
+                payment.style.display = "";
+            }else{
+                payment.style.display = "none";
+            }
 
             $('#payment_by').change(function(){
                 let payment_by = $('#payment_by').val();
@@ -476,7 +511,38 @@
                 cal()
             }
 
+            var id = $('#customer').val();
+            getCustomerAddress(id);
+
+            $('#customer').change(function(){
+                getCustomerAddress(id);
+            });
+
         });
+
+        //ดึงข้อมูล Customer
+        function getCustomerAddress(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/reserved/getcustomeraddress') }}/" +id,
+                success: function (response) {
+                    response.address.forEach(address =>{
+                            let cus_address = "";
+                            let village = address.village == null ? "" : cus_address += address.village + " ";
+                            let house_number = address.house_number == null ? "" : cus_address += "บ้านเลขที่ " + address.house_number + " ";
+                            let alley = address.alley == null ? "" : cus_address += "ตรอก/ซอย " + address.alley + " ";
+                            let group = address.group == null ? "" : cus_address += "หมู่ที่ " + address.group + " ";
+                            let road = address.road == null ? "" : cus_address += "ถ. " +address.road + " ";
+                            let canton = address.canton.name_th == null ? "" : cus_address += "ต. " + address.canton.name_th + " ";
+                            let district = address.districts.name_th == null ? "" : cus_address += "อ. " + address.districts.name_th + " ";
+                            let province = address.provinces.name_th == null ? "" : cus_address +=  "จ. " + address.provinces.name_th + " ";
+                            let zipcode = address.zipcode == null ? "" : cus_address += address.zipcode + " ";
+                            $('#address').val(cus_address);
+                        });
+                    $('#phone').val(response.customer.phone);
+                }
+            });
+        }
 
         function disable_payment_detail(){
             $('#payment_detail').fadeTo(0, 0.4);
@@ -602,6 +668,7 @@
                     $('#accessories').val(response.quotation_detail.accessories);
 
                     cal();
+                    getCustomerAddress(response.quotation.customer_id);
 
                 }
             });
@@ -679,6 +746,11 @@
             $('#payable_show').val(payable);
             cal()
         });
+
+        $('#payment_regis').on('keyup',function() {
+            cal();
+        });
+
         //----- credit -----//
 
         $('#payment_down').on('keyup',function() {
@@ -723,6 +795,7 @@
             var payable = parseInt($('#payable').val()); //จำนวนเงินมัดจำ
             var price_car = parseInt($("#price_car").val()); //ราคารถยนต์
             var payment_discount = parseInt($("#payment_discount").val()); //ส่วนลดราคารถยนต์
+            var payment_regis = parseInt($("#payment_regis").val()); //ค่าจดทะเบียน
 
             var price_car_net = parseInt($("#price_car_net").val()); //ราคารถยนต์สุทธิ
             var payment_down = parseInt($("#payment_down").val()); //ดาวน์
@@ -738,6 +811,10 @@
 
             if(isNaN(payment_discount)) {
                 payment_discount = 0;
+            }
+
+            if(isNaN(payment_regis)) {
+                payment_regis = 0;
             }
 
             if(isNaN(payable)) {
@@ -782,7 +859,7 @@
 
             condition = $("#condition").val();
             if (condition === "cash") {
-                let subtotal = ( price_car - payment_discount ) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
+                let subtotal = ( price_car - payment_discount ) + ( payment_regis + deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
                 $("#subtotal").val(subtotal);
             } else if ( condition === "credit") {
                 hire = (price_car - payment_discount) - payment_down;
@@ -793,7 +870,7 @@
                 $("#hire_purchase").val(hire); //ยอดจัดเช่าซื้อ
                 $("#term_payment").val(net_payment); //ค่างวดต่อเดือน
 
-                let subtotal = (payment_down - payment_down_discount) + ( deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
+                let subtotal = (payment_down - payment_down_discount) + ( payment_regis + deposit_roll + payment_decorate + payment_insurance + payment_other ) - payment_car_turn - payable
                 $("#subtotal").val(subtotal);
             }
 

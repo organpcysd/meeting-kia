@@ -15,6 +15,7 @@ class Quotation extends Model
         'serial_number',
         'user_id',
         'customer_id',
+        'contact_id',
         'car_id',
         'place_send',
         'estimate_send',
@@ -30,7 +31,15 @@ class Quotation extends Model
         return $this->belongsTo(Customer::class,'customer_id','id');
     }
 
+    public function contact(){
+        return $this->belongsTo(Customer::class,'contact_id','id');
+    }
+
     public function user(){
         return $this->belongsTo(User::class,'user_id','id');
+    }
+
+    public function car(){
+        return $this->belongsTo(Car::class,'car_id','id');
     }
 }
