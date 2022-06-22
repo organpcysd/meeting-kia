@@ -8,7 +8,7 @@
     @php( $dashboard_url = $dashboard_url ? url($dashboard_url) : '' )
 @endif
 
-<div style="background-color: #17a2b8;">
+<div style="background-color: #17a2b8;" class="text-center">
     <a href="{{ $dashboard_url }}"
         @if($layoutHelper->isLayoutTopnavEnabled())
             class="navbar-brand {{ config('adminlte.classes_brand') }}"
@@ -16,11 +16,11 @@
             class="brand-link {{ config('adminlte.classes_brand') }}"
         @endif>
                 {{-- Small brand logo --}}
-                <img src="{{ asset(setting('logonav')) }}"
+                {{-- <img src="{{ asset(setting('logonav')) }}"
                 alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
                 class="{{ config('adminlte.logo_img_class', 'brand-image img-circle elevation-3') }}"
-                style="opacity:.8">
-                <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
+                style="opacity:.8"> --}}
+                <span class="brand-text font-weight-bold text-white{{ config('adminlte.classes_brand_text') }}">
                 {{-- {!! config('adminlte.logo', '<b>Admin</b>LTE') !!} --}}
                 {!! setting('title') !!}
                 </span>

@@ -36,7 +36,7 @@ class Received extends Migration
             $table->id();
             $table->UnsignedBigInteger('received_id')->comment('ใบส่งมอบรถยนต์');
             $table->string('condition')->comment('เงื่อนไข');
-            $table->string('payable')->comment('จำนวนเงินมัดจำ');
+            $table->string('payable')->nullable()->comment('จำนวนเงินมัดจำ');
             $table->string('price_car')->nullable()->default(0)->comment('ราคารถยนต์');
             $table->string('payment_discount')->nullable()->default(0)->comment('ส่วนลดราคารถยนต์');
             $table->string('price_car_net')->nullable()->default(0)->comment('ราคารถยนต์สุทธิ');

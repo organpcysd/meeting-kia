@@ -77,7 +77,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">ที่อยู่</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control form-control-sm" id="address" name="address">
+                                            <input type="text" class="form-control form-control-sm" id="address" name="address" readonly>
                                         </div>
                                     </div>
 

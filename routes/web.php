@@ -28,7 +28,10 @@ Route::post('logout', [App\Http\Controllers\Auth\LoginController::class,'logout'
 Route::prefix('admin')->group(function(){
     Route::group(['middleware' => ['IsActive']],function(){
         Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
-        Route::get('getData', [App\Http\Controllers\Admin\HomeController::class,'getData']);
+        Route::get('getData/{btnvalue}', [App\Http\Controllers\Admin\HomeController::class,'getData']);
+        Route::get('getDataDaily', [App\Http\Controllers\Admin\HomeController::class,'getDataDaily']);
+        Route::get('getDataMonthly', [App\Http\Controllers\Admin\HomeController::class,'getDataMonthly']);
+        Route::get('getDataYearly', [App\Http\Controllers\Admin\HomeController::class,'getDataYearly']);
 
         Route::resource('/user', App\Http\Controllers\Admin\UserController::class);
         Route::post('/user/multidel', [App\Http\Controllers\Admin\UserController::class,'multidel'])->name('user.multidel');

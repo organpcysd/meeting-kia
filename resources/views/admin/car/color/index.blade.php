@@ -195,7 +195,7 @@
 
             // edit
             function modaledit(id) {
-                console.log(id);
+                // console.log(id);
 
                 $.ajax({
                     type: "get",

@@ -75,6 +75,13 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">ที่อยู่</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control form-control-sm" id="address" name="address" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">รถยนต์</label>
                                         <div class="col-sm-8">
                                             <select class="sel2 form-control" name="car" id="car">
@@ -415,6 +422,14 @@
                 getEngine(id);
             });
 
+            $('#customer').change(function(){
+                var id = $('#customer').val();
+                getCustomerAddress(id);
+            });
+
+            let cus_id = $('#customer').val();
+            getCustomerAddress(cus_id);
+
         });
 
         function disable_payment_detail(){
@@ -447,6 +462,29 @@
             document.getElementById("accessories").disabled = false;
             document.getElementById("backbtn").disabled = false;
             $('#savebtn').attr('onclick','formsubmit()');
+        }
+
+        //ดึงข้อมูล Customer
+        function getCustomerAddress(id){
+            $.ajax({
+                type: "get",
+                url: "{{ url('admin/received/getcustomeraddress') }}/" +id,
+                success: function (response) {
+                    response.address.forEach(address =>{
+                            let cus_address = "";
+                            let village = address.village == null ? "" : cus_address += address.village + " ";
+                            let house_number = address.house_number == null ? "" : cus_address += "บ้านเลขที่ " + address.house_number + " ";
+                            let alley = address.alley == null ? "" : cus_address += "ตรอก/ซอย " + address.alley + " ";
+                            let group = address.group == null ? "" : cus_address += "หมู่ที่ " + address.group + " ";
+                            let road = address.road == null ? "" : cus_address += "ถ. " +address.road + " ";
+                            let canton = address.canton.name_th == null ? "" : cus_address += "ต. " + address.canton.name_th + " ";
+                            let district = address.districts.name_th == null ? "" : cus_address += "อ. " + address.districts.name_th + " ";
+                            let province = address.provinces.name_th == null ? "" : cus_address +=  "จ. " + address.provinces.name_th + " ";
+                            let zipcode = address.zipcode == null ? "" : cus_address += address.zipcode + " ";
+                            $('#address').val(cus_address);
+                        });
+                }
+            });
         }
 
         //ดึง car stock

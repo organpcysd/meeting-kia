@@ -30,7 +30,9 @@ class CustomerController extends Controller
             return DataTables::make($data)
             ->addIndexColumn()
             ->addColumn('name',function($data){
-                $name = $data['f_name'] . ' ' . $data['l_name'];
+                // $name = "<label data-toggle='modal' data-target='#exampleModalCenter' class='text-info'><u>dwddwdwdw</u></label>";
+                $name = "<a href='#' class='pe-auto' onclick='modalshow(". $data['id'] . ")'>". '<i class="fa-solid fa-eye"></i>' .' '. $data['f_name'] . ' ' . $data['l_name'] ."</a>";
+                // $data['f_name'] . ' ' . $data['l_name'];
                 return $name;
             })
             ->addColumn('select',function($data){
@@ -149,7 +151,9 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $customer = Customer::whereId($id)->with('customer_address','customer_address.canton','customer_address.districts','customer_address.provinces')->first();
+
+        return response()->json(['customer' => $customer]);
     }
 
     /**

@@ -35,7 +35,7 @@
 
                         <div class="form-group">
                             <label>ชื่อเว็บไซต์</label>
-                            <input type="text" class="form-control" id="title" name="title" value="{{setting('title')}}" required>
+                            <input type="text" class="form-control" id="title" name="title" value="{{setting('title')}}">
                         </div>
 
                     </div>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Logo Navbar</label>
                             <div class="row row-cols-2 align-items-center">
                                 <div class="col-4 text-center">
@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>

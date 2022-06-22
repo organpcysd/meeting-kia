@@ -132,6 +132,7 @@ class ReceivedController extends Controller
                 if($request->chassis){
                     $carstock = Car_stock::whereId($request->chassis)->first();
                     $carstock->status = "sold";
+                    $carstock->save();
                 }
                 alert::success('เพิ่มข้อมูลสำเร็จ');
                 return redirect()->route('received.index');
@@ -253,7 +254,7 @@ class ReceivedController extends Controller
     }
 
     public function getDataCarstock(Car $car){
-        $carstock = $car->car_stock;
+        $carstock = $car->car_stock->where('status','pending');
         return response()->json(['carstock' => $carstock]);
     }
 

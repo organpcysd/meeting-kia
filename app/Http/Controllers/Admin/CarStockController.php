@@ -40,10 +40,13 @@ class CarStockController extends Controller
             })
             ->addColumn('status',function($data){
                 $car_status = $data['status'];
-                if($car_status = 'pending'){
+                if($car_status === 'pending'){
                     $status = '<label class="btn btn-primary btn-sm">รอจำหน่าย</label>';
+                }elseif($car_status === 'sold'){
+                    $status = '<label class="btn btn-success btn-sm">จำหน่ายแล้ว</label>';
+                }else{
+                    $status = '<label class="btn btn-secondary btn-sm">บกพร่อง</label>';
                 }
-
                 return $status;
             })
             ->rawColumns(['btn','status','select'])

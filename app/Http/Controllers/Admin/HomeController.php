@@ -30,58 +30,37 @@ class HomeController extends Controller
         $reserved = Reserved::all();
         $received = Received::all();
 
-        $daily_customers = Customer::whereDate('created_at', Carbon::today())->get();
-        $daily_traffic = Traffic::whereDate('created_at', Carbon::today())->get();
-        $daily_quotations = Quotation::whereDate('created_at', Carbon::today())->get();
-        $daily_reserved = Reserved::whereDate('created_at', Carbon::today())->get();
-        $daily_received = Received::whereDate('created_at', Carbon::today())->get();
-
-        $traffic_y = Traffic::select('source_id',Traffic::raw('month(created_at) as Month'),Traffic::raw('count(*) as total'))->whereYear('created_at','=','2022')->groupBy('source_id',Traffic::raw('month(created_at)'))->get();
-        // $traffic_m = Traffic::select('id','source_id','created_at')->get()->groupBy([function($date){return Carbon::parse($date->created_at)->format('m');}]);
-        dd($traffic_y);
-
-        $arr = [];
-        $months = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
-
-        foreach ($traffic_y as $t => $val) {
-            $arr[(int)$t] = $val->Month;
-        }
-
-        // dd($arr);
-
-        // $traffic_mcount = [];
-        // $trafficArr = [];
-
-        // foreach ($traffic_m as $key => $value) {
-        //     $traffic_mcount[(int)$key] = count($value);
-        // }
-
-        // for($i = 1; $i <= 12; $i++){
-        //     if(!empty($traffic_mcount[$i])){
-        //         $trafficArr[$months[$i]] = $traffic_mcount[$i];
-        //     }else{
-        //         $trafficArr[$months[$i]] = 0;
-        //     }
-        // }
-
-        // dd($trafficArr);
-
-        // for($i = 1; $i <= 12; $i++){
-        //     if(!empty($traffic_mcount[$i])){
-        //         $trafficArr[$i] = $traffic_mcount[$i];
-        //     }else{
-        //         $trafficArr[$i] = 0;
-        //     }
-        // }
-
-        return view('admin.home',compact('stocks','customers','traffic','quotations','reserved','received','daily_customers','daily_traffic','daily_quotations','daily_reserved','daily_received'));
+        return view('admin.home',compact('stocks','customers','traffic','quotations','reserved','received'));
     }
 
-    public function getData(){
-        $traffic = Traffic::with('source')->get();
-        $traffic_source = Traffic_source::all();
+    public function getData($btnvalue){
+        if($btnvalue === 'btndaily'){
+            $customers = Customer::whereDate('created_at', Carbon::today())->get()->count();
+            $traffic = Traffic::whereDate('created_at', Carbon::today())->get()->count();
+            $quotations = Quotation::whereDate('created_at', Carbon::today())->get()->count();
+            $reserved = Reserved::whereDate('created_at', Carbon::today())->get()->count();
+            $received = Received::whereDate('created_at', Carbon::today())->get()->count();
+        }elseif($btnvalue === 'btnmonthly'){
+            $customers = Customer::whereMonth('created_at', Carbon::now()->month)->get()->count();
+            $traffic = Traffic::whereMonth('created_at', Carbon::now()->month)->get()->count();
+            $quotations = Quotation::whereMonth('created_at', Carbon::now()->month)->get()->count();
+            $reserved = Reserved::whereMonth('created_at', Carbon::now()->month)->get()->count();
+            $received = Received::whereMonth('created_at', Carbon::now()->month)->get()->count();
+        }elseif($btnvalue === 'btnyearly'){
+            $customers = Customer::whereYear('created_at', Carbon::now()->year)->get()->count();
+            $traffic = Traffic::whereYear('created_at', Carbon::now()->year)->get()->count();
+            $quotations = Quotation::whereYear('created_at', Carbon::now()->year)->get()->count();
+            $reserved = Reserved::whereYear('created_at', Carbon::now()->year)->get()->count();
+            $received = Received::whereYear('created_at', Carbon::now()->year)->get()->count();
+        }else{
+            $customers = Customer::all()->count();
+            $traffic = Traffic::all()->count();
+            $quotations = Quotation::all()->count();
+            $reserved = Reserved::all()->count();
+            $received = Received::all()->count();
+        }
 
-        return response()->json(['traffic' => $traffic,'traffic_source' => $traffic_source]);
+        return response()->json(['customers' => $customers,'traffic' => $traffic, 'quotations' => $quotations, 'reserved' => $reserved, 'received' => $received]);
     }
 
     /**
