@@ -53,6 +53,8 @@
             </div>
         </div>
     </div>
+
+    @include('admin.quotation.partials.modalshow')
 </div>
 
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
@@ -100,6 +102,54 @@
                     }
                 });
             });
+
+            function modalshow(id) {
+                $.ajax({
+                    type: "get",
+                    url: "{{ url('admin/quotation') }}/" + id,
+                    success: function(response) {
+
+                        $('#cus_name').text(response.quotations.customer.f_name + ' ' + response.quotations.customer.l_name);
+                        $('#nickname').text(response.quotations.customer.nickname == null ? "-" : response.quotations.customer.nickname);
+                        $('#email').text(response.quotations.customer.email == null ? "-" : response.quotations.customer.email );
+                        $('#phone').text(response.quotations.customer.phone == null ? "-" : response.quotations.customer.phone);
+                        $('#lineid').text(response.quotations.customer.lineid == null ? "-" : response.quotations.customer.lineid);
+
+                        $('#user_name').text(response.quotations.user.f_name + ' ' + response.quotations.user.l_name);
+                        $('#user_phone').text(response.quotations.user.phone == null ? "-" : response.quotations.user.phone);
+
+                        $('#car').text(response.quotations.car.car_model.model_name + ' ' + response.quotations.car.car_level.level_name + ' ' + response.quotations.car.car_color.color_name + (response.quotations.car.car_color.color_code == null ? ' ' : ' (' + response.quotations.car.car_color.color_code + ') '));
+                        $('#condition').text(response.quotations.quotation_detail.condition == 'credit' ? "ผ่อน" : "เงินสด");
+                        $('#car_price').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.price_car)));
+                        $('#payment_discount').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.payment_discount)));
+                        $('#deposit_roll').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.deposit_roll)));
+                        $('#payment_decorate').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.payment_decorate)));
+                        $('#payment_insurance').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.payment_insurance)));
+                        $('#payment_other').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.payment_other)));
+                        $('#payment_car_turn').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.payment_car_turn)));
+                        $('#subtotal').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.subtotal)));
+                        $('#accessories').text(response.quotations.quotation_detail.accessories);
+
+                        if(response.quotations.quotation_detail.condition == 'credit'){
+                            let ele = document.getElementById("car_credit");
+                            ele.style.display = "";
+
+                            $('#price_car_net').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.price_car_net)));
+                            $('#payment_down').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.payment_down)));
+                            $('#payment_down_discount').text((new Intl.NumberFormat().format(response.quotations.quotation_detail.payment_down_discount)));
+                            $('#term_credit').text (response.quotations.quotation_detail.term_credit);
+                            $('#interest').text (response.quotations.quotation_detail.interest + '%');
+                            $('#hire_purchase').text ((new Intl.NumberFormat().format(response.quotations.quotation_detail.hire_purchase)));
+                            $('#term_payment').text ((new Intl.NumberFormat().format(response.quotations.quotation_detail.term_payment)));
+
+                        }else {
+                            let ele = document.getElementById("car_credit");
+                            ele.style.display = "none";
+                        }
+                        $('#showdata').modal('show');
+                    }
+                });
+            }
 
             function form_multidel() {
                 let sel = $('input.select:checkbox:checked').length;

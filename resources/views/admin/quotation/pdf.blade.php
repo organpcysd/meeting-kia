@@ -103,7 +103,7 @@
                     {{ $quotations->customer->customer_prefix->title . $quotations->customer->f_name . ' ' . $quotations->customer->l_name }}
                 </div>
                 <div>
-                    {{ $quotations->customer->customer_address->canton->name_th . ' ' . $quotations->customer->customer_address->districts->name_th . ' ' . $quotations->customer->customer_address->provinces->name_th }}
+                    {{ $quotations->place_send }}
                 </div>
                 <div>เลขประจำตัวผู้เสียภาษี : {{ $quotations->customer->itax_id }}</div>
                 <div>ชื่อผู้ติดต่อ :

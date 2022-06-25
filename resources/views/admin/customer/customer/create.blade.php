@@ -36,12 +36,12 @@
 
                         <div class="form-group">
                             <label>เลขประจำตัวผู้เสียภาษี</label>
-                            <input type="text" class="form-control" id="itax_id" name="itax_id" minlength="13" maxlength="13" required>
+                            <input type="text" class="form-control" id="itax_id" name="itax_id" minlength="13" maxlength="13">
                         </div>
 
                         <div class="form-group">
                             <label>เลขประจำตัวประชาชน</label>
-                            <input type="text" class="form-control" id="citizen_id" name="citizen_id" minlength="13" maxlength="13" required>
+                            <input type="text" class="form-control" id="citizen_id" name="citizen_id" minlength="13" maxlength="13">
                         </div>
 
                         <div class="form-group row">
@@ -65,17 +65,17 @@
 
                         <div class="form-group">
                             <label>ชื่อเล่น</label>
-                            <input type="text" class="form-control" id="nickname" name="nickname" required>
+                            <input type="text" class="form-control" id="nickname" name="nickname">
                         </div>
 
                         <div class="form-group">
                             <label>วันเกิด</label>
-                            <input type="date" class="form-control" id="born" name="born" required>
+                            <input type="date" class="form-control" id="born" name="born">
                         </div>
 
                         <div class="form-group">
                             <label>อาชีพ</label>
-                            <input type="text" class="form-control" id="vocation" name="vocation" required>
+                            <input type="text" class="form-control" id="vocation" name="vocation">
                         </div>
 
                         <div class="form-group">
@@ -90,7 +90,7 @@
 
                         <div class="form-group">
                             <label>เบอร์โทรศัพท์</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" minlength="10" required>
+                            <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" minlength="10">
                         </div>
 
                         <div class="form-group">

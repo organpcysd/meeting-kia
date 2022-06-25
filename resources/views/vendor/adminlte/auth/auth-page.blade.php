@@ -45,7 +45,7 @@
                 <img class="box bounce" src="{{ asset(setting('logologin')) }}" height="100">
                 <br/>
                 {{-- {!! config('adminlte.logo', '<b>Admin</b>LTE') !!} --}}
-                <b>{!! setting('title') !!}</b>
+                {{-- <b>{!! setting('title') !!}</b> --}}
             </a>
         </div>
 

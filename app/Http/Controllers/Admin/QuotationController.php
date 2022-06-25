@@ -27,9 +27,13 @@ class QuotationController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Quotation::all();
+            $data = Quotation::where('quotation_status','pending')->get();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('serial_number',function($data){
+                $serial_number = "<a href='#' class='pe-auto' onclick='modalshow(". $data['id'] . ")'>". '<i class="fa-solid fa-eye"></i>' .' '. $data['serial_number'] . "</a>";
+                return $serial_number;
+            })
             ->addColumn('customer_name',function($data){
                 $customer_name = $data->customer->customer_prefix->title . ' ' . $data->customer->f_name;
                 return $customer_name;
@@ -56,7 +60,7 @@ class QuotationController extends Controller
                         <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
-            ->rawColumns(['btn','nickname','created_at','customer_name','user_name','select'])
+            ->rawColumns(['btn','nickname','created_at','customer_name','user_name','select','serial_number'])
             ->make(true);
         }
         return view('admin.quotation.index');
@@ -149,7 +153,8 @@ class QuotationController extends Controller
      */
     public function show($id)
     {
-        //
+        $quotations = Quotation::whereId($id)->with('customer','contact','user','quotation_detail','car','car.car_model','car.car_level','car.car_color')->first();
+        return response()->json(['quotations' => $quotations]);
     }
 
     /**

@@ -136,7 +136,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">วิธีการชำระเงิน</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" name="payment_by" id="payment_by">
+                                    <select class="form-control" name="payment_by" id="payment_by" required>
                                         <option value="" selected disabled>- เลือกวิธีการชำระเงิน -</option>
                                         <option value="cash">เงินสด</option>
                                         <option value="credit">บัตรเครดิต</option>

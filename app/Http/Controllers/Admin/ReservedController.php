@@ -29,9 +29,13 @@ class ReservedController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Reserved::all();
+            $data = Reserved::where('status_reserved','pending')->get();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('serial_number',function($data){
+                $serial_number = "<a href='#' class='pe-auto' onclick='modalshow(". $data['id'] . ")'>". '<i class="fa-solid fa-eye"></i>' .' '. $data['serial_number'] . "</a>";
+                return $serial_number;
+            })
             ->addColumn('customer_name',function($data){
                 $customer_name = $data->customer->f_name . ' ' . $data->customer->l_name;
                 return $customer_name;
@@ -66,7 +70,7 @@ class ReservedController extends Controller
                         <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
-            ->rawColumns(['customer_name','nickname','car','user_name','btn','payable','select'])
+            ->rawColumns(['customer_name','nickname','car','user_name','btn','payable','select','serial_number'])
             ->make(true);
         }
         return view('admin.reserved.index');
@@ -79,7 +83,7 @@ class ReservedController extends Controller
      */
     public function create()
     {
-        $quotations = Quotation::all();
+        $quotations = Quotation::where('quotation_status','pending')->get();
         $customers = Customer::all();
         $users = User::all();
         $cars = Car::all();
@@ -150,8 +154,12 @@ class ReservedController extends Controller
 
             if($reserved_detail->save()){
                 $reserved_detail->car_gift()->attach($request->gift);
-                alert::success('เพิ่มข้อมูลสำเร็จ');
-                return redirect()->route('reserved.index');
+                $quotation = Quotation::whereId($request->quotation)->first();
+                $quotation->quotation_status = 'close';
+                if($quotation->save()){
+                    alert::success('เพิ่มข้อมูลสำเร็จ');
+                    return redirect()->route('reserved.index');
+                }
             }
         }
 
@@ -167,7 +175,8 @@ class ReservedController extends Controller
      */
     public function show($id)
     {
-        //
+        $reserved = Reserved::whereId($id)->with('customer','contact','user','reserved_detail','car','car.car_model','car.car_level','car.car_color')->first();
+        return response()->json(['reserved' => $reserved]);
     }
 
     /**
@@ -262,8 +271,12 @@ class ReservedController extends Controller
         $reserved = Reserved::whereId($id)->first();
 
         if ($reserved->delete()) {
-            $status = true;
-            $message = 'ลบข้อมูลเรียบร้อย';
+            $quotation = Quotation::whereId($reserved->quotation_id)->first();
+            $quotation->quotation_status = 'pending';
+                if($quotation->save()){
+                    $status = true;
+                    $message = 'ลบข้อมูลเรียบร้อย';
+                }
         }
         return response()->json(['status' => $status, 'message' => $message]);
     }

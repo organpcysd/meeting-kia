@@ -16,11 +16,11 @@ class Customer extends Migration
         Schema::create('customer', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('prefix_id')->comment('คำนำหน้า');
-            $table->text('citizen_id')->comment('เลขประจำตัวประชาชน');
-            $table->text('itax_id')->comment('เลขประจำตัวผู้เสียภาษี');
+            $table->text('citizen_id')->nullable()->comment('เลขประจำตัวประชาชน');
+            $table->text('itax_id')->nullable()->comment('เลขประจำตัวผู้เสียภาษี');
             $table->string('f_name')->comment('ชื่อจริง');
-            $table->string('l_name')->comment('นามสกุล');
-            $table->string('nickname')->comment('ชื่อเล่น');
+            $table->string('l_name')->nullable()->comment('นามสกุล');
+            $table->string('nickname')->nullable()->comment('ชื่อเล่น');
             $table->date('born')->nullable()->comment('วันเกิด');
             $table->string('vocation')->nullable()->comment('อาชีพ');
             $table->text('phone')->nullable()->comment('เบอร์โทรศัพท์');
@@ -40,9 +40,9 @@ class Customer extends Migration
         Schema::create('customer_address', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id')->comment('ลูกค้า');;
-            $table->unsignedBigInteger('canton_id')->comment('ตำบล');
-            $table->unsignedBigInteger('district_id')->comment('อำเภอ');
-            $table->unsignedBigInteger('province_id')->comment('จังหวัด');
+            $table->unsignedBigInteger('canton_id')->nullable()->comment('ตำบล');
+            $table->unsignedBigInteger('district_id')->nullable()->comment('อำเภอ');
+            $table->unsignedBigInteger('province_id')->nullable()->comment('จังหวัด');
             $table->string('house_number')->nullable()->comment('บ้านเลขที่');
             $table->string('group')->nullable()->comment('หมู่');
             $table->string('village')->nullable()->comment('หมู่บ้าน');
@@ -60,7 +60,7 @@ class Customer extends Migration
         Schema::create('customer_follow', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id');
-            $table->string('follow_up')->comment('ผลการติดตาม');
+            $table->string('follow_up')->nullable()->comment('ผลการติดตาม');
             $table->string('follow_up_customer')->nullable()->comment('การตอบสนองจากลูกค้า');
             $table->string('recomment_ceo')->nullable()->comment('คำแนะนำจาก ผจก.');
             $table->date('follow_date')->nullable()->comment('วันที่ติดตาม');

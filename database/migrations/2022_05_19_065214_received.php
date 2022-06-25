@@ -21,7 +21,7 @@ class Received extends Migration
             $table->unsignedBigInteger('reserved_id')->nullable()->comment('ใบจองรถยนต์');
             $table->unsignedBigInteger('car_id')->comment('รถยนต์');
             $table->unsignedBigInteger('stock_id')->nullable()->comment('เลขตัวถัง');
-            $table->string('payment_by')->comment('วิธีการชำระเงิน');
+            $table->string('payment_by')->nullable()->comment('วิธีการชำระเงิน');
             $table->date('received_date')->nullable()->comment('วันที่จอง');
             $table->timestamps();
 

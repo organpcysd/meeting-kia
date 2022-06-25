@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginform']);
+
+// Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
 
 Route::get('/foo', function () {
     Artisan::call('storage:link');

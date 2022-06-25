@@ -55,7 +55,7 @@ class UserController extends Controller
                     return $btn;
                 })
                 ->addColumn('fullname',function($data){
-                    $fullname = $data['f_name'] . ' ' . $data['l_name'];
+                    $fullname = "<a href='#' class='pe-auto' onclick='modalshow(". $data['id'] . ")'>". '<i class="fa-solid fa-eye"></i>' .' '. $data['f_name'] . ' ' . $data['l_name'] ."</a>";
                     return $fullname;
                 })
                 ->addColumn('position',function($data){
@@ -93,7 +93,7 @@ class UserController extends Controller
 
                     return $status;
                 })
-                ->rawColumns(['btn','status','select','image','position','role'])
+                ->rawColumns(['btn','status','select','image','position','role','fullname'])
                 ->make(true);
         }
         return view('admin.user.index');
@@ -173,7 +173,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::whereId($id)->first();
+        return response()->json(['user' => $user]);
     }
 
     /**

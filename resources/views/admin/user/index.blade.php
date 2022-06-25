@@ -61,6 +61,8 @@
             </div>
         </div>
     </div>
+
+    @include('admin.user.partials.modalshow');
 </div>
 
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
@@ -108,6 +110,24 @@
                     }
                 });
             });
+
+            function modalshow(id) {
+                $.ajax({
+                    type: "get",
+                    url: "{{ url('admin/user') }}/" + id,
+                    success: function(response) {
+                        $('#fullname').text(response.user.f_name + ' ' + response.user.l_name);
+                        $('#nickname').text(response.user.nickname == null ? "-" : response.user.nickname);
+                        $('#birthdate').text(response.user.born == null ? "-" : response.user.born);
+                        $('#vocation').text(response.user.vocation == null ? "-" : response.user.vocation);
+                        $('#email').text(response.user.email == null ? "-" : response.user.email);
+                        $('#phone').text(response.user.phone == null ? "-" : response.user.phone);
+                        $('#lineid').text(response.user.lineid == null ? "-" : response.user.lineid);
+
+                        $('#showdata').modal('show');
+                    }
+                });
+            }
 
             function form_multidel() {
                 let sel = $('input.select:checkbox:checked').length;

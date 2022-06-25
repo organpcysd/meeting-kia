@@ -30,6 +30,10 @@ class ReceivedController extends Controller
             $data = Received::all();
             return DataTables::make($data)
             ->addIndexColumn()
+            ->addColumn('serial_number',function($data){
+                $serial_number = "<a href='#' class='pe-auto' onclick='modalshow(". $data['id'] . ")'>". '<i class="fa-solid fa-eye"></i>' .' '. $data['serial_number'] . "</a>";
+                return $serial_number;
+            })
             ->addColumn('select',function($data){
                 $select = '<input type="checkbox" class="select" id="select" name="select[]" value="'. $data['id'] . '">';
                 return $select;
@@ -55,7 +59,7 @@ class ReceivedController extends Controller
                         <a class="btn btn-danger" onclick="deleteConfirmation('. $data['id'] .')"><i class="fa fa-trash" data-toggle="tooltip" title="ลบข้อมูล"></i></a>';
                 return $btn;
             })
-            ->rawColumns(['customer_name','nickname','car','user_name','btn','select'])
+            ->rawColumns(['customer_name','nickname','car','user_name','btn','select','serial_number'])
             ->make(true);
         }
         return view('admin.received.received.index');
@@ -68,7 +72,7 @@ class ReceivedController extends Controller
      */
     public function create()
     {
-        $reserved = Reserved::all();
+        $reserved = Reserved::where('status_reserved','pending')->get();
         $customers = Customer::all();
         $users = User::all();
         $cars = Car::all();
@@ -129,13 +133,21 @@ class ReceivedController extends Controller
             $received_detail->accessories = $request->accessories;
 
             if($received_detail->save()){
-                if($request->chassis){
-                    $carstock = Car_stock::whereId($request->chassis)->first();
-                    $carstock->status = "sold";
-                    $carstock->save();
+                $reserved = Reserved::whereId($request->reserved)->first();
+                $reserved->status_reserved = 'close';
+                if($reserved->save()){
+                    if($request->chassis){
+                        $carstock = Car_stock::whereId($request->chassis)->first();
+                        $carstock->status = "sold";
+                        if($carstock->save()){
+                            alert::success('เพิ่มข้อมูลสำเร็จ');
+                            return redirect()->route('received.index');
+                        }
+                    }else{
+                        alert::success('เพิ่มข้อมูลสำเร็จ');
+                         return redirect()->route('received.index');
+                    }
                 }
-                alert::success('เพิ่มข้อมูลสำเร็จ');
-                return redirect()->route('received.index');
             }
         }
 
@@ -151,7 +163,8 @@ class ReceivedController extends Controller
      */
     public function show($id)
     {
-        //
+        $received = Received::whereId($id)->with('customer','user','received_detail','car','car.car_model','car.car_level','car.car_color')->first();
+        return response()->json(['received' => $received]);
     }
 
     /**
@@ -182,7 +195,6 @@ class ReceivedController extends Controller
     public function update(Request $request, $id)
     {
         $received = Received::whereId($id)->first();
-        $received->serial_number = $serial_number;
         $received->user_id = $request->user;
         $received->customer_id = $request->customer;
         $received->reserved_id = $request->reserved;
@@ -239,8 +251,21 @@ class ReceivedController extends Controller
         $received = Received::whereId($id)->first();
 
         if ($received->delete()) {
-            $status = true;
-            $message = 'ลบข้อมูลเรียบร้อย';
+            $reserved = Reserved::whereId($received->reserved_id)->first();
+            $reserved->status_reserved = 'pending';
+            if($reserved->save()){
+                if($received->stock_id){
+                    $carstock = Car_stock::whereId($received->stock_id)->first();
+                    $carstock->status = 'pending';
+                    if($carstock->save()){
+                        $status = true;
+                        $message = 'ลบข้อมูลเรียบร้อย';
+                    }
+                }else{
+                    $status = true;
+                    $message = 'ลบข้อมูลเรียบร้อย';
+                }
+            }
         }
         return response()->json(['status' => $status, 'message' => $message]);
     }

@@ -20,7 +20,8 @@
             </div>
         </div>
 
-        <form action="{{ route('received.edit',['received' => $received->id]) }}" method="post" id="formsubmit">
+        <form action="{{ route('received.update',['received' => $received->id]) }}" method="post" id="formsubmit">
+            @method('PUT')
             @csrf
             <div class="row">
                 <div class="col-lg-5 col-md-12 col-sm-5">
@@ -108,7 +109,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">เลขตัวเครื่อง</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="engine" name="engine" value="{{ $received->car_stock->number_engine }}" readonly>
+                                            <input type="text" class="form-control" id="engine" name="engine" value="@if($received->stock_id === null) @else {{ $received->car_stock->number_engine }} @endif" readonly>
                                         </div>
                                     </div>
 

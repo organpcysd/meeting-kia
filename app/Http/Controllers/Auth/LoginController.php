@@ -49,9 +49,9 @@ class LoginController extends Controller
 
         if(auth()->attempt(array('email' => $data['email'],'password' => $data['password']))) {
             if(auth()->user()->status == 1) {
-                return redirect('admin');
+                return redirect()->route('admin');
             }else{
-                // return redirect()->route('login');
+                return view('auth.login');
             }
         }
         return redirect()->route('login');

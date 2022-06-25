@@ -54,6 +54,8 @@
             </div>
         </div>
     </div>
+
+    @include('admin.reserved.partials.modalshow')
 </div>
 
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
@@ -130,6 +132,58 @@
                         }
                     })
                 }
+            }
+
+            function modalshow(id) {
+                $.ajax({
+                    type: "get",
+                    url: "{{ url('admin/reserved') }}/" + id,
+                    success: function(response) {
+
+                        $('#cus_name').text(response.reserved.customer.f_name + ' ' + response.reserved.customer.l_name);
+                        $('#nickname').text(response.reserved.customer.nickname == null ? "-" : response.reserved.customer.nickname);
+                        $('#email').text(response.reserved.customer.email == null ? "-" : response.reserved.customer.email );
+                        $('#phone').text(response.reserved.customer.phone == null ? "-" : response.reserved.customer.phone);
+                        $('#lineid').text(response.reserved.customer.lineid == null ? "-" : response.reserved.customer.lineid);
+
+                        $('#user_name').text(response.reserved.user.f_name + ' ' + response.reserved.user.l_name);
+                        $('#user_phone').text(response.reserved.user.phone == null ? "-" : response.reserved.user.phone);
+
+                        $('#car').text(response.reserved.car.car_model.model_name + ' ' + response.reserved.car.car_level.level_name + ' ' + response.reserved.car.car_color.color_name + (response.reserved.car.car_color.color_code == null ? ' ' : ' (' + response.reserved.car.car_color.color_code + ') '));
+                        $('#condition').text(response.reserved.reserved_detail.condition == 'credit' ? "ผ่อน" : "เงินสด");
+                        $('#car_price').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.price_car)));
+                        $('#payment_discount').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_discount)));
+                        $('#payment_regis').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_regis)));
+                        $('#deposit_roll').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.deposit_roll)));
+                        $('#payment_decorate').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_decorate)));
+                        $('#payment_insurance').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_insurance)));
+                        $('#payment_other').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_other)));
+                        $('#payment_car_turn').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_car_turn)));
+                        $('#subtotal').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.subtotal)));
+                        $('#accessories').text(response.reserved.reserved_detail.accessories);
+
+                        $('#reserved_date').text(response.reserved.reserved_date);
+                        $('#payable').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payable)));
+
+                        if(response.reserved.reserved_detail.condition == 'credit'){
+                            let ele = document.getElementById("car_credit");
+                            ele.style.display = "";
+
+                            $('#price_car_net').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.price_car_net)));
+                            $('#payment_down').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_down)));
+                            $('#payment_down_discount').text((new Intl.NumberFormat().format(response.reserved.reserved_detail.payment_down_discount)));
+                            $('#term_credit').text (response.reserved.reserved_detail.term_credit);
+                            $('#interest').text (response.reserved.reserved_detail.interest + '%');
+                            $('#hire_purchase').text ((new Intl.NumberFormat().format(response.reserved.reserved_detail.hire_purchase)));
+                            $('#term_payment').text ((new Intl.NumberFormat().format(response.reserved.reserved_detail.term_payment)));
+
+                        }else {
+                            let ele = document.getElementById("car_credit");
+                            ele.style.display = "none";
+                        }
+                        $('#showdata').modal('show');
+                    }
+                });
             }
 
         function deleteConfirmation(id) {
